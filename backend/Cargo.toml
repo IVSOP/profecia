@@ -1,0 +1,25 @@
+[package]
+name = "backend"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.101"
+argon2 = "0.5.3"
+axum = { version = "0.8.8", features = ["macros"] }
+axum-extra = { version = "0.10.3", features = ["cookie"] }
+chrono = { version = "0.4.42", features = ["serde"] }
+clap = { version = "4.5.32", features = ["derive", "env"] }
+dotenvy = "0.15.7"
+itertools = "0.14.0"
+regex = "1.12.2"
+sea-orm = { version = "2.0.0-rc", features = ["sqlx-postgres", "sqlx-sqlite", "runtime-tokio-rustls", "debug-print", "macros", "with-chrono", "with-json", "with-uuid", "entity-registry", "schema-sync"] }
+serde = "1.0.228"
+serde_json = "1.0.145"
+thiserror = "2.0.18"
+time = "0.3.37"
+tokio = { version = "1.49.0", features = ["full"] }
+tracing = "0.1.44"
+tracing-subscriber = "0.3.22"
+uuid = { version = "1.20.0", features = ["v4"] }
+validator = { version = "0.20.0", features = ["derive"] }

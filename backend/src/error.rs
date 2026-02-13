@@ -1,0 +1,72 @@
+use axum::{
+    Json,
+    extract::rejection::JsonRejection,
+    http::StatusCode,
+    response::{IntoResponse, Response},
+};
+use serde::Serialize;
+
+pub type AppResult<T> = Result<T, AppError>;
+
+#[derive(Debug, thiserror::Error)]
+pub enum AppError {
+    #[error(transparent)]
+    ValidationError(#[from] validator::ValidationErrors),
+    #[error(transparent)]
+    AxumJsonRejection(#[from] JsonRejection),
+    #[error(transparent)]
+    DatabaseError(#[from] sea_orm::error::DbErr),
+    #[error("User {0} already exists")]
+    UserAlreadyExists(String),
+    #[error(transparent)]
+    AnyhowError(#[from] anyhow::Error),
+    #[error("Unauthorized: {0}")]
+    Unauthorized(String),
+}
+
+impl IntoResponse for AppError {
+    fn into_response(self) -> Response {
+        #[derive(Serialize)]
+        struct ErrorBody {
+            error: String,
+        }
+
+        let internal_server_error = (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            String::from("Internal server error"),
+        );
+
+        let (status, error) = match &self {
+            AppError::ValidationError(err) => (
+                StatusCode::BAD_REQUEST,
+                itertools::Itertools::intersperse(
+                    err.field_errors()
+                        .into_values()
+                        .flatten()
+                        .filter_map(|v| v.message.clone())
+                        .map(|a| a.to_string()),
+                    ", ".to_string(),
+                )
+                .collect(),
+            ),
+            AppError::AxumJsonRejection(err) => (StatusCode::BAD_REQUEST, err.to_string()),
+            AppError::DatabaseError(err) => {
+                tracing::error!("Database error: {}", err);
+                internal_server_error
+            }
+            AppError::UserAlreadyExists(username) => (
+                StatusCode::BAD_REQUEST,
+                format!("Utilizador {} já existe", username),
+            ),
+            AppError::AnyhowError(error) => {
+                tracing::error!("Error: {}", error);
+                internal_server_error
+            }
+            AppError::Unauthorized(error) => (StatusCode::UNAUTHORIZED, error.to_string()),
+        };
+
+        let body = ErrorBody { error };
+
+        (status, Json(body)).into_response()
+    }
+}
