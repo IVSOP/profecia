@@ -52,6 +52,8 @@ export interface EventDto {
 	id: string;
 	displayName: string;
 	imageUrl: string | null;
+    url: string,
+    pubkey: string,
 	markets: MarketDto[];
 }
 
