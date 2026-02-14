@@ -4,6 +4,7 @@
 	import { page } from '$app/state';
 	import { Button } from '$lib/components/ui/button';
 	import UserAvatar from '$lib/components/avatar.svelte';
+	import '@fontsource-variable/inter';
 
 	let { children } = $props();
 

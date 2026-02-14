@@ -82,7 +82,7 @@
 			<h2 class="text-lg font-semibold">Regras</h2>
 			{#if data.event.markets.length > 1}
 				<Select.Root type="single" bind:value={selectedRuleMarketId}>
-					<Select.Trigger class="w-[220px]">
+					<Select.Trigger class="w-55">
 						{rulesSelectLabel}
 					</Select.Trigger>
 					<Select.Content>
