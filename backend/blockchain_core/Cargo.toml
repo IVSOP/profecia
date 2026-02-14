@@ -1,0 +1,19 @@
+[package]
+name = "blockchain_core"
+version = "0.1.0"
+edition = "2021" # por causa do programa da blockchain usar esta crate
+
+[dependencies]
+anyhow = { workspace = true, optional = true }
+wincode = { workspace = true }
+pinocchio = { workspace = true }
+pinocchio-pubkey = { workspace = true }
+solana-client = { workspace = true, optional = true }
+# uuid = { workspace = true, features = [] } # FIX: THIS KEEPS USING THE v4 FEATURE!!!
+uuid = "1.20.0"
+# serde = { workspace = true, optional = true }
+
+[features]
+default = []
+client = ["dep:anyhow", "dep:solana-client"] #"dep:serde"]
+

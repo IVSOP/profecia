@@ -1,0 +1,22 @@
+[package]
+name = "blockchain_client"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = { workspace = true }
+wincode = { workspace = true }
+pinocchio = { workspace = true }
+pinocchio-pubkey = { workspace = true }
+solana-client = { workspace = true }
+uuid = { workspace = true }
+solana-sdk = { version = "3.0.0", default-features = false, features = ["full", "solana-signature"] } # "borsh"
+tokio = { workspace = true }
+blockchain_core = { path = "../blockchain_core", features = ["client"] } 
+spl-token = "9.0.0"
+spl-associated-token-account = "8.0.0"
+reqwest = { workspace = true }
+serde_json = { workspace = true }
+
+[features]
+default = []

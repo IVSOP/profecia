@@ -1,0 +1,69 @@
+use std::collections::HashMap;
+
+use uuid::Uuid;
+use wincode::{SchemaRead, SchemaWrite};
+
+use crate::accounts::{event::EventOption, order::TokenOption};
+
+#[derive(SchemaWrite, SchemaRead, Debug, Clone)]
+pub enum MarketInstruction {
+    CreateEvent(CreateEventArgs),
+    CloseEvent(CloseEventArgs),
+    // CreateOrder(CreateOrderArgs),
+    // MatchOrder(MatchOrderArgs),
+    // CancelOrder(CancelOrderArgs),
+    FakeMatchOrder(FakeMatchOrderArgs),
+    GetReward(GetRewardArgs),
+}
+
+#[derive(SchemaWrite, SchemaRead, Debug, Clone)]
+pub struct CreateEventArgs {
+    pub uuid: Uuid,
+    pub description: String,
+    pub options: HashMap<Uuid, EventOption>,
+}
+
+#[derive(SchemaWrite, SchemaRead, Debug, Copy, Clone)]
+pub struct CloseEventArgs {
+    pub uuid: Uuid,
+}
+
+#[derive(SchemaWrite, SchemaRead, Debug, Copy, Clone)]
+pub struct CreateOrderArgs {
+    pub event_uuid: Uuid,
+    pub option_uuid: Uuid,
+    pub num_shares: u64,
+    pub token: TokenOption,
+    pub seed: Uuid,
+    pub token_per_share: u64,
+}
+
+#[derive(SchemaWrite, SchemaRead, Debug, Copy, Clone)]
+pub struct FakeMatchOrderArgs {
+    pub event_uuid: Uuid,
+    pub option_uuid: Uuid,
+    pub num_shares: u64,
+    pub yes_price: u64,
+    pub no_price: u64,
+}
+
+#[derive(SchemaWrite, SchemaRead, Debug, Copy, Clone)]
+pub struct MatchOrderArgs {
+    pub event_uuid: Uuid,
+    pub option_uuid: Uuid,
+    pub num_shares: u64,
+}
+
+#[derive(SchemaWrite, SchemaRead, Debug, Copy, Clone)]
+pub struct CancelOrderArgs {
+    pub event_uuid: Uuid,
+    pub option_uuid: Uuid,
+    pub seed: u64,
+}
+
+#[derive(SchemaWrite, SchemaRead, Debug, Copy, Clone)]
+pub struct GetRewardArgs {
+    pub event_uuid: Uuid,
+    pub option_uuid: Uuid,
+    pub seed: u64,
+}

@@ -1,0 +1,21 @@
+[package]
+name = "blockchain-program"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+name = "blockchain_program"
+
+[dependencies]
+blockchain_core = { path = "../blockchain_core" }
+
+# WARN: SHOULD PROBABLY MATCH WORKSPACE
+wincode = { version = "0.3.0", features = ["derive", "uuid"] }
+pinocchio = "0.9.2"
+pinocchio-pubkey = "0.3.0"
+pinocchio-log = "0.5.1"
+pinocchio-system = "0.4.0"
+pinocchio-token = "0.4.0"
+fast_ata_pinocchio = { git = "https://github.com/IVSOP/fast_ata_pinocchio", rev = "f62a0de1b519bef334d78915aa4f5c7c9373b6f5" }
+uuid = { version = "1.20.0" }

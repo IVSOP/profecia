@@ -16,3 +16,36 @@ services:
       interval: 5s
       timeout: 3s
       retries: 20
+
+  # blockchain-program:
+  #   build:
+  #     context: ./backend/blockchain_program
+  #     dockerfile: Dockerfile
+  #   container_name: profecia-blockchain
+  #  # ports:
+  #  #   - "8899:8899"
+  #  #   - "8900:8900"
+  #  #   - "18488:18488"
+  #   volumes:
+  #     # - ./backend/blockchain_program:/workspace
+  #     # - ./backend/blockchain_core:/blockchain_core
+  #     # - ./backend/blockchain_program/target:/workspace/target
+  #     # - ./backend/blockchain_program/.surfpool:/workspace/.surfpool
+  #     - ./backend:/workspace
+  #   working_dir: /workspace/blockchain_program
+  #   environment:
+  #     - RUST_LOG=info
+
+  surfpool:
+    image: surfpool/surfpool
+    container_name: surfpool-instance
+    ports:
+     - "8899:8899"
+     - "8900:8900"
+     - "18488:18488"
+    volumes:
+      - ./backend/blockchain_program:/workspace
+      - .surfpool:/workspace/.surfpool
+      - ./backend/blockchain_program/PRIVATE_KEY:/root/.config/solana/ # TODO: this will also copy program priv key
+    command: start --no-tui
+    restart: unless-stopped

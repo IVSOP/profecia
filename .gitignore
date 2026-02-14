@@ -1,3 +1,10 @@
-.DS_Store
 target/
+.env
 data/
+.idea
+.vscode
+.cursor
+node_modules
+.svelte-kit
+.surfpool
+
