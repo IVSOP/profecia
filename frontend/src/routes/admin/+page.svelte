@@ -25,7 +25,7 @@
 		<Button onclick={() => (dialogOpen = true)}>Criar Evento</Button>
 	</div>
 
-	<div class="rounded-lg border">
+	<div class="rounded-lg border bg-card text-card-foreground">
 		<Table.Root class="[&_td:first-child]:pl-4 [&_td:last-child]:pr-4 [&_th:first-child]:pl-4 [&_th:last-child]:pr-4">
 			<Table.Header>
 				<Table.Row>
@@ -60,13 +60,13 @@
 							<Table.Cell>
 								{#if event.markets.some((m) => m.resolvedOption !== null)}
 									<span
-										class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900/30 dark:text-green-400"
+										class="inline-flex items-center rounded-full bg-green-600/15 px-2.5 py-0.5 text-xs font-medium text-green-700 dark:text-green-400"
 									>
 										Resolvido
 									</span>
 								{:else}
 									<span
-										class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900/30 dark:text-blue-400"
+										class="inline-flex items-center rounded-full bg-blue-600/15 px-2.5 py-0.5 text-xs font-medium text-blue-700 dark:text-blue-400"
 									>
 										Ativo
 									</span>

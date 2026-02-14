@@ -183,7 +183,7 @@
 						<div class="flex shrink-0 items-center">
 							<span class="text-xl text-muted-foreground">→</span>
 						</div>
-						<div class="flex flex-1 flex-col items-center justify-center rounded-lg border border-green-200 bg-green-50 p-3 text-center dark:border-green-900 dark:bg-green-950">
+						<div class="flex flex-1 flex-col items-center justify-center rounded-lg border border-green-600/20 bg-green-600/10 p-3 text-center">
 							<p class="text-xs text-muted-foreground">Recebes</p>
 							<p class="text-lg font-bold">{formatEuros(totalGainCents)}</p>
 							<p class="text-xs font-medium text-green-600">+{formatEuros(profitCents)} de lucro</p>

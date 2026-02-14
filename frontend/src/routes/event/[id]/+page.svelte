@@ -47,7 +47,7 @@
 	<!-- Event Title -->
 	<h1 class="mb-6 text-2xl font-bold">{data.event.displayName}</h1>
 
-	<div class="rounded-lg border">
+	<div class="rounded-lg border bg-card text-card-foreground">
 		{#each data.event.markets as market, i (market.id)}
 			{#if i > 0}
 				<Separator />
@@ -109,7 +109,7 @@
 				</Select.Root>
 			{/if}
 		</div>
-		<div class="rounded-lg border p-4">
+		<div class="rounded-lg border bg-card text-card-foreground p-4">
 			{#if selectedMarketRules}
 				<p class="text-sm leading-relaxed whitespace-pre-wrap text-muted-foreground">
 					{selectedMarketRules}
