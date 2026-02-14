@@ -24,8 +24,8 @@
 
 <div class="mt-8">
 	<h2 class="mb-3 text-lg font-semibold">As tuas posições</h2>
-	<div class="rounded-lg border">
-		<Table.Root>
+	<div class="rounded-lg border bg-card text-card-foreground">
+		<Table.Root class="[&_td:first-child]:pl-4 [&_td:last-child]:pr-4 [&_th:first-child]:pl-4 [&_th:last-child]:pr-4">
 			<Table.Header>
 				<Table.Row>
 					<Table.Head>Mercado</Table.Head>
@@ -42,8 +42,8 @@
 						<Table.Cell>
 							<span
 								class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold {position.option === 'optionA'
-									? 'bg-primary/10 text-primary'
-									: 'bg-destructive/10 text-destructive'}"
+									? 'bg-green-600/15 text-green-700 dark:text-green-400'
+									: 'bg-red-600/15 text-red-700 dark:text-red-400'}"
 							>
 								{getOptionName(position.marketId, position.option)}
 							</span>

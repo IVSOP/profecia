@@ -117,7 +117,7 @@
 						<button
 							type="button"
 							class="rounded-lg border-2 px-3 py-2.5 text-sm font-semibold transition-colors {option === 'A'
-								? 'border-primary bg-primary text-primary-foreground'
+								? 'border-green-600 bg-green-600 text-white'
 								: 'border-border bg-muted/50 text-muted-foreground hover:bg-muted'}"
 							onclick={() => (option = 'A')}
 						>
@@ -126,7 +126,7 @@
 						<button
 							type="button"
 							class="rounded-lg border-2 px-3 py-2.5 text-sm font-semibold transition-colors {option === 'B'
-								? 'border-destructive bg-destructive text-destructive-foreground'
+								? 'border-red-600 bg-red-600 text-white'
 								: 'border-border bg-muted/50 text-muted-foreground hover:bg-muted'}"
 							onclick={() => (option = 'B')}
 						>
@@ -183,7 +183,7 @@
 						<div class="flex shrink-0 items-center">
 							<span class="text-xl text-muted-foreground">→</span>
 						</div>
-						<div class="flex flex-1 flex-col items-center justify-center rounded-lg border border-green-200 bg-green-50 p-3 text-center dark:border-green-900 dark:bg-green-950">
+						<div class="flex flex-1 flex-col items-center justify-center rounded-lg border border-green-600/20 bg-green-600/10 p-3 text-center">
 							<p class="text-xs text-muted-foreground">Recebes</p>
 							<p class="text-lg font-bold">{formatEuros(totalGainCents)}</p>
 							<p class="text-xs font-medium text-green-600">+{formatEuros(profitCents)} de lucro</p>
