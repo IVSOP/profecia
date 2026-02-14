@@ -1,6 +1,6 @@
 use axum::{
     Router,
-    routing::{delete, get, post},
+    routing::{get, post},
 };
 
 use crate::AppState;
@@ -13,5 +13,5 @@ pub fn router() -> Router<AppState> {
     Router::new()
         .route("/", post(buy::handle))
         .route("/{market_id}", get(list::handle))
-        .route("/{order_id}", delete(cancel::handle))
+        .route("/cancel/{order_id}", post(cancel::handle))
 }
