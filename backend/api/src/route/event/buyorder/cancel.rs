@@ -42,7 +42,7 @@ pub async fn handle(
 
     let user_wallet = Keypair::from_base58_string(&user_model.wallet);
 
-    AppState::cancel_buy_order(
+    let _sig = AppState::cancel_buy_order(
         &txn,
         buy_order.id,
         buy_order.shares,

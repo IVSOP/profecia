@@ -191,7 +191,7 @@ impl AppState {
         txn: &impl sea_orm::ConnectionTrait,
         order_id: Uuid,
         num_shares: i64,
-        price_per_share: i64,
+        cents_per_share: i64,
         event_id: Uuid,
         user_pubkey: &Pubkey,
         solana: &ProfeciaClient,
@@ -200,11 +200,13 @@ impl AppState {
             .exec(txn)
             .await?;
 
+        let cents_per_share: u64 = cents_per_share.try_into().unwrap();
+
         let cancel_order_args = FakeCancelOrderArgs {
             event_uuid: event_id,
             option_uuid: order_id,
             num_shares: num_shares.try_into().unwrap(),
-            price_per_share: price_per_share.try_into().unwrap(),
+            price_per_share: cents_per_share * 10000,
         };
         let sig = solana.cancel_order(user_pubkey, &cancel_order_args).await?;
 
