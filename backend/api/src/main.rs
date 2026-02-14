@@ -4,6 +4,7 @@ use anyhow::Context;
 use blockchain_client::{DEFAULT_RPC_HTTP, ProfeciaClient};
 use clap::Parser;
 use sea_orm::{Database, DatabaseConnection};
+use solana_sdk::{native_token::LAMPORTS_PER_SOL, signer::Signer};
 use tokio::net::TcpListener;
 use tracing::info;
 use utils::axum_utils::shutdown_signal;
@@ -51,7 +52,14 @@ async fn main() -> anyhow::Result<()> {
 
     let solana = ProfeciaClient::new(DEFAULT_RPC_HTTP)?;
 
-    let app_state = AppState { database, solana: Arc::new(solana) };
+    let _sig = solana.rpc_client
+            .request_airdrop(&solana.admin_wallet.pubkey(), LAMPORTS_PER_SOL * 10)
+            .await?;
+
+    let app_state = AppState {
+        database,
+        solana: Arc::new(solana),
+    };
 
     let app = route::router(app_state);
 

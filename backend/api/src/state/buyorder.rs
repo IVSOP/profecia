@@ -1,3 +1,4 @@
+use blockchain_core::instructions::FakeCreateOrderArgs;
 use chrono::Utc;
 use sea_orm::{
     ActiveModelTrait, ActiveValue::Set, ColumnTrait, EntityTrait, QueryFilter, QueryOrder,
@@ -6,7 +7,6 @@ use sea_orm::{
 use serde::{Deserialize, Serialize};
 use solana_sdk::{signature::Keypair, signer::Signer};
 use uuid::Uuid;
-use blockchain_core::instructions::FakeCreateOrderArgs;
 
 use crate::{
     AppState, entity,
@@ -77,15 +77,6 @@ impl AppState {
         if necessary_usdc >= user_ata.amount {
             return Err(AppError::InsufficientFunds);
         }
-
-        // blockchain tx to transfer funds
-        let create_order_args = FakeCreateOrderArgs {
-            event_uuid: event_id,
-            option_uuid: market_id,
-            num_shares: shares.try_into().unwrap(),
-            price_per_share: usdc_per_share.try_into().unwrap(),
-        };
-        self.solana.create_order(&user_wallet, &create_order_args).await?;
 
         let option = match option {
             MarketOptionDto::OptionA => entity::market::MarketOption::A,
@@ -166,6 +157,18 @@ impl AppState {
         }
 
         transaction.commit().await?;
+
+        // blockchain tx to transfer funds
+        let create_order_args = FakeCreateOrderArgs {
+            event_uuid: event_id,
+            option_uuid: market_id,
+            num_shares: shares.try_into().unwrap(),
+            price_per_share: usdc_per_share.try_into().unwrap(),
+        };
+        self.solana
+            .create_order(&user_wallet, &create_order_args)
+            .await?;
+
         Ok(())
     }
 

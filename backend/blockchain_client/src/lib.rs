@@ -151,9 +151,11 @@ impl ProfeciaClient {
 
         let mut transaction = Transaction::new_unsigned(message);
 
-        let mut all_signers: Vec<&dyn Signer> = vec![&self.admin_wallet];
-        all_signers.extend(token_keypairs.iter().map(|k| k as &dyn Signer));
-        transaction.sign(&all_signers[..], recent_blockhash);
+        {
+            let mut all_signers: Vec<&dyn Signer> = vec![&self.admin_wallet];
+            all_signers.extend(token_keypairs.iter().map(|k| k as &dyn Signer));
+            transaction.sign(&all_signers[..], recent_blockhash);
+        }
 
         let signature = self
             .rpc_client
@@ -421,5 +423,9 @@ impl ProfeciaClient {
 
     pub fn derive_event_pubkey(event_id: &Uuid) -> Pubkey {
         Event::find_program_address(event_id, &MARKETPLACE_PROGRAM).0
+    }
+
+    pub fn get_account_url(&self, pubkey: &Pubkey) -> String {
+        format!("https://solscan.io/account/{}?cluster=custom&customUrl={}", pubkey.to_string(), self.rpc_url)
     }
 }
