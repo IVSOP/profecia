@@ -30,6 +30,7 @@ pub struct Model {
     #[sea_orm(unique)]
     pub no_keypair: String,
     pub display_name: String,
+    pub image_url: Option<String>,
     pub event_id: Uuid,
     pub option_a_name: String,
     pub option_b_name: String,

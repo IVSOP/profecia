@@ -7,6 +7,7 @@ pub struct Model {
     #[sea_orm(primary_key)]
     pub id: Uuid,
     pub display_name: String,
+    pub image_url: Option<String>,
     #[sea_orm(has_many)]
     pub markets: HasMany<super::market::Entity>,
 }

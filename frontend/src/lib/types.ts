@@ -7,6 +7,7 @@ export interface AuthRequest {
 
 export interface CreateMarketRequest {
 	displayName: string;
+	imageUrl?: string;
 	optionAName: string;
 	optionBName: string;
 	rules: string;
@@ -14,6 +15,7 @@ export interface CreateMarketRequest {
 
 export interface CreateEventRequest {
 	displayName: string;
+	imageUrl?: string;
 	markets: CreateMarketRequest[];
 }
 
@@ -39,6 +41,7 @@ export type MarketOption = 'optionA' | 'optionB';
 export interface MarketDto {
 	id: string;
 	displayName: string;
+	imageUrl: string | null;
 	optionAName: string;
 	optionBName: string;
 	rules: string;
@@ -48,6 +51,7 @@ export interface MarketDto {
 export interface EventDto {
 	id: string;
 	displayName: string;
+	imageUrl: string | null;
 	markets: MarketDto[];
 }
 

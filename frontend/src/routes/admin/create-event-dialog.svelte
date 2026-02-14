@@ -16,12 +16,13 @@
 	let loading = $state(false);
 	let error = $state('');
 	let title = $state('');
-	let markets = $state<CreateMarketRequest[]>([
-		{ displayName: '', optionAName: 'Sim', optionBName: 'Não', rules: '' }
+	let eventImageUrl = $state('');
+	let markets = $state<(CreateMarketRequest & { imageUrl: string })[]>([
+		{ displayName: '', imageUrl: '', optionAName: 'Sim', optionBName: 'Não', rules: '' }
 	]);
 
 	function addMarket() {
-		markets.push({ displayName: '', optionAName: 'Sim', optionBName: 'Não', rules: '' });
+		markets.push({ displayName: '', imageUrl: '', optionAName: 'Sim', optionBName: 'Não', rules: '' });
 	}
 
 	function removeMarket(index: number) {
@@ -32,7 +33,8 @@
 
 	function resetForm() {
 		title = '';
-		markets = [{ displayName: '', optionAName: 'Sim', optionBName: 'Não', rules: '' }];
+		eventImageUrl = '';
+		markets = [{ displayName: '', imageUrl: '', optionAName: 'Sim', optionBName: 'Não', rules: '' }];
 		error = '';
 		loading = false;
 	}
@@ -58,8 +60,10 @@
 
 		const payload: CreateEventRequest = {
 			displayName: title.trim(),
+			imageUrl: eventImageUrl.trim() || undefined,
 			markets: markets.map((m) => ({
 				displayName: m.displayName.trim(),
+				imageUrl: m.imageUrl.trim() || undefined,
 				optionAName: m.optionAName.trim(),
 				optionBName: m.optionBName.trim(),
 				rules: m.rules.trim()
@@ -123,6 +127,16 @@
 						bind:value={title}
 						disabled={loading}
 						required
+					/>
+				</div>
+
+				<div class="grid gap-2">
+					<Label for="event-image-url">Imagem do Evento (URL, opcional)</Label>
+					<Input
+						id="event-image-url"
+						placeholder="https://exemplo.com/imagem.jpg"
+						bind:value={eventImageUrl}
+						disabled={loading}
 					/>
 				</div>
 
@@ -191,6 +205,15 @@
 									id="market-rules-{i}"
 									placeholder="Ex: Resultado no tempo regulamentar"
 									bind:value={market.rules}
+									disabled={loading}
+								/>
+							</div>
+							<div class="grid gap-2">
+								<Label for="market-image-url-{i}">Imagem do Mercado (URL, opcional)</Label>
+								<Input
+									id="market-image-url-{i}"
+									placeholder="https://exemplo.com/imagem.jpg"
+									bind:value={market.imageUrl}
 									disabled={loading}
 								/>
 							</div>

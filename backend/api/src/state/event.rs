@@ -20,6 +20,7 @@ use crate::{
 pub struct EventDto {
     pub id: Uuid,
     pub display_name: String,
+    pub image_url: Option<String>,
     pub url: String,
     pub markets: Vec<MarketDto>,
 }
@@ -29,6 +30,7 @@ pub struct EventDto {
 pub struct MarketDto {
     pub id: Uuid,
     pub display_name: String,
+    pub image_url: Option<String>,
     pub option_a_name: String,
     pub option_b_name: String,
     pub rules: String,
@@ -46,6 +48,7 @@ pub enum MarketOptionDto {
 #[serde(rename_all = "camelCase")]
 pub struct EventRequest {
     pub display_name: String,
+    pub image_url: Option<String>,
     pub markets: Vec<MarketRequest>,
 }
 
@@ -53,6 +56,7 @@ pub struct EventRequest {
 #[serde(rename_all = "camelCase")]
 pub struct MarketRequest {
     pub display_name: String,
+    pub image_url: Option<String>,
     pub option_a_name: String,
     pub option_b_name: String,
     pub rules: String,
@@ -73,6 +77,7 @@ impl From<entity::market::Model> for MarketDto {
         MarketDto {
             id: value.id,
             display_name: value.display_name,
+            image_url: value.image_url,
             option_a_name: value.option_a_name,
             option_b_name: value.option_b_name,
             rules: value.rules,
@@ -113,6 +118,7 @@ impl AppState {
                 EventDto {
                     id: event.id,
                     display_name: event.display_name,
+                    image_url: event.image_url,
                     url: self.solana.get_account_url(&event_pda),
                     markets: markets.into_iter().map(Into::into).collect(),
                 }
@@ -132,6 +138,7 @@ impl AppState {
                 EventDto {
                     id: event.id,
                     display_name: event.display_name,
+                    image_url: event.image_url,
                     url: self.solana.get_account_url(&event_pda),
                     markets: markets.into_iter().map(Into::into).collect(),
                 }
@@ -144,10 +151,16 @@ impl AppState {
         let transaction = self.database.begin().await?;
         let event_id = Uuid::new_v4();
         let display_name = event.display_name.trim().to_string();
+        let event_image_url = event
+            .image_url
+            .as_deref()
+            .map(|s| s.trim().to_string())
+            .filter(|s| !s.is_empty());
 
         entity::event::ActiveModel {
             id: Set(event_id),
             display_name: Set(display_name),
+            image_url: Set(event_image_url.clone()),
         }
         .insert(&transaction)
         .await?;
@@ -159,6 +172,11 @@ impl AppState {
 
         for market in event.markets {
             let market_display_name = market.display_name.trim().to_string();
+            let market_image_url = market
+                .image_url
+                .as_deref()
+                .map(|s| s.trim().to_string())
+                .filter(|s| !s.is_empty());
 
             let yes_keypair = Keypair::new();
             let no_keypair = Keypair::new();
@@ -184,6 +202,7 @@ impl AppState {
                 yes_keypair: Set(yes_keypair_string),
                 no_keypair: Set(no_keypair_string),
                 display_name: Set(market_display_name),
+                image_url: Set(market_image_url.clone()),
                 event_id: Set(event_id),
                 option_a_name: Set(market.option_a_name),
                 option_b_name: Set(market.option_b_name),
@@ -195,6 +214,7 @@ impl AppState {
             markets.push(MarketDto {
                 id: market.id,
                 display_name: market.display_name,
+                image_url: market_image_url,
                 option_a_name: market.option_a_name,
                 option_b_name: market.option_b_name,
                 rules: market.rules,
@@ -220,6 +240,7 @@ impl AppState {
             id: event_id,
             url: self.solana.get_account_url(&event_pda),
             display_name: event.display_name,
+            image_url: event_image_url,
             markets,
         };
 

@@ -52,7 +52,16 @@
 
 <div class="mx-auto max-w-3xl">
 	<!-- Event Title -->
-	<h1 class="mb-6 text-2xl font-bold">{data.event.displayName}</h1>
+	<div class="mb-6 flex items-center gap-4">
+		{#if data.event.imageUrl}
+			<img
+				src={data.event.imageUrl}
+				alt={data.event.displayName}
+				class="size-14 shrink-0 rounded-lg object-cover"
+			/>
+		{/if}
+		<h1 class="text-2xl font-bold">{data.event.displayName}</h1>
+	</div>
 
 	<!-- Price Chart -->
 	<EventChart markets={data.event.markets} chartData={data.chartData} />

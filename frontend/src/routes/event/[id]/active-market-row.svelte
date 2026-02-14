@@ -28,6 +28,13 @@
 					? 'rotate-180'
 					: ''}"
 			/>
+			{#if market.imageUrl}
+				<img
+					src={market.imageUrl}
+					alt={market.displayName}
+					class="size-8 shrink-0 rounded object-cover"
+				/>
+			{/if}
 			<div class="min-w-0">
 				<p class="truncate text-sm font-semibold">{market.displayName}</p>
 				<p class="text-xs text-muted-foreground">
