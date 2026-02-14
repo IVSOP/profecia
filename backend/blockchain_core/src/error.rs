@@ -18,6 +18,7 @@ pub enum MarketError {
     OrderPDA = 11,
     OptionMissmatch = 12,
     TokenMissmatch = 13,
+    InvalidAta = 14,
 }
 
 pub type MarketResult = Result<(), MarketError>;
@@ -48,6 +49,7 @@ impl ToStr for MarketError {
             Self::OrderPDA => "Invalid order PDA",
             Self::OptionMissmatch => "Option missmatch",
             Self::TokenMissmatch => "Token missmatch",
+            Self::InvalidAta => "Invalida ATA",
         }
     }
 }
@@ -70,6 +72,7 @@ impl TryFrom<u32> for MarketError {
             11 => Ok(Self::OrderPDA),
             12 => Ok(Self::OptionMissmatch),
             13 => Ok(Self::TokenMissmatch),
+            14 => Ok(Self::InvalidAta),
             _ => Err(ProgramError::Custom(u32::MAX)),
         }
     }

@@ -5,11 +5,11 @@ use pinocchio::{
 use pinocchio_token::instructions::{MintToChecked, TransferChecked};
 
 use crate::utils::{
-    check_associated_token_program, check_token_program, check_usdc, deserialize_and_check_event,
+    check_associated_token_program, check_existing_ata, check_token_program, check_usdc, create_or_check_ata, deserialize_and_check_event, CreateOrCheckAtaArgs
 };
 
 pub fn fake_match_order(accounts: &[AccountInfo], args: &FakeMatchOrderArgs) -> ProgramResult {
-    let [user_yes, user_yes_usdc_ata, user_yes_token_ata, user_no, user_no_usdc_ata, user_no_token_ata, event, treasury, token_yes, token_no, usdc, _system_program, token_program, associated_token_program] =
+    let [user_yes, user_yes_usdc_ata, user_yes_token_ata, user_no, user_no_usdc_ata, user_no_token_ata, event, treasury, token_yes, token_no, usdc, system_program, token_program, associated_token_program] =
         accounts
     else {
         return Err(MarketError::InvalidAccounts.into());
@@ -42,12 +42,41 @@ pub fn fake_match_order(accounts: &[AccountInfo], args: &FakeMatchOrderArgs) -> 
     let event_bump_ref = &[event_data.bump];
     let event_seeds = seeds!(b"event", event_uuid_ref, event_bump_ref);
 
+    pinocchio_log::log!("check or init user YES token ata");
+
+    // check or init user A and user B
+    let user_yes_ata_args = CreateOrCheckAtaArgs {
+        ata: user_yes_token_ata,
+        owner: user_yes,
+        mint: token_yes,
+        funding_account: user_yes,
+        system_program,
+        token_program,
+        associated_token_program
+    };
+    create_or_check_ata(&user_yes_ata_args, &[])?;
+
+    pinocchio_log::log!("check or init user NO token ata");
+
+    let user_no_ata_args = CreateOrCheckAtaArgs {
+        ata: user_no_token_ata,
+        owner: user_no,
+        mint: token_no,
+        funding_account: user_no,
+        system_program,
+        token_program,
+        associated_token_program
+    };
+    create_or_check_ata(&user_no_ata_args, &[])?;
+
+    pinocchio_log::log!("minting");
+
     // mint to user A and user B
     MintToChecked {
         mint: token_yes,
         account: user_yes_token_ata,
         mint_authority: event,
-        amount: args.num_shares,
+        amount: args.num_shares * 1000000, // 1 share will result in 1000000 tokens, as they have 6 decimals
         decimals: 6,
     }
     .invoke_signed(&[Signer::from(&event_seeds)])?;
@@ -56,13 +85,13 @@ pub fn fake_match_order(accounts: &[AccountInfo], args: &FakeMatchOrderArgs) -> 
         mint: token_no,
         account: user_no_token_ata,
         mint_authority: event,
-        amount: args.num_shares,
+        amount: args.num_shares * 1000000, // 1 share will result in 1000000 tokens, as they have 6 decimals
         decimals: 6,
     }
     .invoke_signed(&[Signer::from(&event_seeds)])?;
 
     // check treasury
-    // TODO:
+    check_existing_ata(treasury, usdc.key(), event.key())?;
 
     // transfer USDC from A and B to treasury
     TransferChecked {

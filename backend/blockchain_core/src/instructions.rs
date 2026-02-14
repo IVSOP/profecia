@@ -38,6 +38,7 @@ pub struct CreateOrderArgs {
     pub token_per_share: u64,
 }
 
+/// PRICE IN MICRO USDC!!!
 #[derive(SchemaWrite, SchemaRead, Debug, Copy, Clone)]
 pub struct FakeMatchOrderArgs {
     pub event_uuid: Uuid,

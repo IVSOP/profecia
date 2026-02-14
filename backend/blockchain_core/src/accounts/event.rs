@@ -15,7 +15,7 @@ pub struct Event {
     pub state: EventState,
     // #[wincode(with = "std::collections::HashMap<wincode::containers::Pod<_>, _>")]
     pub options: HashMap<Uuid, EventOption>,
-    pub bump: u8
+    pub bump: u8,
 }
 
 #[derive(SchemaWrite, SchemaRead, Debug, Clone)]

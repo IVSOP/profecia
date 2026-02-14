@@ -3,27 +3,34 @@ use std::{collections::HashMap, env};
 use anyhow::Result;
 use blockchain_core::{
     accounts::event::{Event, EventOption},
-    instructions::{CloseEventArgs, CreateEventArgs, MarketInstruction},
+    instructions::{CloseEventArgs, CreateEventArgs, FakeMatchOrderArgs, MarketInstruction},
 };
-use serde_json::{json, Value};
+use serde_json::{Value, json};
 use solana_client::{
     nonblocking::rpc_client::RpcClient,
     rpc_config::{CommitmentConfig, RpcSendTransactionConfig},
 };
 use solana_sdk::{
-    message::{AccountMeta, Instruction, Message}, native_token::LAMPORTS_PER_SOL, program_pack::Pack, pubkey::Pubkey, signature::{Keypair, Signature}, signer::Signer, transaction::Transaction
+    message::{AccountMeta, Instruction, Message},
+    native_token::LAMPORTS_PER_SOL,
+    program_pack::Pack,
+    pubkey::Pubkey,
+    signature::{Keypair, Signature},
+    signer::Signer,
+    transaction::Transaction,
 };
 use spl_associated_token_account::{
     get_associated_token_address, instruction::create_associated_token_account,
 };
-use uuid::Uuid;
 use spl_token::state::Account as TokenAccount;
+use uuid::Uuid;
 
 pub const DEFAULT_RPC_HTTP: &str = "http://127.0.0.1:8899";
 pub const USDC_MINT: Pubkey = solana_sdk::pubkey!("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
 pub const MARKETPLACE_PROGRAM: Pubkey =
     solana_sdk::pubkey!("ProirMXDTFF4AEqGyZVKPhWte4chANDd1c4Y8w7Nsd4");
 pub const SYSTEM_PROGRAM: Pubkey = solana_sdk::pubkey!("11111111111111111111111111111111");
+pub const SKIP_PREFLIGHT: bool = false;
 
 pub struct ProfeciaClient {
     pub rpc_client: RpcClient,
@@ -38,7 +45,7 @@ impl ProfeciaClient {
             RpcClient::new_with_commitment(rpc_url.into(), CommitmentConfig::confirmed());
 
         let rpc_config = RpcSendTransactionConfig {
-            skip_preflight: false,
+            skip_preflight: SKIP_PREFLIGHT,
             preflight_commitment: None,
             encoding: None,
             max_retries: None,
@@ -61,7 +68,7 @@ impl ProfeciaClient {
             RpcClient::new_with_commitment(rpc_url.into(), CommitmentConfig::confirmed());
 
         let rpc_config = RpcSendTransactionConfig {
-            skip_preflight: false,
+            skip_preflight: SKIP_PREFLIGHT,
             preflight_commitment: None,
             encoding: None,
             max_retries: None,
@@ -178,13 +185,13 @@ impl ProfeciaClient {
     }
 
     /// amount is in micro-usdc. Assumes the usdc ATA does not exist (basically, if this is the first time airdropping, call create_usdc_ata() first)
-    pub async fn airdrop_usdc(&self, pubkey: &Pubkey, amount: u64) -> Result<()> {
+    pub async fn airdrop_usdc(&self, wallet: &Pubkey, amount: u64) -> Result<()> {
         let body = json!({
             "jsonrpc": "2.0",
             "id": 1,
             "method": "surfnet_setTokenAccount",
             "params": [
-                pubkey.to_string(),
+                wallet.to_string(),
                 USDC_MINT.to_string(),
                 {
                     "amount": amount,
@@ -204,11 +211,15 @@ impl ProfeciaClient {
             .await?;
         let json: Value = res.json().await?;
         if let Some(error) = json.get("error") {
-            anyhow::bail!("Error funding: {}", serde_json::to_string(error).unwrap_or_else(|_| "Unknown error".to_string()));
+            anyhow::bail!(
+                "Error funding: {}",
+                serde_json::to_string(error).unwrap_or_else(|_| "Unknown error".to_string())
+            );
         }
 
         Ok(())
     }
+
     pub async fn create_usdc_ata(&self, wallet: &Keypair) -> Result<Signature> {
         let instruction = create_associated_token_account(
             &wallet.pubkey(),
@@ -234,12 +245,69 @@ impl ProfeciaClient {
     pub async fn fetch_ata(&self, pubkey: &Pubkey, token: &Pubkey) -> Result<TokenAccount> {
         let ata = get_associated_token_address(pubkey, token);
 
-        let account = self.rpc_client
-            .get_account(&ata).await?;
+        let account = self.rpc_client.get_account(&ata).await?;
 
         let token_account = TokenAccount::unpack(&account.data)?;
 
         Ok(token_account)
+    }
+
+    pub async fn match_order(
+        &self,
+        user_yes_wallet: &Keypair,
+        user_no_wallet: &Keypair,
+        token_yes: &Pubkey,
+        token_no: &Pubkey,
+        args: &FakeMatchOrderArgs,
+    ) -> Result<Signature> {
+        let instruction_args = MarketInstruction::FakeMatchOrder(args.clone());
+
+        let instruction_bytes = wincode::serialize(&instruction_args)?;
+
+        let (event_pda, _) = Event::find_program_address(&args.event_uuid, &MARKETPLACE_PROGRAM);
+
+        let treasury = get_associated_token_address(&event_pda, &USDC_MINT);
+
+        let user_yes_usdc_ata = get_associated_token_address(&user_yes_wallet.pubkey(), &USDC_MINT);
+        let user_yes_token_ata = get_associated_token_address(&user_yes_wallet.pubkey(), token_yes);
+
+        let user_no_usdc_ata = get_associated_token_address(&user_no_wallet.pubkey(), &USDC_MINT);
+        let user_no_token_ata = get_associated_token_address(&user_no_wallet.pubkey(), token_no);
+
+        let accounts: Vec<AccountMeta> = vec![
+            AccountMeta::new(user_yes_wallet.pubkey(), true),
+            AccountMeta::new(user_yes_usdc_ata, false),
+            AccountMeta::new(user_yes_token_ata, false),
+            AccountMeta::new(user_no_wallet.pubkey(), true),
+            AccountMeta::new(user_no_usdc_ata, false),
+            AccountMeta::new(user_no_token_ata, false),
+            AccountMeta::new(event_pda, false),
+            AccountMeta::new(treasury, false),
+            AccountMeta::new(*token_yes, false),
+            AccountMeta::new(*token_no, false),
+            AccountMeta::new_readonly(USDC_MINT, false),
+            AccountMeta::new_readonly(SYSTEM_PROGRAM, false),
+            AccountMeta::new_readonly(spl_token::ID, false),
+            AccountMeta::new_readonly(spl_associated_token_account::ID, false),
+        ];
+
+        let recent_blockhash = self.rpc_client.get_latest_blockhash().await?;
+
+        let instruction =
+            Instruction::new_with_bytes(MARKETPLACE_PROGRAM, instruction_bytes.as_ref(), accounts);
+
+        let message = Message::new(&[instruction], Some(&user_yes_wallet.pubkey()));
+
+        let mut transaction = Transaction::new_unsigned(message);
+
+        transaction.sign(&[&user_yes_wallet, &user_no_wallet], recent_blockhash);
+
+        let sig = self
+            .rpc_client
+            .send_transaction_with_config(&transaction, self.rpc_config)
+            .await?;
+
+        Ok(sig)
     }
 }
 
@@ -258,12 +326,14 @@ pub async fn main() -> Result<()> {
     let mut options = HashMap::new();
     let mut token_keypairs = Vec::new();
 
+    let some_option_uuid = Uuid::new_v4();
+
     {
         let yes_mint = Keypair::new();
         let no_mint = Keypair::new();
 
         options.insert(
-            Uuid::new_v4(),
+            some_option_uuid,
             EventOption {
                 option_desc: "Some option #1".into(),
                 yes_mint: (*yes_mint.pubkey().as_array()).into(),
@@ -290,10 +360,11 @@ pub async fn main() -> Result<()> {
         token_keypairs.push(yes_mint);
         token_keypairs.push(no_mint);
     }
+    let event_uuid = Uuid::new_v4();
     let args = CreateEventArgs {
-        uuid: Uuid::new_v4(),
+        uuid: event_uuid,
         description: "Some event".into(),
-        options,
+        options: options.clone(),
     };
 
     let sig = profecia_client.create_event(&token_keypairs, &args).await?;
@@ -316,7 +387,49 @@ pub async fn main() -> Result<()> {
         .airdrop_usdc(&profecia_client.admin_wallet.pubkey(), 1000000 * 1000)
         .await?;
 
-    println!("info: {:#?}", profecia_client.fetch_ata(&profecia_client.admin_wallet.pubkey(), &USDC_MINT).await?);
+    println!(
+        "info: {:#?}",
+        profecia_client
+            .fetch_ata(&profecia_client.admin_wallet.pubkey(), &USDC_MINT)
+            .await?
+    );
+
+    // create two clients
+    let client_yes = profecia_client.init_new_wallet().await?;
+    let client_no = profecia_client.init_new_wallet().await?;
+    profecia_client.create_usdc_ata(&client_yes).await?;
+    profecia_client.create_usdc_ata(&client_no).await?;
+    profecia_client
+        .airdrop_usdc(&client_yes.pubkey(), 100 * 1000000)
+        .await?;
+    profecia_client
+        .airdrop_usdc(&client_no.pubkey(), 100 * 1000000)
+        .await?;
+
+    println!("Finished airdrops");
+
+    // 60 cent yes, 40 cent no
+    let yes_price = 60 * 10000;
+    let no_price = 40 * 10000;
+
+    // get the first option in the map
+    // let option = options.get(&some_option_uuid).unwrap();
+    let yes = &token_keypairs[0];
+    let no = &token_keypairs[1];
+
+    let args = FakeMatchOrderArgs {
+        event_uuid,
+        option_uuid: some_option_uuid,
+        num_shares: 5,
+        yes_price,
+        no_price,
+    };
+
+    let sig = profecia_client
+        .match_order(&client_yes, &client_no, &yes.pubkey(), &no.pubkey(), &args)
+        .await?;
+
+    println!("Match order sig: {}", sig);
 
     Ok(())
 }

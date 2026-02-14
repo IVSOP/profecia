@@ -4,13 +4,12 @@ use blockchain_core::{
     accounts::event::Event,
     error::{MarketError, MarketResult},
 };
+use fast_ata_pinocchio::instructions::CreateAta;
 use pinocchio::{
-    account_info::AccountInfo,
-    program_error::ProgramError,
-    pubkey::{pubkey_eq, Pubkey},
-    ProgramResult,
+    account_info::AccountInfo, instruction::Signer, program_error::ProgramError, pubkey::{pubkey_eq, Pubkey}, ProgramResult
 };
 use pinocchio_pubkey::pubkey;
+use pinocchio_token::state::TokenAccount;
 use uuid::Uuid;
 
 use crate::USDC_ADDRESS;
@@ -76,6 +75,17 @@ pub fn check_usdc(usdc: &AccountInfo) -> ProgramResult {
 
     Ok(())
 }
+
+ /// Checks an ATA that must already be initialized.
+ pub fn check_existing_ata(ata: &AccountInfo, mint: &Pubkey, owner: &Pubkey) -> ProgramResult {
+     // this deserialization will check len and the account owner
+     let ata_info = TokenAccount::from_account_info(ata).map_err(|_| MarketError::InvalidAta)?;
+     if pubkey_eq(mint, ata_info.mint()) && pubkey_eq(owner, ata_info.owner()) {
+         Ok(())
+     } else {
+         Err(MarketError::InvalidAta.into())
+     }
+ }
 
 // /// Deserializes a lobby, checking that the account is valid
 // /// - Owner must be the game program
@@ -145,4 +155,58 @@ where
     IC: IntoIterator<Item = C>,
 {
     a.into_iter().zip(b).zip(c).map(|((a, b), c)| (a, b, c))
+}
+
+pub struct CreateOrCheckAtaArgs<'a> {
+    pub ata: &'a AccountInfo,
+    pub owner: &'a AccountInfo,
+    pub mint: &'a AccountInfo,
+    pub funding_account: &'a AccountInfo,
+    pub system_program: &'a AccountInfo,
+    pub token_program: &'a AccountInfo,
+    pub associated_token_program: &'a AccountInfo,
+    // TODO: put the &[Signer] here too
+}
+
+/// If the ATA does not exist, creates it.
+/// Else, deserializes it and checks that the mint and owner match
+pub fn create_or_check_ata(args: &CreateOrCheckAtaArgs, signers: &[Signer]) -> ProgramResult {
+    // WARN: TokenAccount::from_account_info does some checks, and maps the data to a Ref
+    // since I know I only need the data to live inside this function, I can skip all of this
+
+    // check if uninit
+    if args.ata.lamports() == 0
+        || args.ata.data_len() != TokenAccount::LEN
+        || !args.ata.is_owned_by(&pinocchio_token::ID)
+    {
+        // uninit, create it
+        CreateAta {
+            funding_account: args.funding_account,
+            ata: args.ata,
+            owner: args.owner,
+            mint: args.mint,
+            system_program: args.system_program,
+            token_program: args.token_program,
+            associated_token_program: args.associated_token_program,
+        }
+        .invoke_signed(signers)?;
+
+        Ok(())
+    } else {
+        // else just deserialize the data and check it
+        let ata_bytes = args.ata.try_borrow_data()?;
+        // use the faster unchecked version since the extra checks performed are impossible to fail
+        // as they are checked in the `if`
+        let ata_data = unsafe { TokenAccount::from_bytes_unchecked(&ata_bytes) };
+
+        if pubkey_eq(ata_data.owner(), args.owner.key())
+            && pubkey_eq(ata_data.mint(), args.mint.key())
+        {
+            // DO NOT HAVE THIS FUNCTION RETURN THE &TokenAccount
+            // if you need that functionality, have the ata's data bytes be passed in as an argument to this function
+            Ok(())
+        } else {
+            Err(MarketError::InvalidAta.into())
+        }
+    }
 }
