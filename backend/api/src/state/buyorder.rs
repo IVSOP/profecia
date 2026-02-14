@@ -18,8 +18,8 @@ pub struct BuyOrderDto {
     pub id: Uuid,
     pub market_id: Uuid,
     pub user_id: Uuid,
-    pub shares: u64,
-    pub price_per_share: u64,
+    pub shares: i64,
+    pub price_per_share: i64,
     pub option: MarketOptionDto,
 }
 
@@ -41,8 +41,8 @@ impl AppState {
         &self,
         market_id: Uuid,
         user_id: Uuid,
-        shares: u64,
-        price_per_share: u64,
+        shares: i64,
+        price_per_share: i64,
         option: MarketOptionDto,
     ) -> AppResult<()> {
         let transaction = self.database.begin().await?;
@@ -163,7 +163,8 @@ impl AppState {
     }
 
     pub async fn list_buy_orders(&self, market_id: Uuid) -> AppResult<Vec<BuyOrderDto>> {
-        Ok(entity::buyorder::Entity::find_by_id(market_id)
+        Ok(entity::buyorder::Entity::find()
+            .filter(entity::buyorder::Column::MarketId.eq(market_id))
             .all(&self.database)
             .await
             .map_err(Into::<AppError>::into)?

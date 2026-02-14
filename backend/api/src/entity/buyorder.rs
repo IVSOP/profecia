@@ -11,8 +11,8 @@ pub struct Model {
     pub market_id: Uuid,
     pub user_id: Uuid,
     pub option: MarketOption,
-    pub shares: u64,
-    pub price_per_share: u64,
+    pub shares: i64,
+    pub price_per_share: i64,
     pub created_at: DateTimeWithTimeZone,
     #[sea_orm(belongs_to, from = "market_id", to = "id")]
     pub market: HasOne<super::market::Entity>,

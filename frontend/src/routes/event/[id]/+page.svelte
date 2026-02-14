@@ -1,12 +1,17 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import { Button } from '$lib/components/ui/button';
 	import { Separator } from '$lib/components/ui/separator';
 	import * as Select from '$lib/components/ui/select';
-	import * as Dialog from '$lib/components/ui/dialog';
 	import type { MarketDto } from '$lib/types';
-	import type { PageData } from './$types';
+	import type { PageProps } from './$types';
+	import BuyOrderDialog from './buy-order-dialog.svelte';
+	import BuyOrdersTable from './buy-orders-table.svelte';
+	import PositionsTable from './positions-table.svelte';
 
-	let { data }: { data: PageData } = $props();
+	let { data }: PageProps = $props();
+
+	const user = $derived(page.data.user);
 
 	let selectedRuleMarketId = $state('');
 
@@ -23,7 +28,7 @@
 
 	const rulesSelectLabel = $derived(
 		data.event.markets.find((m) => m.id === selectedRuleMarketId)?.displayName ??
-			'Selecione um mercado'
+			'Selecionar mercado'
 	);
 
 	// Buy dialog state
@@ -77,6 +82,16 @@
 		{/each}
 	</div>
 
+	<!-- Positions -->
+	{#if user && data.positions.length > 0}
+		<PositionsTable positions={data.positions} markets={data.event.markets} />
+	{/if}
+
+	<!-- Pending Buy Orders -->
+	{#if user && data.buyOrders.length > 0}
+		<BuyOrdersTable buyOrders={data.buyOrders} markets={data.event.markets} />
+	{/if}
+
 	<div class="mt-8">
 		<div class="mb-3 flex items-center justify-between gap-4">
 			<h2 class="text-lg font-semibold">Regras</h2>
@@ -101,29 +116,16 @@
 					{selectedMarketRules}
 				</p>
 			{:else}
-				<p class="text-sm text-muted-foreground">Nenhuma regra definida para este mercado.</p>
+				<p class="text-sm text-muted-foreground">Sem regras definidas para este mercado.</p>
 			{/if}
 		</div>
 	</div>
 </div>
 
-<!-- Buy Dialog -->
-<Dialog.Root bind:open={buyDialogOpen}>
-	<Dialog.Content>
-		<Dialog.Header>
-			<Dialog.Title>
-				{#if buyDialogMarket}
-					Comprar {buyDialogOption === 'A'
-						? buyDialogMarket.optionAName
-						: buyDialogMarket.optionBName}
-				{/if}
-			</Dialog.Title>
-			<Dialog.Description>
-				{buyDialogMarket?.displayName ?? ''}
-			</Dialog.Description>
-		</Dialog.Header>
-		<div class="flex items-center justify-center py-8 text-muted-foreground">
-			<p class="text-sm">Em breve...</p>
-		</div>
-	</Dialog.Content>
-</Dialog.Root>
+<!-- Buy Order Dialog -->
+<BuyOrderDialog
+	bind:open={buyDialogOpen}
+	market={buyDialogMarket}
+	bind:option={buyDialogOption}
+	user={user ?? null}
+/>

@@ -12,9 +12,9 @@ use crate::{
 pub struct BuyOrderRequest {
     pub market_id: Uuid,
     pub user_id: Uuid,
-    pub shares: u64,
+    pub shares: i64,
     #[validate(range(min = 1, max = 100))]
-    pub price_per_share: u64,
+    pub price_per_share: i64,
     pub option: MarketOptionDto,
 }
 

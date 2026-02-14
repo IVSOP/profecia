@@ -33,7 +33,7 @@ export interface MeResponse {
 	user: UserDto;
 }
 
-export type MarketOption = 'OptionA' | 'OptionB';
+export type MarketOption = 'optionA' | 'optionB';
 
 export interface MarketDto {
 	id: string;
@@ -56,4 +56,33 @@ export interface InfoResponse {
 
 export interface ListResponse {
 	events: EventDto[];
+}
+
+// Position types
+
+export interface PositionDto {
+	id: string;
+	marketId: string;
+	userId: string;
+	option: MarketOption;
+	shares: number;
+}
+
+// Buy order types
+
+export interface BuyOrderRequest {
+	marketId: string;
+	userId: string;
+	shares: number;
+	pricePerShare: number;
+	option: MarketOption;
+}
+
+export interface BuyOrderDto {
+	id: string;
+	marketId: string;
+	userId: string;
+	shares: number;
+	pricePerShare: number;
+	option: MarketOption;
 }

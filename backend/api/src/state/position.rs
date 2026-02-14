@@ -13,12 +13,13 @@ use crate::{
 };
 
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct PositionDto {
     pub id: Uuid,
     pub market_id: Uuid,
     pub user_id: Uuid,
     pub option: MarketOptionDto,
-    pub shares: u64,
+    pub shares: i64,
 }
 
 impl From<entity::position::Model> for PositionDto {
@@ -63,7 +64,7 @@ impl AppState {
         market_id: Uuid,
         user_id: Uuid,
         option: entity::market::MarketOption,
-        shares: u64,
+        shares: i64,
     ) -> AppResult<()> {
         let existing = entity::position::Entity::find()
             .filter(entity::position::Column::MarketId.eq(market_id))
