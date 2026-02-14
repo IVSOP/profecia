@@ -17,7 +17,7 @@
 	let error = $state('');
 	let title = $state('');
 	let markets = $state<CreateMarketRequest[]>([
-		{ displayName: '', optionAName: '', optionBName: '', rules: '' }
+		{ displayName: '', optionAName: 'Sim', optionBName: 'Não', rules: '' }
 	]);
 
 	function addMarket() {
@@ -32,7 +32,7 @@
 
 	function resetForm() {
 		title = '';
-		markets = [{ displayName: '', optionAName: '', optionBName: '', rules: '' }];
+		markets = [{ displayName: '', optionAName: 'Sim', optionBName: 'Não', rules: '' }];
 		error = '';
 		loading = false;
 	}
