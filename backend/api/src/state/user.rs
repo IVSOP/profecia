@@ -124,19 +124,33 @@ impl AppState {
         Ok(valid)
     }
 
-    pub async fn get_last_airdrop(
+    pub async fn get_airdrop_status(
         &self,
         user_id: Uuid,
-    ) -> AppResult<Option<DateTime<FixedOffset>>> {
+    ) -> AppResult<(Option<DateTime<FixedOffset>>, u64)> {
         let user = entity::user::Entity::find_by_id(user_id)
             .one(&self.database)
             .await?
             .ok_or(AppError::UserNotFound)?;
 
-        Ok(user.last_airdrop)
+        let seconds_remaining = match user.last_airdrop {
+            Some(last) => {
+                let next_allowed = last + AIRDROP_COOLDOWN;
+                let now: DateTime<FixedOffset> = Utc::now().into();
+                let remaining = next_allowed - now;
+                if remaining.num_seconds() > 0 {
+                    remaining.num_seconds() as u64
+                } else {
+                    0
+                }
+            }
+            None => 0,
+        };
+
+        Ok((user.last_airdrop, seconds_remaining))
     }
 
-    pub async fn request_airdrop(&self, user_id: Uuid) -> AppResult<()> {
+    pub async fn request_airdrop(&self, user_id: Uuid, cents: u64) -> AppResult<()> {
         let user = entity::user::Entity::find_by_id(user_id)
             .one(&self.database)
             .await?
@@ -150,7 +164,11 @@ impl AppState {
         }
 
         let wallet = Keypair::from_base58_string(&user.wallet);
-        self.solana.airdrop_usdc(&wallet.pubkey(), 1_000_000).await?;
+
+        let current_balance = self.get_balance_in_cents(user_id).await?;
+
+        // x 10k to make it into micro usd
+        self.solana.airdrop_usdc(&wallet.pubkey(), (current_balance + cents) * 10000).await?;
 
         let mut active_user: entity::user::ActiveModel = user.into();
         active_user.last_airdrop = Set(Some(Utc::now().into()));

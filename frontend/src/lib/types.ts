@@ -105,3 +105,9 @@ export interface AllPercentagesResponse {
 export interface BalanceResponse {
 	balanceCents: number;
 }
+
+export interface AirdropStatusResponse {
+	lastAirdrop: string | null;
+	secondsUntilAvailable: number;
+	available: boolean;
+}
