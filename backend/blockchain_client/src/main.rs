@@ -3,7 +3,7 @@ use std::{collections::HashMap, env};
 use anyhow::Result;
 use blockchain_core::{
     accounts::event::{Event, EventOption},
-    instructions::{CloseEventArgs, CreateEventArgs, CreateOrderArgs, FakeCreateOrderArgs, FakeMatchOrderArgs, MarketInstruction},
+    instructions::{CloseEventArgs, CreateEventArgs, CreateOrderArgs, FakeCancelOrderArgs, FakeCreateOrderArgs, FakeMatchOrderArgs, MarketInstruction},
 };
 use serde_json::{Value, json};
 use solana_client::{
@@ -350,6 +350,48 @@ impl ProfeciaClient {
 
         Ok(sig)
     }
+
+    pub async fn cancel_order(&self, admin: &Keypair, user: &Pubkey, args: &FakeCancelOrderArgs) -> Result<Signature> {
+        let instruction_args = MarketInstruction::FakeCancelOrder(args.clone());
+
+        let instruction_bytes = wincode::serialize(&instruction_args)?;
+
+        let (event_pda, _) = Event::find_program_address(&args.event_uuid, &MARKETPLACE_PROGRAM);
+
+        let treasury = get_associated_token_address(&event_pda, &USDC_MINT);
+
+        let user_usdc_ata = get_associated_token_address(&user, &USDC_MINT);
+
+        let accounts: Vec<AccountMeta> = vec![
+            AccountMeta::new(admin.pubkey(), true),
+            AccountMeta::new_readonly(*user, false),
+            AccountMeta::new(user_usdc_ata, false),
+            AccountMeta::new(event_pda, false),
+            AccountMeta::new(treasury, false),
+            AccountMeta::new_readonly(USDC_MINT, false),
+            AccountMeta::new_readonly(SYSTEM_PROGRAM, false),
+            AccountMeta::new_readonly(spl_token::ID, false),
+            AccountMeta::new_readonly(spl_associated_token_account::ID, false),
+        ];
+
+        let recent_blockhash = self.rpc_client.get_latest_blockhash().await?;
+
+        let instruction =
+            Instruction::new_with_bytes(MARKETPLACE_PROGRAM, instruction_bytes.as_ref(), accounts);
+
+        let message = Message::new(&[instruction], Some(&admin.pubkey()));
+
+        let mut transaction = Transaction::new_unsigned(message);
+
+        transaction.sign(&[&admin], recent_blockhash);
+
+        let sig = self
+            .rpc_client
+            .send_transaction_with_config(&transaction, self.rpc_config)
+            .await?;
+
+        Ok(sig)
+    }
 }
 
 #[tokio::main]
@@ -462,6 +504,20 @@ pub async fn main() -> Result<()> {
     };
     let sig = profecia_client.create_order(&client_yes, &create_order_yes).await?;
     println!("buy order for yes {}", sig);
+
+    // cancel order, then buy again
+    let cancel_order_yes = FakeCancelOrderArgs {
+        event_uuid,
+        option_uuid: some_option_uuid,
+        num_shares: 5,
+        price_per_share: yes_price
+    };
+    let sig = profecia_client.cancel_order(&profecia_client.admin_wallet, &client_yes.pubkey(), &cancel_order_yes).await?;
+    println!("cancel order for yes {}", sig);
+
+    let sig = profecia_client.create_order(&client_yes, &create_order_yes).await?;
+    println!("buy order for yes {}", sig);
+
     let create_order_no = FakeCreateOrderArgs {
         event_uuid,
         option_uuid: some_option_uuid,
