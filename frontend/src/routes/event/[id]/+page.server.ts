@@ -18,24 +18,32 @@ export const load: PageServerLoad = async ({ fetch, params, locals }) => {
 	let positions: PositionDto[] = [];
 	let buyOrders: BuyOrderDto[] = [];
 
+	// Fetch ALL buy orders for each market (for the order book)
+	const allOrderPromises = payload.event.markets.map(async (market) => {
+		const res = await fetch(`/api/event/buyorder/${market.id}`);
+		if (!res.ok) return { marketId: market.id, orders: [] as BuyOrderDto[] };
+		const orders = (await res.json()) as BuyOrderDto[];
+		return { marketId: market.id, orders };
+	});
+	const allOrderResults = await Promise.all(allOrderPromises);
+	const allMarketOrders: Record<string, BuyOrderDto[]> = {};
+	for (const { marketId, orders } of allOrderResults) {
+		allMarketOrders[marketId] = orders;
+	}
+
 	if (locals.user) {
 		const posResponse = await fetch(`/api/event/position/${params.id}`);
 		if (posResponse.ok) {
 			positions = (await posResponse.json()) as PositionDto[];
 		}
 
-		// Fetch buy orders for each market, filter by current user
-		const orderPromises = payload.event.markets.map(async (market) => {
-			const res = await fetch(`/api/event/buyorder/${market.id}`);
-			if (!res.ok) return [];
-			const orders = (await res.json()) as BuyOrderDto[];
-			return orders.filter((o) => o.userId === locals.user!.id);
-		});
-
-		buyOrders = (await Promise.all(orderPromises)).flat();
+		// Filter user's buy orders from the already-fetched data
+		buyOrders = Object.values(allMarketOrders)
+			.flat()
+			.filter((o) => o.userId === locals.user!.id);
 	}
 
-	return { event: payload.event, positions, buyOrders };
+	return { event: payload.event, positions, buyOrders, allMarketOrders };
 };
 
 export const actions = {
