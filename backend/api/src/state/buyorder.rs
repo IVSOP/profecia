@@ -127,6 +127,7 @@ impl AppState {
                 user_id,
                 option.clone(),
                 matched_qty,
+                cents_per_share,
             )
             .await?;
 
@@ -137,6 +138,7 @@ impl AppState {
                 opposing.user_id,
                 opposing_option.clone(),
                 matched_qty,
+                opposing.price_per_share,
             )
             .await?;
 

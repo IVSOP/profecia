@@ -73,6 +73,7 @@ export interface PositionDto {
 	userId: string;
 	option: MarketOption;
 	shares: number;
+	pricePerShare: number;
 }
 
 // Buy order types

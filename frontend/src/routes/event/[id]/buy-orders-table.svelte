@@ -39,7 +39,7 @@
 					<Table.Head>Mercado</Table.Head>
 					<Table.Head>Opção</Table.Head>
 					<Table.Head class="text-end">Ações</Table.Head>
-					<Table.Head class="text-end">Preço/ação</Table.Head>
+					<Table.Head class="text-end">Preço</Table.Head>
 					<Table.Head class="text-end">Total</Table.Head>
 					<Table.Head class="w-[1%]"></Table.Head>
 				</Table.Row>
@@ -59,13 +59,13 @@
 								{getOptionName(order.marketId, order.option)}
 							</span>
 						</Table.Cell>
-						<Table.Cell class="text-end font-medium">
+						<Table.Cell class="text-end font-medium tabular-nums">
 							{order.shares}
 						</Table.Cell>
-						<Table.Cell class="text-end">
+						<Table.Cell class="text-end text-muted-foreground tabular-nums">
 							{order.pricePerShare}¢
 						</Table.Cell>
-						<Table.Cell class="text-end font-medium">
+						<Table.Cell class="text-end font-semibold tabular-nums">
 							{formatDollars(order.shares * order.pricePerShare)}
 						</Table.Cell>
 						<Table.Cell>
