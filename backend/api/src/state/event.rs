@@ -213,7 +213,6 @@ impl AppState {
             .solana
             .create_event(&token_keypairs, &create_event_args)
             .await?;
-        // tracing::error!("SIG: {}", sig);
 
         let event_pda = ProfeciaClient::derive_event_pubkey(&event_id);
 

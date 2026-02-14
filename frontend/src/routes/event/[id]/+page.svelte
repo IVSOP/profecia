@@ -5,7 +5,7 @@
 	import * as Select from '$lib/components/ui/select';
 	import * as Collapsible from '$lib/components/ui/collapsible';
 	import ChevronDown from '@lucide/svelte/icons/chevron-down';
-	import type { MarketDto } from '$lib/types';
+	import type { MarketDto, MarketPercentagesDto } from '$lib/types';
 	import type { PageProps } from './$types';
 	import BuyOrderDialog from './buy-order-dialog.svelte';
 	import BuyOrdersTable from './buy-orders-table.svelte';
@@ -38,10 +38,12 @@
 	let buyDialogOpen = $state(false);
 	let buyDialogMarket = $state<MarketDto | null>(null);
 	let buyDialogOption = $state<'A' | 'B'>('A');
+	let buyDialogPercentages = $state<MarketPercentagesDto | null>(null);
 
 	function openBuyDialog(market: MarketDto, option: 'A' | 'B') {
 		buyDialogMarket = market;
 		buyDialogOption = option;
+		buyDialogPercentages = data.marketPercentages[market.id] ?? null;
 		buyDialogOpen = true;
 	}
 
@@ -59,6 +61,7 @@
 				<Separator />
 			{/if}
 			{@const orderCount = data.allMarketOrders[market.id]?.length ?? 0}
+			{@const pct = data.marketPercentages[market.id]}
 			<Collapsible.Root
 				open={expandedMarkets[market.id] ?? false}
 				onOpenChange={(v) => (expandedMarkets[market.id] = v)}
@@ -78,24 +81,28 @@
 						</div>
 					</Collapsible.Trigger>
 
-					<div class="flex shrink-0 items-center gap-1.5">
-						<span class="text-lg font-bold">50%</span>
-					</div>
+					<span class="shrink-0 text-lg font-bold">{pct?.optionAPercentage != null ? `${pct.optionAPercentage}%` : '–'}</span>
 
 					<div class="flex shrink-0 items-center gap-2">
 						<Button
 							size="sm"
-							class="h-8 bg-green-600 px-4 text-xs font-semibold text-white hover:bg-green-700"
+							class="group relative h-8 min-w-[120px] bg-green-600 px-4 text-xs font-semibold text-white hover:bg-green-700"
 							onclick={() => openBuyDialog(market, 'A')}
 						>
-							Comprar {market.optionAName}
+							<span class="transition-opacity group-hover:opacity-0">Comprar {market.optionAName}</span>
+							<span class="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100">
+								{pct?.optionAPercentage != null ? `${pct.optionAPercentage}¢` : '–'}
+							</span>
 						</Button>
 						<Button
 							size="sm"
-							class="h-8 bg-red-600 px-4 text-xs font-semibold text-white hover:bg-red-700"
+							class="group relative h-8 min-w-[120px] bg-red-600 px-4 text-xs font-semibold text-white hover:bg-red-700"
 							onclick={() => openBuyDialog(market, 'B')}
 						>
-							Comprar {market.optionBName}
+							<span class="transition-opacity group-hover:opacity-0">Comprar {market.optionBName}</span>
+							<span class="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100">
+								{pct?.optionBPercentage != null ? `${pct.optionBPercentage}¢` : '–'}
+							</span>
 						</Button>
 					</div>
 				</div>
@@ -152,5 +159,6 @@
 	bind:open={buyDialogOpen}
 	market={buyDialogMarket}
 	bind:option={buyDialogOption}
+	percentages={buyDialogPercentages}
 	user={user ?? null}
 />

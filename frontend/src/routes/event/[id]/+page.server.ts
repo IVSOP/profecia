@@ -1,6 +1,6 @@
 import { error, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import type { BuyOrderDto, InfoResponse, MarketOption, PositionDto } from '$lib/types';
+import type { BuyOrderDto, EventPercentagesResponse, InfoResponse, MarketOption, MarketPercentagesDto, PositionDto } from '$lib/types';
 
 export const load: PageServerLoad = async ({ fetch, params, locals }) => {
 	const response = await fetch(`/api/event/${params.id}`);
@@ -17,6 +17,14 @@ export const load: PageServerLoad = async ({ fetch, params, locals }) => {
 
 	let positions: PositionDto[] = [];
 	let buyOrders: BuyOrderDto[] = [];
+
+	// Fetch percentages for all markets in this event
+	let marketPercentages: Record<string, MarketPercentagesDto> = {};
+	const pctResponse = await fetch(`/api/event/percentages/${params.id}`);
+	if (pctResponse.ok) {
+		const response = (await pctResponse.json()) as EventPercentagesResponse;
+		marketPercentages = response.percentages;
+	}
 
 	// Fetch ALL buy orders for each market (for the order book)
 	const allOrderPromises = payload.event.markets.map(async (market) => {
@@ -43,7 +51,7 @@ export const load: PageServerLoad = async ({ fetch, params, locals }) => {
 			.filter((o) => o.userId === locals.user!.id);
 	}
 
-	return { event: payload.event, positions, buyOrders, allMarketOrders };
+	return { event: payload.event, positions, buyOrders, allMarketOrders, marketPercentages };
 };
 
 export const actions = {

@@ -1,13 +1,14 @@
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card';
 	import { Button } from '$lib/components/ui/button';
-	import type { EventDto } from '$lib/types';
+	import type { EventDto, MarketPercentagesDto } from '$lib/types';
 
 	interface Props {
 		event: EventDto;
+		percentages: Record<string, MarketPercentagesDto>;
 	}
 
-	let { event }: Props = $props();
+	let { event, percentages }: Props = $props();
 </script>
 
 <Card.Root class="w-full gap-0 overflow-hidden py-0">
@@ -23,12 +24,13 @@
 	</Card.Header>
 	<Card.Content class="flex flex-col gap-3 px-4 pt-0 pb-4">
 		{#each event.markets as market (market.id)}
+			{@const pct = percentages[market.id]}
 			<div class="flex items-center justify-between gap-3">
 				<a href="/event/{event.id}" class="min-w-0 truncate text-sm font-medium hover:underline"
 					>{market.displayName}</a
 				>
 				<div class="flex shrink-0 items-center gap-2">
-					<span class="text-sm font-semibold">50%</span>
+					<span class="text-sm font-semibold">{pct?.optionAPercentage != null ? `${pct.optionAPercentage}%` : '–'}</span>
 					<Button size="sm" variant="outline" class="h-7 border-green-600 px-3 text-xs text-green-600 hover:bg-green-600 hover:text-white">Sim</Button>
 					<Button size="sm" variant="outline" class="h-7 border-red-600 px-3 text-xs text-red-600 hover:bg-red-600 hover:text-white">Não</Button>
 				</div>

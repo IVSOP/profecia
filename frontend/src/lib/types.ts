@@ -86,3 +86,18 @@ export interface BuyOrderDto {
 	pricePerShare: number;
 	option: MarketOption;
 }
+
+// Market percentages
+
+export interface MarketPercentagesDto {
+	optionAPercentage: number | null;
+	optionBPercentage: number | null;
+}
+
+export interface EventPercentagesResponse {
+	percentages: Record<string, MarketPercentagesDto>;
+}
+
+export interface AllPercentagesResponse {
+	percentages: Record<string, EventPercentagesResponse>;
+}

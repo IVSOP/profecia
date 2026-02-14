@@ -4,21 +4,40 @@
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
 	import * as Dialog from '$lib/components/ui/dialog';
-	import type { MarketDto, UserDto } from '$lib/types';
+	import type { MarketDto, MarketPercentagesDto, UserDto } from '$lib/types';
 
 	interface Props {
 		open: boolean;
 		market: MarketDto | null;
 		option: 'A' | 'B';
+		percentages: MarketPercentagesDto | null;
 		user: UserDto | null;
 	}
 
-	let { open = $bindable(false), market, option = $bindable('A'), user }: Props = $props();
+	let { open = $bindable(false), market, option = $bindable('A'), percentages, user }: Props = $props();
 
 	let shares = $state(1);
 	let priceInput = $state('50');
 	let submitting = $state(false);
 	let errorMessage = $state('');
+
+	function getPriceForOption(opt: 'A' | 'B'): string {
+		if (!percentages) return '50';
+		const pct = opt === 'A' ? percentages.optionAPercentage : percentages.optionBPercentage;
+		return pct != null ? String(pct) : '50';
+	}
+
+	// When the dialog opens, set initial price based on the selected option
+	$effect(() => {
+		if (open) {
+			priceInput = getPriceForOption(option);
+		}
+	});
+
+	function switchOption(opt: 'A' | 'B') {
+		option = opt;
+		priceInput = getPriceForOption(opt);
+	}
 
 	const pricePerShare = $derived(parseInt(priceInput, 10));
 	const priceValid = $derived(!isNaN(pricePerShare) && pricePerShare >= 1 && pricePerShare <= 99);
@@ -119,18 +138,18 @@
 							class="rounded-lg border-2 px-3 py-2.5 text-sm font-semibold transition-colors {option === 'A'
 								? 'border-green-600 bg-green-600 text-white'
 								: 'border-border bg-muted/50 text-muted-foreground hover:bg-muted'}"
-							onclick={() => (option = 'A')}
+							onclick={() => switchOption('A')}
 						>
-							{market.optionAName} {priceValid ? pricePerShare : '—'}¢
+							{market.optionAName} {percentages?.optionAPercentage != null ? `${percentages.optionAPercentage}¢` : '—'}
 						</button>
 						<button
 							type="button"
 							class="rounded-lg border-2 px-3 py-2.5 text-sm font-semibold transition-colors {option === 'B'
 								? 'border-red-600 bg-red-600 text-white'
 								: 'border-border bg-muted/50 text-muted-foreground hover:bg-muted'}"
-							onclick={() => (option = 'B')}
+							onclick={() => switchOption('B')}
 						>
-							{market.optionBName} {priceValid ? 100 - pricePerShare : '—'}¢
+							{market.optionBName} {percentages?.optionBPercentage != null ? `${percentages.optionBPercentage}¢` : '—'}
 						</button>
 					</div>
 				{/if}
