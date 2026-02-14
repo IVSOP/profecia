@@ -1,7 +1,7 @@
 import type { EventDto, ListResponse } from '$lib/types';
-import type { PageLoad } from './$types';
+import type { PageServerLoad } from './$types';
 
-export const load: PageLoad = async ({ fetch }) => {
+export const load: PageServerLoad = async ({ fetch }) => {
 	try {
 		const response = await fetch('/api/event');
 
