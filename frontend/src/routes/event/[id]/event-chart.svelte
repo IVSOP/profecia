@@ -1,0 +1,171 @@
+<script lang="ts">
+	import * as Chart from '$lib/components/ui/chart/index.js';
+	import { LineChart } from 'layerchart';
+	import { scaleTime } from 'd3-scale';
+	import { curveNatural } from 'd3-shape';
+	import type { MarketDto } from '$lib/types';
+
+	interface Props {
+		markets: MarketDto[];
+	}
+
+	let { markets }: Props = $props();
+
+	// Colors for each market line (Polymarket-style palette)
+	const MARKET_COLORS = [
+		'#2563eb', // blue
+		'#dc2626', // red
+		'#16a34a', // green
+		'#d97706', // amber
+		'#7c3aed', // violet
+		'#db2777', // pink
+		'#0891b2', // cyan
+		'#65a30d' // lime
+	];
+
+	// Generate random hardcoded data for each market (minute-by-minute)
+	function generateChartData(marketList: MarketDto[]) {
+		const now = new Date();
+		const points = 60; // 60 minutes of data
+		const data: Record<string, unknown>[] = [];
+
+		// Initialize starting percentages for each market (random between 30-70%)
+		const currentValues: Record<string, number> = {};
+		for (const market of marketList) {
+			currentValues[market.id] = 30 + Math.random() * 40;
+		}
+
+		for (let i = 0; i < points; i++) {
+			const time = new Date(now.getTime() - (points - 1 - i) * 60 * 1000);
+			const point: Record<string, unknown> = { time };
+
+			for (const market of marketList) {
+				// Random walk: drift by -3 to +3 each minute
+				const drift = (Math.random() - 0.5) * 6;
+				currentValues[market.id] = Math.max(1, Math.min(99, currentValues[market.id] + drift));
+				point[market.id] = Math.round(currentValues[market.id] * 10) / 10;
+			}
+
+			data.push(point);
+		}
+
+		return data;
+	}
+
+	const chartData = $derived(generateChartData(markets));
+
+	const chartConfig = $derived.by(() => {
+		const config: Chart.ChartConfig = {};
+		for (let i = 0; i < markets.length; i++) {
+			const market = markets[i];
+			config[market.id] = {
+				label: market.displayName,
+				color: MARKET_COLORS[i % MARKET_COLORS.length]
+			};
+		}
+		return config;
+	});
+
+	const series = $derived(
+		markets.map((market, i) => ({
+			key: market.id,
+			label: chartConfig[market.id]?.label ?? market.displayName,
+			color: chartConfig[market.id]?.color ?? MARKET_COLORS[i % MARKET_COLORS.length]
+		}))
+	);
+
+	const latestValues = $derived.by(() => {
+		const last = chartData[chartData.length - 1];
+		if (!last) return {};
+		const values: Record<string, number> = {};
+		for (const market of markets) {
+			values[market.id] = last[market.id] as number;
+		}
+		return values;
+	});
+</script>
+
+<div class="mt-6 mb-10">
+	{#if markets.length > 1}
+		<div class="mb-1 flex items-center gap-4">
+			{#each series as s}
+				<div class="flex items-center gap-1.5">
+					<span
+						class="inline-block size-2.5 rounded-[2px]"
+						style="background-color: {s.color};"
+					></span>
+					<span class="text-xs text-muted-foreground">
+						{s.label}
+						<span class="font-medium text-foreground">{latestValues[s.key]?.toFixed(1) ?? '—'}%</span>
+					</span>
+				</div>
+			{/each}
+		</div>
+	{/if}
+	<Chart.Container config={chartConfig} class="h-[300px] w-full">
+		<LineChart
+			data={chartData}
+			x="time"
+			xScale={scaleTime()}
+			yDomain={[0, 100]}
+			yNice={false}
+			padding={{ left: 0, right: 40, top: 0, bottom: 0 }}
+			axis={true}
+			{series}
+			props={{
+				grid: {
+					y: true,
+					yTicks: [0, 25, 50, 75, 100]
+				},
+				spline: {
+					curve: curveNatural,
+					style: 'stroke-width: 3px;'
+				},
+				yAxis: {
+					ticks: [0, 25, 50, 75, 100],
+					format: (d: number) => `${d}%`,
+					placement: 'right'
+				},
+				xAxis: {
+					format: (d: Date | number) => {
+						const date = d instanceof Date ? d : new Date(d);
+						return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+					},
+					ticks: 6
+				}
+			}}
+		>
+			{#snippet tooltip()}
+				<Chart.Tooltip
+					labelFormatter={(value: unknown) => {
+						if (value instanceof Date) {
+							return `${value.getHours().toString().padStart(2, '0')}:${value.getMinutes().toString().padStart(2, '0')}`;
+						}
+						return `${value}`;
+					}}
+					formatter={tooltipFormatter}
+				/>
+			{/snippet}
+		</LineChart>
+	</Chart.Container>
+</div>
+
+{#snippet tooltipFormatter({ value, name, item, index, payload }: { value: unknown; name: string; item: import('$lib/components/ui/chart/chart-utils.js').TooltipPayload; index: number; payload: import('$lib/components/ui/chart/chart-utils.js').TooltipPayload[] })}
+	{@const indicatorColor = item.color}
+	<div
+		class="flex w-full flex-wrap items-center gap-2"
+	>
+		<div
+			style="--color-bg: {indicatorColor}; --color-border: {indicatorColor};"
+			class="size-2.5 shrink-0 rounded-[2px] border-(--color-border) bg-(--color-bg)"
+		></div>
+		<div class="flex flex-1 justify-between items-center leading-none">
+			<span class="text-muted-foreground">
+				{chartConfig[name]?.label || name}
+			</span>
+			<span class="text-foreground tabular-nums">
+				{value}%
+			</span>
+		</div>
+	</div>
+{/snippet}

@@ -6,6 +6,7 @@
 	import type { PageProps } from './$types';
 	import BuyOrderDialog from './buy-order-dialog.svelte';
 	import BuyOrdersTable from './buy-orders-table.svelte';
+	import EventChart from './event-chart.svelte';
 	import PositionsTable from './positions-table.svelte';
 	import ResolvedMarketRow from './resolved-market-row.svelte';
 	import ActiveMarketRow from './active-market-row.svelte';
@@ -52,6 +53,9 @@
 <div class="mx-auto max-w-3xl">
 	<!-- Event Title -->
 	<h1 class="mb-6 text-2xl font-bold">{data.event.displayName}</h1>
+
+	<!-- Price Chart -->
+	<EventChart markets={data.event.markets} />
 
 	<div class="rounded-lg border bg-card text-card-foreground">
 		{#each data.event.markets as market, i (market.id)}
