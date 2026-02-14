@@ -18,7 +18,7 @@
 			<DropdownMenu.Label>{username}</DropdownMenu.Label>
 			<DropdownMenu.Separator />
 			<DropdownMenu.Item>
-				<a href="/logout" class="w-full">Sair</a>
+				<a href="/logout" class="w-full" data-sveltekit-reload>Sair</a>
 			</DropdownMenu.Item>
 		</DropdownMenu.Group>
 	</DropdownMenu.Content>

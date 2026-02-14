@@ -1,6 +1,10 @@
 import { fail, redirect } from '@sveltejs/kit';
-import type { Actions } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 import type { AuthResponse } from '$lib/types';
+
+export const load: PageServerLoad = async ({ locals }) => {
+	if (locals.user) redirect(303, '/');
+};
 
 export const actions = {
 	default: async ({ request, cookies, fetch }) => {
@@ -22,7 +26,7 @@ export const actions = {
 			const data = await response.json().catch(() => null);
 			return fail(400, {
 				username,
-				error: data?.error || 'Credenciais inválidas. Tente novamente.'
+				error: data?.error || 'Erro ao autenticar utilizador. Tente novamente.'
 			});
 		}
 

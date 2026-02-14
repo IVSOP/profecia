@@ -1,7 +1,7 @@
 use axum::{Json, debug_handler, extract::State};
 
 use crate::{
-    error::AppResult,
+    error::{AppError, AppResult},
     route::{
         AppState,
         extractors::ValidatedJson,
@@ -15,11 +15,15 @@ pub async fn handle(
     ValidatedJson(payload): ValidatedJson<AuthRequest>,
 ) -> AppResult<Json<AuthResponse>> {
     let user = state
-        .register_user(&payload.username, &payload.password)
-        .await?;
+        .get_user_by_username(&payload.username)
+        .await?
+        .ok_or(AppError::InvalidCredentials)?;
+
+    if !state.check_user_password(user.id, payload.password).await? {
+        return Err(AppError::InvalidCredentials);
+    }
 
     let session_id = state.create_session(user.id).await?;
-    let response = AuthResponse { session_id, user };
 
-    Ok(Json(response))
+    Ok(Json(AuthResponse { session_id, user }))
 }

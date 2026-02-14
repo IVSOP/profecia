@@ -1,14 +1,13 @@
 <script lang="ts">
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
-	import { enhance } from '$app/forms';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { Button } from '$lib/components/ui/button';
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+	import UserAvatar from '$lib/components/avatar.svelte';
 
 	let { children } = $props();
 
-	const user = $derived($page.data.user);
+	const user = $derived(page.data.user);
 </script>
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
@@ -19,20 +18,7 @@
 			<div class="flex items-center justify-between">
 				<a href="/" class="text-xl font-bold">Profecia</a>
 				{#if user}
-					<DropdownMenu.Root>
-						<DropdownMenu.Trigger>
-							<Button variant="ghost" class="gap-2">
-								{user.username}
-							</Button>
-						</DropdownMenu.Trigger>
-						<DropdownMenu.Content align="end">
-							<form method="POST" action="/logout" use:enhance>
-								<DropdownMenu.Item>
-									<button type="submit" class="w-full text-left">Sair</button>
-								</DropdownMenu.Item>
-							</form>
-						</DropdownMenu.Content>
-					</DropdownMenu.Root>
+					<UserAvatar username={user.username} />
 				{:else}
 					<div class="flex items-center gap-2">
 						<Button variant="ghost" href="/login">Entrar</Button>
@@ -43,6 +29,6 @@
 		</div>
 	</header>
 	<main class="container mx-auto flex-1 px-4 py-5">
-		{@render children()}
+		{@render children?.()}
 	</main>
 </div>

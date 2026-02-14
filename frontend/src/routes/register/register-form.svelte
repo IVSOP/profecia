@@ -30,6 +30,7 @@
 				};
 			}}
 		>
+			<input type="submit" hidden />
 			<FieldGroup>
 				{#if form?.error}
 					<div

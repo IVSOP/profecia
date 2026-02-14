@@ -22,6 +22,8 @@ pub enum AppError {
     AnyhowError(#[from] anyhow::Error),
     #[error("Unauthorized: {0}")]
     Unauthorized(String),
+    #[error("Invalid credentials")]
+    InvalidCredentials,
 }
 
 impl IntoResponse for AppError {
@@ -63,6 +65,10 @@ impl IntoResponse for AppError {
                 internal_server_error
             }
             AppError::Unauthorized(error) => (StatusCode::UNAUTHORIZED, error.to_string()),
+            AppError::InvalidCredentials => (
+                StatusCode::UNAUTHORIZED,
+                "Credenciais inválidas".to_string(),
+            ),
         };
 
         let body = ErrorBody { error };

@@ -1,3 +1,4 @@
+.DS_Store
 target/
 .env
 data/
@@ -7,4 +8,3 @@ data/
 node_modules
 .svelte-kit
 .surfpool
-

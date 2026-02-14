@@ -30,9 +30,9 @@ pub struct AuthRequest {
     ))]
     pub username: String,
     #[validate(length(
-        min = 8,
+        min = 5,
         max = 128,
-        message = "A password deve ter entre 8 e 128 caracteres"
+        message = "A password deve ter entre 5 e 128 caracteres"
     ))]
     pub password: String,
 }
