@@ -22,6 +22,7 @@ pub struct EventDto {
     pub display_name: String,
     pub image_url: Option<String>,
     pub url: String,
+    pub pubkey: String,
     pub markets: Vec<MarketDto>,
 }
 
@@ -120,6 +121,7 @@ impl AppState {
                     display_name: event.display_name,
                     image_url: event.image_url,
                     url: self.solana.get_account_url(&event_pda),
+                    pubkey: event_pda.to_string(),
                     markets: markets.into_iter().map(Into::into).collect(),
                 }
             })
@@ -140,6 +142,7 @@ impl AppState {
                     display_name: event.display_name,
                     image_url: event.image_url,
                     url: self.solana.get_account_url(&event_pda),
+                    pubkey: event_pda.to_string(),
                     markets: markets.into_iter().map(Into::into).collect(),
                 }
             });
@@ -241,6 +244,7 @@ impl AppState {
             url: self.solana.get_account_url(&event_pda),
             display_name: event.display_name,
             image_url: event_image_url,
+            pubkey: event_pda.to_string(),
             markets,
         };
 
