@@ -1,11 +1,16 @@
-use blockchain_core::instructions::FakeCreateOrderArgs;
+use blockchain_client::ProfeciaClient;
+use blockchain_core::instructions::{FakeCancelOrderArgs, FakeCreateOrderArgs};
 use chrono::Utc;
 use sea_orm::{
     ActiveModelTrait, ActiveValue::Set, ColumnTrait, EntityTrait, QueryFilter, QueryOrder,
     TransactionTrait,
 };
 use serde::{Deserialize, Serialize};
-use solana_sdk::{signature::Keypair, signer::Signer};
+use solana_sdk::{
+    pubkey::Pubkey,
+    signature::{Keypair, Signature},
+    signer::Signer,
+};
 use uuid::Uuid;
 
 use crate::{
@@ -172,9 +177,28 @@ impl AppState {
         Ok(())
     }
 
-    pub async fn cancel_buy_order(txn: &impl sea_orm::ConnectionTrait, id: Uuid) -> AppResult<()> {
-        entity::buyorder::Entity::delete_by_id(id).exec(txn).await?;
-        Ok(())
+    pub async fn cancel_buy_order(
+        txn: &impl sea_orm::ConnectionTrait,
+        order_id: Uuid,
+        num_shares: i64,
+        price_per_share: i64,
+        event_id: Uuid,
+        user_pubkey: &Pubkey,
+        solana: &ProfeciaClient,
+    ) -> AppResult<Signature> {
+        entity::buyorder::Entity::delete_by_id(order_id)
+            .exec(txn)
+            .await?;
+
+        let cancel_order_args = FakeCancelOrderArgs {
+            event_uuid: event_id,
+            option_uuid: order_id,
+            num_shares: num_shares.try_into().unwrap(),
+            price_per_share: price_per_share.try_into().unwrap(),
+        };
+        let sig = solana.cancel_order(user_pubkey, &cancel_order_args).await?;
+
+        Ok(sig)
     }
 
     pub async fn get_buy_order(

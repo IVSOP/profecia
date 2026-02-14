@@ -247,8 +247,23 @@ impl AppState {
             .await?;
 
         for order in &buy_orders {
-            // TODO: refund user balance for cancelled buy orders
-            AppState::cancel_buy_order(&transaction, order.id).await?;
+            let user = entity::user::Entity::find_by_id(order.user_id)
+                .one(&transaction)
+                .await?
+                .ok_or(AppError::UserNotFound)?;
+
+            let user_wallet = Keypair::from_base58_string(&user.wallet);
+
+            AppState::cancel_buy_order(
+                &transaction,
+                order.id,
+                order.shares,
+                order.price_per_share,
+                market.event_id,
+                &user_wallet.pubkey(),
+                &self.solana,
+            )
+            .await?;
         }
 
         // Pay out positions that hold the winning option

@@ -133,7 +133,7 @@ pub async fn main() -> Result<()> {
         num_shares: 5,
         price_per_share: yes_price
     };
-    let sig = profecia_client.cancel_order(&profecia_client.admin_wallet, &client_yes.pubkey(), &cancel_order_yes).await?;
+    let sig = profecia_client.cancel_order(&client_yes.pubkey(), &cancel_order_yes).await?;
     println!("cancel order for yes {}", sig);
 
     let sig = profecia_client.create_order(&client_yes, &create_order_yes).await?;

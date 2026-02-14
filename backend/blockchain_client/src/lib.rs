@@ -379,7 +379,7 @@ impl ProfeciaClient {
         Ok(sig)
     }
 
-    pub async fn cancel_order(&self, admin: &Keypair, user: &Pubkey, args: &FakeCancelOrderArgs) -> Result<Signature> {
+    pub async fn cancel_order(&self, user: &Pubkey, args: &FakeCancelOrderArgs) -> Result<Signature> {
         let instruction_args = MarketInstruction::FakeCancelOrder(args.clone());
 
         let instruction_bytes = wincode::serialize(&instruction_args)?;
@@ -391,7 +391,7 @@ impl ProfeciaClient {
         let user_usdc_ata = get_associated_token_address(&user, &USDC_MINT);
 
         let accounts: Vec<AccountMeta> = vec![
-            AccountMeta::new(admin.pubkey(), true),
+            AccountMeta::new(self.admin_wallet.pubkey(), true),
             AccountMeta::new_readonly(*user, false),
             AccountMeta::new(user_usdc_ata, false),
             AccountMeta::new(event_pda, false),
@@ -407,11 +407,11 @@ impl ProfeciaClient {
         let instruction =
             Instruction::new_with_bytes(MARKETPLACE_PROGRAM, instruction_bytes.as_ref(), accounts);
 
-        let message = Message::new(&[instruction], Some(&admin.pubkey()));
+        let message = Message::new(&[instruction], Some(&self.admin_wallet.pubkey()));
 
         let mut transaction = Transaction::new_unsigned(message);
 
-        transaction.sign(&[&admin], recent_blockhash);
+        transaction.sign(&[&self.admin_wallet], recent_blockhash);
 
         let sig = self
             .rpc_client
