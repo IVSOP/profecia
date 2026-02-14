@@ -3,15 +3,15 @@
 	import { LineChart } from 'layerchart';
 	import { scaleTime } from 'd3-scale';
 	import { curveNatural } from 'd3-shape';
-	import type { MarketDto } from '$lib/types';
+	import type { MarketDto, EventChartDto } from '$lib/types';
 
 	interface Props {
 		markets: MarketDto[];
+		chartData: EventChartDto;
 	}
 
-	let { markets }: Props = $props();
+	let { markets, chartData }: Props = $props();
 
-	// Colors for each market line (Polymarket-style palette)
 	const MARKET_COLORS = [
 		'#2563eb', // blue
 		'#dc2626', // red
@@ -23,36 +23,20 @@
 		'#65a30d' // lime
 	];
 
-	// Generate random hardcoded data for each market (minute-by-minute)
-	function generateChartData(marketList: MarketDto[]) {
-		const now = new Date();
-		const points = 60; // 60 minutes of data
-		const data: Record<string, unknown>[] = [];
-
-		// Initialize starting percentages for each market (random between 30-70%)
-		const currentValues: Record<string, number> = {};
-		for (const market of marketList) {
-			currentValues[market.id] = 30 + Math.random() * 40;
-		}
-
-		for (let i = 0; i < points; i++) {
-			const time = new Date(now.getTime() - (points - 1 - i) * 60 * 1000);
-			const point: Record<string, unknown> = { time };
-
+	// Transform backend data into chart-friendly format
+	function buildChartData(marketList: MarketDto[], chart: EventChartDto): Record<string, unknown>[] {
+		return chart.points.map((point) => {
+			const row: Record<string, unknown> = {
+				time: new Date(point.recordedAt)
+			};
 			for (const market of marketList) {
-				// Random walk: drift by -3 to +3 each minute
-				const drift = (Math.random() - 0.5) * 6;
-				currentValues[market.id] = Math.max(1, Math.min(99, currentValues[market.id] + drift));
-				point[market.id] = Math.round(currentValues[market.id] * 10) / 10;
+				row[market.id] = point.percentages[market.id] ?? null;
 			}
-
-			data.push(point);
-		}
-
-		return data;
+			return row;
+		});
 	}
 
-	const chartData = $derived(generateChartData(markets));
+	const transformedData = $derived(buildChartData(markets, chartData));
 
 	const chartConfig = $derived.by(() => {
 		const config: Chart.ChartConfig = {};
@@ -75,7 +59,7 @@
 	);
 
 	const latestValues = $derived.by(() => {
-		const last = chartData[chartData.length - 1];
+		const last = transformedData[transformedData.length - 1];
 		if (!last) return {};
 		const values: Record<string, number> = {};
 		for (const market of markets) {
@@ -104,7 +88,7 @@
 	{/if}
 	<Chart.Container config={chartConfig} class="h-[300px] w-full">
 		<LineChart
-			data={chartData}
+			data={transformedData}
 			x="time"
 			xScale={scaleTime()}
 			yDomain={[0, 100]}

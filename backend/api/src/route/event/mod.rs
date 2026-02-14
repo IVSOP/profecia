@@ -6,6 +6,7 @@ use axum::{
 use crate::AppState;
 
 mod buyorder;
+mod chart;
 mod create;
 mod info;
 mod list;
@@ -21,6 +22,7 @@ pub fn router() -> Router<AppState> {
         .route("/resolve/{market_id}", post(resolve::handle))
         .route("/percentages", get(percentages::handle_all))
         .route("/percentages/{event_id}", get(percentages::handle))
+        .route("/chart/{event_id}", get(chart::handle))
         .nest("/buyorder", buyorder::router())
         .nest("/position", position::router())
 }

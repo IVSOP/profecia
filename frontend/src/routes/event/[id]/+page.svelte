@@ -55,7 +55,7 @@
 	<h1 class="mb-6 text-2xl font-bold">{data.event.displayName}</h1>
 
 	<!-- Price Chart -->
-	<EventChart markets={data.event.markets} />
+	<EventChart markets={data.event.markets} chartData={data.chartData} />
 
 	<div class="rounded-lg border bg-card text-card-foreground">
 		{#each data.event.markets as market, i (market.id)}

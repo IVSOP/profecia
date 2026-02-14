@@ -98,6 +98,17 @@ export interface EventPercentagesResponse {
 	percentages: Record<string, MarketPercentagesDto>;
 }
 
+// Chart data
+
+export interface MarketSnapshotPointDto {
+	recordedAt: string;
+	percentages: Record<string, number | null>;
+}
+
+export interface EventChartDto {
+	points: MarketSnapshotPointDto[];
+}
+
 export interface AllPercentagesResponse {
 	percentages: Record<string, EventPercentagesResponse>;
 }

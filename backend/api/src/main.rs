@@ -69,6 +69,21 @@ async fn main() -> anyhow::Result<()> {
         solana: Arc::new(solana),
     };
 
+    {
+        let snapshot_state = app_state.clone();
+        tokio::spawn(async move {
+            let mut interval = tokio::time::interval(std::time::Duration::from_secs(60));
+            loop {
+                interval.tick().await;
+                if let Err(e) = snapshot_state.record_market_snapshots().await {
+                    tracing::error!("Failed to record market snapshots: {}", e);
+                } else {
+                    tracing::debug!("Recorded market snapshots");
+                }
+            }
+        });
+    }
+
     let app = route::router(app_state);
 
     let listener = TcpListener::bind("0.0.0.0:3000")

@@ -41,6 +41,8 @@ pub struct Model {
     pub buy_orders: HasMany<super::buyorder::Entity>,
     #[sea_orm(has_many)]
     pub positions: HasMany<super::position::Entity>,
+    #[sea_orm(has_many)]
+    pub snapshots: HasMany<super::market_snapshot::Entity>,
 }
 
 impl ActiveModelBehavior for ActiveModel {}
