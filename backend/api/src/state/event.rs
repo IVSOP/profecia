@@ -33,7 +33,6 @@ pub enum MarketOption {
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct EventRequest {
-    pub id: Uuid,
     pub display_name: String,
     pub markets: Vec<MarketRequest>,
 }
@@ -103,10 +102,11 @@ impl AppState {
 
     pub async fn create_event(&self, event: EventRequest) -> AppResult<EventDto> {
         let transaction = self.database.begin().await?;
+        let event_id = Uuid::new_v4();
         let display_name = event.display_name.trim().to_string();
 
         entity::event::ActiveModel {
-            id: Set(Uuid::new_v4()),
+            id: Set(event_id),
             display_name: Set(display_name),
         }
         .insert(&transaction)
@@ -120,7 +120,7 @@ impl AppState {
             let market = entity::market::ActiveModel {
                 id: Set(Uuid::new_v4()),
                 display_name: Set(market_display_name),
-                event_id: Set(event.id),
+                event_id: Set(event_id),
                 option_a_name: Set(market.option_a_name),
                 option_b_name: Set(market.option_b_name),
                 rules: Set(market.rules),
@@ -141,7 +141,7 @@ impl AppState {
         transaction.commit().await?;
 
         let event_dto = EventDto {
-            id: event.id,
+            id: event_id,
             display_name: event.display_name,
             markets,
         };

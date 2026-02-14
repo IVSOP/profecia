@@ -6,15 +6,14 @@ export interface AuthRequest {
 }
 
 export interface CreateMarketRequest {
-	display_name: string;
-	option_a_name: string;
-	option_b_name: string;
+	displayName: string;
+	optionAName: string;
+	optionBName: string;
 	rules: string;
 }
 
 export interface CreateEventRequest {
-	id: string;
-	display_name: string;
+	displayName: string;
 	markets: CreateMarketRequest[];
 }
 
@@ -38,16 +37,16 @@ export type MarketOption = 'OptionA' | 'OptionB';
 
 export interface MarketDto {
 	id: string;
-	display_name: string;
-	option_a_name: string;
-	option_b_name: string;
+	displayName: string;
+	optionAName: string;
+	optionBName: string;
 	rules: string;
-	resolved_option: MarketOption | null;
+	resolvedOption: MarketOption | null;
 }
 
 export interface EventDto {
 	id: string;
-	display_name: string;
+	displayName: string;
 	markets: MarketDto[];
 }
 

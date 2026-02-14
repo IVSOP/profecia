@@ -14,15 +14,15 @@
 	<Card.Header class="flex flex-row items-center gap-3 p-4">
 		<img
 			src="https://placehold.co/48x48"
-			alt={event.display_name}
+			alt={event.displayName}
 			class="size-12 shrink-0 rounded-lg object-cover"
 		/>
-		<Card.Title class="text-base leading-snug">{event.display_name}</Card.Title>
+		<Card.Title class="text-base leading-snug">{event.displayName}</Card.Title>
 	</Card.Header>
 	<Card.Content class="flex flex-col gap-3 px-4 pt-0 pb-4">
 		{#each event.markets as market (market.id)}
 			<div class="flex items-center justify-between gap-3">
-				<span class="min-w-0 truncate text-sm font-medium">{market.display_name}</span>
+				<span class="min-w-0 truncate text-sm font-medium">{market.displayName}</span>
 				<div class="flex shrink-0 items-center gap-2">
 					<span class="text-sm font-semibold">50%</span>
 					<Button size="sm" variant="outline" class="h-7 px-3 text-xs">Sim</Button>
