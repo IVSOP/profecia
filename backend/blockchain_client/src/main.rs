@@ -3,7 +3,7 @@ use std::{collections::HashMap, env};
 use anyhow::Result;
 use blockchain_core::{
     accounts::event::{Event, EventOption},
-    instructions::{CloseEventArgs, CreateEventArgs, FakeMatchOrderArgs, MarketInstruction},
+    instructions::{CloseEventArgs, CreateEventArgs, CreateOrderArgs, FakeCreateOrderArgs, FakeMatchOrderArgs, MarketInstruction},
 };
 use serde_json::{Value, json};
 use solana_client::{
@@ -266,26 +266,26 @@ impl ProfeciaClient {
 
         let (event_pda, _) = Event::find_program_address(&args.event_uuid, &MARKETPLACE_PROGRAM);
 
-        let treasury = get_associated_token_address(&event_pda, &USDC_MINT);
+        // let treasury = get_associated_token_address(&event_pda, &USDC_MINT);
 
-        let user_yes_usdc_ata = get_associated_token_address(&user_yes_wallet.pubkey(), &USDC_MINT);
+        // let user_yes_usdc_ata = get_associated_token_address(&user_yes_wallet.pubkey(), &USDC_MINT);
         let user_yes_token_ata = get_associated_token_address(&user_yes_wallet.pubkey(), token_yes);
 
-        let user_no_usdc_ata = get_associated_token_address(&user_no_wallet.pubkey(), &USDC_MINT);
+        // let user_no_usdc_ata = get_associated_token_address(&user_no_wallet.pubkey(), &USDC_MINT);
         let user_no_token_ata = get_associated_token_address(&user_no_wallet.pubkey(), token_no);
 
         let accounts: Vec<AccountMeta> = vec![
             AccountMeta::new(user_yes_wallet.pubkey(), true),
-            AccountMeta::new(user_yes_usdc_ata, false),
+            // AccountMeta::new(user_yes_usdc_ata, false),
             AccountMeta::new(user_yes_token_ata, false),
             AccountMeta::new(user_no_wallet.pubkey(), true),
-            AccountMeta::new(user_no_usdc_ata, false),
+            // AccountMeta::new(user_no_usdc_ata, false),
             AccountMeta::new(user_no_token_ata, false),
             AccountMeta::new(event_pda, false),
-            AccountMeta::new(treasury, false),
+            // AccountMeta::new(treasury, false),
             AccountMeta::new(*token_yes, false),
             AccountMeta::new(*token_no, false),
-            AccountMeta::new_readonly(USDC_MINT, false),
+            // AccountMeta::new_readonly(USDC_MINT, false),
             AccountMeta::new_readonly(SYSTEM_PROGRAM, false),
             AccountMeta::new_readonly(spl_token::ID, false),
             AccountMeta::new_readonly(spl_associated_token_account::ID, false),
@@ -301,6 +301,47 @@ impl ProfeciaClient {
         let mut transaction = Transaction::new_unsigned(message);
 
         transaction.sign(&[&user_yes_wallet, &user_no_wallet], recent_blockhash);
+
+        let sig = self
+            .rpc_client
+            .send_transaction_with_config(&transaction, self.rpc_config)
+            .await?;
+
+        Ok(sig)
+    }
+
+    pub async fn create_order(&self, user: &Keypair, args: &FakeCreateOrderArgs) -> Result<Signature> {
+        let instruction_args = MarketInstruction::FakeCreateOrder(args.clone());
+
+        let instruction_bytes = wincode::serialize(&instruction_args)?;
+
+        let (event_pda, _) = Event::find_program_address(&args.event_uuid, &MARKETPLACE_PROGRAM);
+
+        let treasury = get_associated_token_address(&event_pda, &USDC_MINT);
+
+        let user_usdc_ata = get_associated_token_address(&user.pubkey(), &USDC_MINT);
+
+        let accounts: Vec<AccountMeta> = vec![
+            AccountMeta::new(user.pubkey(), true),
+            AccountMeta::new(user_usdc_ata, false),
+            AccountMeta::new(event_pda, false),
+            AccountMeta::new(treasury, false),
+            AccountMeta::new_readonly(USDC_MINT, false),
+            AccountMeta::new_readonly(SYSTEM_PROGRAM, false),
+            AccountMeta::new_readonly(spl_token::ID, false),
+            AccountMeta::new_readonly(spl_associated_token_account::ID, false),
+        ];
+
+        let recent_blockhash = self.rpc_client.get_latest_blockhash().await?;
+
+        let instruction =
+            Instruction::new_with_bytes(MARKETPLACE_PROGRAM, instruction_bytes.as_ref(), accounts);
+
+        let message = Message::new(&[instruction], Some(&user.pubkey()));
+
+        let mut transaction = Transaction::new_unsigned(message);
+
+        transaction.sign(&[&user], recent_blockhash);
 
         let sig = self
             .rpc_client
@@ -411,6 +452,24 @@ pub async fn main() -> Result<()> {
     // 60 cent yes, 40 cent no
     let yes_price = 60 * 10000;
     let no_price = 40 * 10000;
+
+    // create order (will just transfer some usdc)
+    let create_order_yes = FakeCreateOrderArgs {
+        event_uuid,
+        option_uuid: some_option_uuid,
+        num_shares: 5,
+        price_per_share: yes_price
+    };
+    let sig = profecia_client.create_order(&client_yes, &create_order_yes).await?;
+    println!("buy order for yes {}", sig);
+    let create_order_no = FakeCreateOrderArgs {
+        event_uuid,
+        option_uuid: some_option_uuid,
+        num_shares: 5,
+        price_per_share: no_price
+    };
+    let sig = profecia_client.create_order(&client_no, &create_order_no).await?;
+    println!("buy order for no {}", sig);
 
     // get the first option in the map
     // let option = options.get(&some_option_uuid).unwrap();

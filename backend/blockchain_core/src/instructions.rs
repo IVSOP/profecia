@@ -14,6 +14,7 @@ pub enum MarketInstruction {
     // CancelOrder(CancelOrderArgs),
     FakeMatchOrder(FakeMatchOrderArgs),
     GetReward(GetRewardArgs),
+    FakeCreateOrder(FakeCreateOrderArgs),
 }
 
 #[derive(SchemaWrite, SchemaRead, Debug, Clone)]
@@ -46,6 +47,15 @@ pub struct FakeMatchOrderArgs {
     pub num_shares: u64,
     pub yes_price: u64,
     pub no_price: u64,
+}
+
+/// PRICE IN MICRO USDC!!!
+#[derive(SchemaWrite, SchemaRead, Debug, Copy, Clone)]
+pub struct FakeCreateOrderArgs {
+    pub event_uuid: Uuid,
+    pub option_uuid: Uuid,
+    pub num_shares: u64,
+    pub price_per_share: u64,
 }
 
 #[derive(SchemaWrite, SchemaRead, Debug, Copy, Clone)]

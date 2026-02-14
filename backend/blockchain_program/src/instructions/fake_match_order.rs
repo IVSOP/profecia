@@ -2,14 +2,14 @@ use blockchain_core::{error::MarketError, instructions::FakeMatchOrderArgs};
 use pinocchio::{
     account_info::AccountInfo, instruction::Signer, pubkey::pubkey_eq, seeds, ProgramResult,
 };
-use pinocchio_token::instructions::{MintToChecked, TransferChecked};
+use pinocchio_token::instructions::MintToChecked;
 
 use crate::utils::{
-    check_associated_token_program, check_existing_ata, check_token_program, check_usdc, create_or_check_ata, deserialize_and_check_event, CreateOrCheckAtaArgs
+    check_associated_token_program, check_token_program, create_or_check_ata, deserialize_and_check_event, CreateOrCheckAtaArgs
 };
 
 pub fn fake_match_order(accounts: &[AccountInfo], args: &FakeMatchOrderArgs) -> ProgramResult {
-    let [user_yes, user_yes_usdc_ata, user_yes_token_ata, user_no, user_no_usdc_ata, user_no_token_ata, event, treasury, token_yes, token_no, usdc, system_program, token_program, associated_token_program] =
+    let [user_yes,  user_yes_token_ata, user_no, user_no_token_ata, event, token_yes, token_no, system_program, token_program, associated_token_program] =
         accounts
     else {
         return Err(MarketError::InvalidAccounts.into());
@@ -18,9 +18,6 @@ pub fn fake_match_order(accounts: &[AccountInfo], args: &FakeMatchOrderArgs) -> 
     // check token program and associated token program
     check_token_program(token_program)?;
     check_associated_token_program(associated_token_program)?;
-
-    // check usdc
-    check_usdc(usdc)?;
 
     // deser and check event
     let event_data = deserialize_and_check_event(event, &args.event_uuid)?;
@@ -89,30 +86,6 @@ pub fn fake_match_order(accounts: &[AccountInfo], args: &FakeMatchOrderArgs) -> 
         decimals: 6,
     }
     .invoke_signed(&[Signer::from(&event_seeds)])?;
-
-    // check treasury
-    check_existing_ata(treasury, usdc.key(), event.key())?;
-
-    // transfer USDC from A and B to treasury
-    TransferChecked {
-        from: user_yes_usdc_ata,
-        mint: usdc,
-        to: treasury,
-        authority: user_yes,
-        amount: args.num_shares * args.yes_price, // TODO: overflow,
-        decimals: 6,
-    }
-    .invoke()?;
-
-    TransferChecked {
-        from: user_no_usdc_ata,
-        mint: usdc,
-        to: treasury,
-        authority: user_no,
-        amount: args.num_shares * args.no_price, // TODO: overflow,
-        decimals: 6,
-    }
-    .invoke()?;
 
     Ok(())
 }
