@@ -12,6 +12,7 @@ use utils::axum_utils::shutdown_signal;
 mod entity;
 mod error;
 mod route;
+mod solana_integration;
 mod state;
 mod utils;
 
@@ -23,6 +24,12 @@ struct AppConfig {
         default_value = "postgres://profecia:profecia@localhost:5432/profecia"
     )]
     database_url: String,
+    #[arg(
+        long,
+        env = "RPC_URL",
+        default_value = DEFAULT_RPC_HTTP
+    )]
+    rpc_url: String,
 }
 
 #[derive(Clone)]
@@ -50,11 +57,12 @@ async fn main() -> anyhow::Result<()> {
         .sync(&database)
         .await?;
 
-    let solana = ProfeciaClient::new(DEFAULT_RPC_HTTP)?;
+    let solana = ProfeciaClient::new(&config.rpc_url)?;
 
-    let _sig = solana.rpc_client
-            .request_airdrop(&solana.admin_wallet.pubkey(), LAMPORTS_PER_SOL * 10)
-            .await?;
+    let _sig = solana
+        .rpc_client
+        .request_airdrop(&solana.admin_wallet.pubkey(), LAMPORTS_PER_SOL * 10)
+        .await?;
 
     let app_state = AppState {
         database,

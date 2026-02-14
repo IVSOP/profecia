@@ -16,6 +16,7 @@ pub enum MarketInstruction {
     GetReward(GetRewardArgs),
     FakeCreateOrder(FakeCreateOrderArgs),
     FakeCancelOrder(FakeCancelOrderArgs),
+    FakeGetReward(FakeGetRewardArgs),
 }
 
 #[derive(SchemaWrite, SchemaRead, Debug, Clone)]
@@ -87,4 +88,11 @@ pub struct GetRewardArgs {
     pub event_uuid: Uuid,
     pub option_uuid: Uuid,
     pub seed: u64,
+}
+
+#[derive(SchemaWrite, SchemaRead, Debug, Copy, Clone)]
+pub struct FakeGetRewardArgs {
+    pub event_uuid: Uuid,
+    pub option_uuid: Uuid,
+    pub num_shares: u64,
 }
