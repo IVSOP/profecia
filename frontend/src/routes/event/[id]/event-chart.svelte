@@ -148,7 +148,7 @@
 				{chartConfig[name]?.label || name}
 			</span>
 			<span class="text-foreground tabular-nums">
-				{value}%
+				{value != null ? `${value}%` : '—'}
 			</span>
 		</div>
 	</div>
