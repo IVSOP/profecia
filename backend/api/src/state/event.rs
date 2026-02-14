@@ -1,8 +1,14 @@
-use sea_orm::{ActiveModelTrait, ActiveValue::Set, EntityTrait, TransactionTrait};
+use sea_orm::{
+    ActiveModelTrait, ActiveValue::Set, ColumnTrait, EntityTrait, ModelTrait, QueryFilter,
+    TransactionTrait,
+};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::{AppState, entity, error::AppResult};
+use crate::{
+    AppState, entity,
+    error::{AppError, AppResult},
+};
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -78,6 +84,15 @@ impl From<entity::market::MarketOption> for MarketOptionDto {
     }
 }
 
+impl From<MarketOptionDto> for entity::market::MarketOption {
+    fn from(value: MarketOptionDto) -> Self {
+        match value {
+            MarketOptionDto::OptionA => entity::market::MarketOption::A,
+            MarketOptionDto::OptionB => entity::market::MarketOption::B,
+        }
+    }
+}
+
 impl AppState {
     pub async fn get_all_events(&self) -> AppResult<Vec<EventDto>> {
         let rows = entity::event::Entity::find()
@@ -147,5 +162,56 @@ impl AppState {
         };
 
         Ok(event_dto)
+    }
+
+    pub async fn resolve_market(
+        &self,
+        market_id: Uuid,
+        option: MarketOptionDto,
+    ) -> AppResult<()> {
+        let transaction = self.database.begin().await?;
+
+        let market = entity::market::Entity::find_by_id(market_id)
+            .one(&transaction)
+            .await?
+            .ok_or(AppError::MarketNotFound)?;
+
+        if market.resolved_option.is_some() {
+            return Err(AppError::MarketAlreadyResolved);
+        }
+
+        let winning_option: entity::market::MarketOption = option.into();
+
+        // Cancel all remaining buy orders for this market
+        let buy_orders = market
+            .find_related(entity::buyorder::Entity)
+            .all(&transaction)
+            .await?;
+
+        for order in &buy_orders {
+            // TODO: refund user balance for cancelled buy orders
+            AppState::cancel_buy_order(&transaction, order.id).await?;
+        }
+
+        // Pay out positions that hold the winning option
+        let winning_positions = entity::position::Entity::find()
+            .filter(entity::position::Column::MarketId.eq(market_id))
+            .filter(entity::position::Column::Option.eq(winning_option.clone()))
+            .all(&transaction)
+            .await?;
+
+        for position in &winning_positions {
+            // TODO: add position.shares to user balance (each share pays out 100)
+            let _ = position;
+        }
+
+        // Mark the market as resolved
+        let mut active_market: entity::market::ActiveModel = market.into();
+        active_market.resolved_option = Set(Some(winning_option));
+        active_market.update(&transaction).await?;
+
+        transaction.commit().await?;
+
+        Ok(())
     }
 }
