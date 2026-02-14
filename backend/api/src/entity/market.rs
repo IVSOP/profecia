@@ -10,6 +10,15 @@ pub enum MarketOption {
     B,
 }
 
+impl MarketOption {
+    pub fn opposite(&self) -> Self {
+        match self {
+            MarketOption::A => MarketOption::B,
+            MarketOption::B => MarketOption::A,
+        }
+    }
+}
+
 #[sea_orm::model]
 #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
 #[sea_orm(table_name = "market")]
@@ -24,6 +33,10 @@ pub struct Model {
     pub resolved_option: Option<MarketOption>,
     #[sea_orm(belongs_to, from = "event_id", to = "id")]
     pub event: HasOne<super::event::Entity>,
+    #[sea_orm(has_many)]
+    pub buy_orders: HasMany<super::buyorder::Entity>,
+    #[sea_orm(has_many)]
+    pub positions: HasMany<super::position::Entity>,
 }
 
 impl ActiveModelBehavior for ActiveModel {}

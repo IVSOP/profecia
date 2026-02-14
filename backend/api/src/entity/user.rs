@@ -12,6 +12,10 @@ pub struct Model {
     pub identity: HasOne<super::identity::Entity>,
     #[sea_orm(has_many)]
     pub sessions: HasMany<super::session::Entity>,
+    #[sea_orm(has_many)]
+    pub buy_orders: HasMany<super::buyorder::Entity>,
+    #[sea_orm(has_many)]
+    pub positions: HasMany<super::position::Entity>,
 }
 
 impl ActiveModelBehavior for ActiveModel {}

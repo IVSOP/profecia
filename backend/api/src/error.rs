@@ -24,6 +24,14 @@ pub enum AppError {
     Unauthorized(String),
     #[error("Invalid credentials")]
     InvalidCredentials,
+    #[error("Market not found")]
+    MarketNotFound,
+    #[error("User not found")]
+    UserNotFound,
+    #[error("Market already resolved")]
+    MarketAlreadyResolved,
+    #[error("Buy order not found")]
+    BuyOrderNotFound,
 }
 
 impl IntoResponse for AppError {
@@ -69,6 +77,19 @@ impl IntoResponse for AppError {
                 StatusCode::UNAUTHORIZED,
                 "Credenciais inválidas".to_string(),
             ),
+            AppError::MarketNotFound => {
+                (StatusCode::NOT_FOUND, "Mercado não encontrado".to_string())
+            }
+            AppError::UserNotFound => (
+                StatusCode::NOT_FOUND,
+                "Utilizador não encontrado".to_string(),
+            ),
+            AppError::MarketAlreadyResolved => {
+                (StatusCode::BAD_REQUEST, "Mercado já resolvido".to_string())
+            }
+            AppError::BuyOrderNotFound => {
+                (StatusCode::NOT_FOUND, "Compra não encontrada".to_string())
+            }
         };
 
         let body = ErrorBody { error };

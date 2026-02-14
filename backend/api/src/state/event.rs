@@ -20,12 +20,12 @@ pub struct MarketDto {
     pub option_a_name: String,
     pub option_b_name: String,
     pub rules: String,
-    pub resolved_option: Option<MarketOption>,
+    pub resolved_option: Option<MarketOptionDto>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub enum MarketOption {
+pub enum MarketOptionDto {
     OptionA,
     OptionB,
 }
@@ -69,11 +69,11 @@ impl From<entity::market::Model> for MarketDto {
     }
 }
 
-impl From<entity::market::MarketOption> for MarketOption {
+impl From<entity::market::MarketOption> for MarketOptionDto {
     fn from(value: entity::market::MarketOption) -> Self {
         match value {
-            entity::market::MarketOption::A => MarketOption::OptionA,
-            entity::market::MarketOption::B => MarketOption::OptionB,
+            entity::market::MarketOption::A => MarketOptionDto::OptionA,
+            entity::market::MarketOption::B => MarketOptionDto::OptionB,
         }
     }
 }
