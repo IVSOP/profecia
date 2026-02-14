@@ -17,12 +17,16 @@
 			alt={event.displayName}
 			class="size-12 shrink-0 rounded-lg object-cover"
 		/>
-		<Card.Title class="text-base leading-snug">{event.displayName}</Card.Title>
+		<Card.Title class="text-base leading-snug">
+			<a href="/event/{event.id}" class="hover:underline">{event.displayName}</a>
+		</Card.Title>
 	</Card.Header>
 	<Card.Content class="flex flex-col gap-3 px-4 pt-0 pb-4">
 		{#each event.markets as market (market.id)}
 			<div class="flex items-center justify-between gap-3">
-				<span class="min-w-0 truncate text-sm font-medium">{market.displayName}</span>
+				<a href="/event/{event.id}" class="min-w-0 truncate text-sm font-medium hover:underline"
+					>{market.displayName}</a
+				>
 				<div class="flex shrink-0 items-center gap-2">
 					<span class="text-sm font-semibold">50%</span>
 					<Button size="sm" variant="outline" class="h-7 px-3 text-xs">Sim</Button>

@@ -8,7 +8,12 @@ const BACKEND_URL = env.BACKEND_URL || 'http://localhost:3000';
 // In SSR the svelte fetch function will run this function automatically without doing any network calls.
 // In production and client-side we use rpxy and will redirect /api client fetch requests to the backend
 
-async function proxyRequest(method: string, path: string, request: Request) {
+async function proxyRequest(
+	method: string,
+	path: string,
+	request: Request,
+	fetcher: typeof globalThis.fetch
+) {
 	const url = `${BACKEND_URL}/${path}`;
 
 	const options: RequestInit = {
@@ -20,17 +25,17 @@ async function proxyRequest(method: string, path: string, request: Request) {
 		options.body = await request.text();
 	}
 
-	return await fetch(url, options);
+	return await fetcher(url, options);
 }
 
-export const GET: RequestHandler = async ({ params, request }) => {
-	return await proxyRequest('GET', params.path, request);
+export const GET: RequestHandler = async ({ params, request, fetch }) => {
+	return await proxyRequest('GET', params.path, request, fetch);
 };
 
-export const POST: RequestHandler = async ({ params, request }) => {
-	return await proxyRequest('POST', params.path, request);
+export const POST: RequestHandler = async ({ params, request, fetch }) => {
+	return await proxyRequest('POST', params.path, request, fetch);
 };
 
-export const PATCH: RequestHandler = async ({ params, request }) => {
-	return await proxyRequest('PATCH', params.path, request);
+export const PATCH: RequestHandler = async ({ params, request, fetch }) => {
+	return await proxyRequest('PATCH', params.path, request, fetch);
 };
