@@ -12,9 +12,10 @@
 		option: 'A' | 'B';
 		percentages: MarketPercentagesDto | null;
 		user: UserDto | null;
+		balanceCents: number | null;
 	}
 
-	let { open = $bindable(false), market, option = $bindable('A'), percentages, user }: Props = $props();
+	let { open = $bindable(false), market, option = $bindable('A'), percentages, user, balanceCents }: Props = $props();
 
 	let shares = $state(1);
 	let priceInput = $state('50');
@@ -55,6 +56,8 @@
 	}
 
 	const isValid = $derived(shares > 0 && priceValid);
+	const hasEnoughBalance = $derived(balanceCents != null && totalCostCents <= balanceCents);
+	const canSubmit = $derived(isValid && hasEnoughBalance);
 
 	function handlePriceInput(e: Event) {
 		const input = e.target as HTMLInputElement;
@@ -117,6 +120,7 @@
 						if (result.type === 'success') {
 							open = false;
 							resetForm();
+							window.dispatchEvent(new CustomEvent('balance:refresh'));
 							await update();
 						} else if (result.type === 'failure') {
 							const data = result.data as { error?: string } | undefined;
@@ -210,6 +214,12 @@
 					</div>
 				</div>
 
+				{#if isValid && !hasEnoughBalance}
+					<div class="rounded-md border border-amber-500/50 bg-amber-500/10 px-3 py-2 text-sm text-amber-700 dark:text-amber-400">
+						Saldo insuficiente. Precisas de {formatDollars(totalCostCents)} mas tens {formatDollars(balanceCents ?? 0)}.
+					</div>
+				{/if}
+
 				{#if errorMessage}
 					<div
 						class="rounded-md border border-destructive/50 bg-destructive/10 px-3 py-2 text-sm text-destructive"
@@ -222,7 +232,7 @@
 					<Dialog.Close>
 						<Button type="button" variant="outline" class="w-full" disabled={submitting}>Cancelar</Button>
 					</Dialog.Close>
-					<Button type="submit" class="w-full" disabled={!isValid || submitting}>
+					<Button type="submit" class="w-full" disabled={!canSubmit || submitting}>
 						{#if submitting}
 							A enviar...
 						{:else}

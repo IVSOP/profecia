@@ -24,6 +24,19 @@
 		balanceOverride = null;
 	});
 
+	// Listen for balance refresh events from child components
+	$effect(() => {
+		const handler = async () => {
+			const res = await fetch('/api/user/balance');
+			if (res.ok) {
+				const data = (await res.json()) as BalanceResponse;
+				balanceOverride = data.balanceCents;
+			}
+		};
+		window.addEventListener('balance:refresh', handler);
+		return () => window.removeEventListener('balance:refresh', handler);
+	});
+
 	// Airdrop cooldown state
 	let secondsLeft = $state(0);
 	let airdropAvailable = $state(false);

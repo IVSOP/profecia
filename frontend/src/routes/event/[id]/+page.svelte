@@ -124,4 +124,5 @@
 	bind:option={buyDialogOption}
 	percentages={buyDialogPercentages}
 	user={user ?? null}
+	balanceCents={page.data.balanceCents}
 />
