@@ -1,11 +1,10 @@
 use blockchain_core::{error::MarketError, instructions::FakeGetRewardArgs};
-use pinocchio::{
-    ProgramResult, account_info::AccountInfo, instruction::Signer, seeds
-};
+use pinocchio::{account_info::AccountInfo, instruction::Signer, seeds, ProgramResult};
 use pinocchio_token::instructions::{BurnChecked, TransferChecked};
 
 use crate::utils::{
-    check_associated_token_program, check_existing_ata, check_token_program, check_usdc, deserialize_and_check_event
+    check_associated_token_program, check_existing_ata, check_token_program, check_usdc,
+    deserialize_and_check_event,
 };
 
 pub fn fake_get_reward(accounts: &[AccountInfo], args: &FakeGetRewardArgs) -> ProgramResult {

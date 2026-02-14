@@ -6,7 +6,11 @@ use blockchain_core::{
 };
 use fast_ata_pinocchio::instructions::CreateAta;
 use pinocchio::{
-    account_info::AccountInfo, instruction::Signer, program_error::ProgramError, pubkey::{pubkey_eq, Pubkey}, ProgramResult
+    account_info::AccountInfo,
+    instruction::Signer,
+    program_error::ProgramError,
+    pubkey::{pubkey_eq, Pubkey},
+    ProgramResult,
 };
 use pinocchio_pubkey::pubkey;
 use pinocchio_token::state::TokenAccount;
@@ -76,16 +80,16 @@ pub fn check_usdc(usdc: &AccountInfo) -> ProgramResult {
     Ok(())
 }
 
- /// Checks an ATA that must already be initialized.
- pub fn check_existing_ata(ata: &AccountInfo, mint: &Pubkey, owner: &Pubkey) -> ProgramResult {
-     // this deserialization will check len and the account owner
-     let ata_info = TokenAccount::from_account_info(ata).map_err(|_| MarketError::InvalidAta)?;
-     if pubkey_eq(mint, ata_info.mint()) && pubkey_eq(owner, ata_info.owner()) {
-         Ok(())
-     } else {
-         Err(MarketError::InvalidAta.into())
-     }
- }
+/// Checks an ATA that must already be initialized.
+pub fn check_existing_ata(ata: &AccountInfo, mint: &Pubkey, owner: &Pubkey) -> ProgramResult {
+    // this deserialization will check len and the account owner
+    let ata_info = TokenAccount::from_account_info(ata).map_err(|_| MarketError::InvalidAta)?;
+    if pubkey_eq(mint, ata_info.mint()) && pubkey_eq(owner, ata_info.owner()) {
+        Ok(())
+    } else {
+        Err(MarketError::InvalidAta.into())
+    }
+}
 
 // /// Deserializes a lobby, checking that the account is valid
 // /// - Owner must be the game program

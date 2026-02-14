@@ -4,7 +4,7 @@ use anyhow::Result;
 use blockchain_client::{DEFAULT_RPC_HTTP, ProfeciaClient, USDC_MINT};
 use blockchain_core::{
     accounts::event::EventOption,
-    instructions::{CloseEventArgs, CreateEventArgs, FakeCancelOrderArgs, FakeCreateOrderArgs, FakeMatchOrderArgs},
+    instructions::{CloseEventArgs, CreateEventArgs, FakeCancelOrderArgs, FakeCreateOrderArgs, FakeGetRewardArgs, FakeMatchOrderArgs},
 };
 use solana_sdk::{
     signature::Keypair,
@@ -166,6 +166,15 @@ pub async fn main() -> Result<()> {
         .await?;
 
     println!("Match order sig: {}", sig);
+
+    let args = FakeGetRewardArgs {
+        event_uuid,
+        option_uuid: some_option_uuid,
+        num_shares: 5
+    };
+    let sig = profecia_client.get_reward(&client_yes, &yes.pubkey(), &args).await?;
+
+    println!("Get reward sig: {}", sig);
 
     Ok(())
 }

@@ -1,11 +1,10 @@
 use blockchain_core::{error::MarketError, instructions::FakeCancelOrderArgs};
-use pinocchio::{
-    ProgramResult, account_info::AccountInfo, instruction::Signer, seeds
-};
+use pinocchio::{account_info::AccountInfo, instruction::Signer, seeds, ProgramResult};
 use pinocchio_token::instructions::TransferChecked;
 
 use crate::utils::{
-    check_associated_token_program, check_existing_ata, check_token_program, check_usdc, deserialize_and_check_event
+    check_associated_token_program, check_existing_ata, check_token_program, check_usdc,
+    deserialize_and_check_event,
 };
 
 pub fn fake_cancel_order(accounts: &[AccountInfo], args: &FakeCancelOrderArgs) -> ProgramResult {
@@ -49,8 +48,6 @@ pub fn fake_cancel_order(accounts: &[AccountInfo], args: &FakeCancelOrderArgs) -
         decimals: 6,
     }
     .invoke_signed(&[Signer::from(&event_seeds)])?;
-
-
 
     // // check that option exists and check that token mints are correct
     // let option = event_data

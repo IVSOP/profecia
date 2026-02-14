@@ -1,7 +1,7 @@
 use anyhow::{Result, anyhow};
 use blockchain_core::{
     accounts::event::Event,
-    instructions::{CloseEventArgs, CreateEventArgs, FakeCancelOrderArgs, FakeCreateOrderArgs, FakeMatchOrderArgs, MarketInstruction},
+    instructions::{CloseEventArgs, CreateEventArgs, FakeCancelOrderArgs, FakeCreateOrderArgs, FakeGetRewardArgs, FakeMatchOrderArgs, MarketInstruction},
 };
 use serde_json::{Value, json};
 use solana_client::{
@@ -412,6 +412,50 @@ impl ProfeciaClient {
         let mut transaction = Transaction::new_unsigned(message);
 
         transaction.sign(&[&admin], recent_blockhash);
+
+        let sig = self
+            .rpc_client
+            .send_transaction_with_config(&transaction, self.rpc_config)
+            .await?;
+
+        Ok(sig)
+    }
+
+    pub async fn get_reward(&self, user: &Keypair, token: &Pubkey, args: &FakeGetRewardArgs) -> Result<Signature> {
+        let instruction_args = MarketInstruction::FakeGetReward(args.clone());
+
+        let instruction_bytes = wincode::serialize(&instruction_args)?;
+
+        let (event_pda, _) = Event::find_program_address(&args.event_uuid, &MARKETPLACE_PROGRAM);
+
+        let treasury = get_associated_token_address(&event_pda, &USDC_MINT);
+
+        let user_usdc_ata = get_associated_token_address(&user.pubkey(), &USDC_MINT);
+        let user_token_ata = get_associated_token_address(&user.pubkey(), &token);
+
+        let accounts: Vec<AccountMeta> = vec![
+            AccountMeta::new(user.pubkey(), true),
+            AccountMeta::new(user_usdc_ata, false),
+            AccountMeta::new(user_token_ata, false),
+            AccountMeta::new(event_pda, false),
+            AccountMeta::new(treasury, false),
+            AccountMeta::new_readonly(USDC_MINT, false),
+            AccountMeta::new(*token, false),
+            AccountMeta::new_readonly(SYSTEM_PROGRAM, false),
+            AccountMeta::new_readonly(spl_token::ID, false),
+            AccountMeta::new_readonly(spl_associated_token_account::ID, false),
+        ];
+
+        let recent_blockhash = self.rpc_client.get_latest_blockhash().await?;
+
+        let instruction =
+            Instruction::new_with_bytes(MARKETPLACE_PROGRAM, instruction_bytes.as_ref(), accounts);
+
+        let message = Message::new(&[instruction], Some(&user.pubkey()));
+
+        let mut transaction = Transaction::new_unsigned(message);
+
+        transaction.sign(&[&user], recent_blockhash);
 
         let sig = self
             .rpc_client

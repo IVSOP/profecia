@@ -8,7 +8,9 @@ use pinocchio::{
 use pinocchio_pubkey::pubkey;
 
 use crate::instructions::{
-    close_event::close_event, create_event::create_event, fake_cancel_order::fake_cancel_order, fake_create_order::fake_create_order, fake_match_order::fake_match_order
+    close_event::close_event, create_event::create_event, fake_cancel_order::fake_cancel_order,
+    fake_create_order::fake_create_order, fake_get_reward::fake_get_reward,
+    fake_match_order::fake_match_order,
 };
 
 pinocchio_pubkey::declare_id!("ProirMXDTFF4AEqGyZVKPhWte4chANDd1c4Y8w7Nsd4");
@@ -49,6 +51,9 @@ pub fn process_instruction(
         }
         MarketInstruction::FakeCancelOrder(ref args) => {
             fake_cancel_order(accounts, args)?;
+        }
+        MarketInstruction::FakeGetReward(ref args) => {
+            fake_get_reward(accounts, args)?;
         }
         _ => {}
     }

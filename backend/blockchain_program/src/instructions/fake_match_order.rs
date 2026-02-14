@@ -5,11 +5,12 @@ use pinocchio::{
 use pinocchio_token::instructions::MintToChecked;
 
 use crate::utils::{
-    check_associated_token_program, check_token_program, create_or_check_ata, deserialize_and_check_event, CreateOrCheckAtaArgs
+    check_associated_token_program, check_token_program, create_or_check_ata,
+    deserialize_and_check_event, CreateOrCheckAtaArgs,
 };
 
 pub fn fake_match_order(accounts: &[AccountInfo], args: &FakeMatchOrderArgs) -> ProgramResult {
-    let [user_yes,  user_yes_token_ata, user_no, user_no_token_ata, event, token_yes, token_no, system_program, token_program, associated_token_program] =
+    let [user_yes, user_yes_token_ata, user_no, user_no_token_ata, event, token_yes, token_no, system_program, token_program, associated_token_program] =
         accounts
     else {
         return Err(MarketError::InvalidAccounts.into());
@@ -49,7 +50,7 @@ pub fn fake_match_order(accounts: &[AccountInfo], args: &FakeMatchOrderArgs) -> 
         funding_account: user_yes,
         system_program,
         token_program,
-        associated_token_program
+        associated_token_program,
     };
     create_or_check_ata(&user_yes_ata_args, &[])?;
 
@@ -62,7 +63,7 @@ pub fn fake_match_order(accounts: &[AccountInfo], args: &FakeMatchOrderArgs) -> 
         funding_account: user_no,
         system_program,
         token_program,
-        associated_token_program
+        associated_token_program,
     };
     create_or_check_ata(&user_no_ata_args, &[])?;
 
