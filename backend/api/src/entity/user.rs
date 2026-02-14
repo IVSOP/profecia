@@ -8,6 +8,8 @@ pub struct Model {
     pub id: Uuid,
     #[sea_orm(unique)]
     pub username: String,
+    #[sea_orm(unique)]
+    pub wallet: String,
     #[sea_orm(has_one)]
     pub identity: HasOne<super::identity::Entity>,
     #[sea_orm(has_many)]

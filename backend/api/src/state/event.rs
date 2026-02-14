@@ -3,6 +3,7 @@ use sea_orm::{
     TransactionTrait,
 };
 use serde::{Deserialize, Serialize};
+use solana_sdk::signature::Keypair;
 use uuid::Uuid;
 
 use crate::{
@@ -132,8 +133,13 @@ impl AppState {
         for market in event.markets {
             let market_display_name = market.display_name.trim().to_string();
 
+            let yes_keypair = Keypair::new();
+            let no_keypair = Keypair::new();
+
             let market = entity::market::ActiveModel {
                 id: Set(Uuid::new_v4()),
+                yes_keypair: Set(yes_keypair.to_base58_string()),
+                no_keypair: Set(no_keypair.to_base58_string()),
                 display_name: Set(market_display_name),
                 event_id: Set(event_id),
                 option_a_name: Set(market.option_a_name),

@@ -63,9 +63,12 @@ impl AppState {
         let user_id = Uuid::new_v4();
         let hashed_password = hash_password(raw_password.to_string()).await?;
 
+        let wallet = self.solana.init_new_wallet().await?;
+
         let user = entity::user::ActiveModel {
             id: Set(user_id),
             username: Set(username.to_string()),
+            wallet: Set(wallet.to_base58_string()),
         }
         .insert(&self.database)
         .await?;

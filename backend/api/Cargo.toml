@@ -24,3 +24,4 @@ uuid = { workspace = true}
 validator = { workspace = true }
 itertools = { workspace = true}
 blockchain_client = { path = "../blockchain_client" }
+solana-sdk = { workspace = true }

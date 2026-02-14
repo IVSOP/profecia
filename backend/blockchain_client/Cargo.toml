@@ -10,7 +10,7 @@ pinocchio = { workspace = true }
 pinocchio-pubkey = { workspace = true }
 solana-client = { workspace = true }
 uuid = { workspace = true }
-solana-sdk = { version = "3.0.0", default-features = false, features = ["full", "solana-signature"] } # "borsh"
+solana-sdk = { workspace = true }
 tokio = { workspace = true }
 blockchain_core = { path = "../blockchain_core", features = ["client"] } 
 spl-token = "9.0.0"

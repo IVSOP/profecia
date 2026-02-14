@@ -25,6 +25,10 @@ impl MarketOption {
 pub struct Model {
     #[sea_orm(primary_key)]
     pub id: Uuid,
+    #[sea_orm(unique)]
+    pub yes_keypair: String,
+    #[sea_orm(unique)]
+    pub no_keypair: String,
     pub display_name: String,
     pub event_id: Uuid,
     pub option_a_name: String,
