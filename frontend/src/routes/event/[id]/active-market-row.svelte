@@ -24,7 +24,9 @@
 	<div class="flex items-center gap-4 px-4 py-3">
 		<Collapsible.Trigger class="flex min-w-0 flex-1 cursor-pointer items-center gap-2 text-left">
 			<ChevronDown
-				class="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 {expanded ? 'rotate-180' : ''}"
+				class="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 {expanded
+					? 'rotate-180'
+					: ''}"
 			/>
 			<div class="min-w-0">
 				<p class="truncate text-sm font-semibold">{market.displayName}</p>
@@ -42,12 +44,10 @@
 		<div class="flex shrink-0 items-center gap-2">
 			<Button
 				size="sm"
-				class="group relative h-8 min-w-[120px] bg-green-600 px-4 text-xs font-semibold text-white hover:bg-green-700"
+				class="group relative h-8 min-w-30 bg-green-600 px-4 text-xs font-semibold text-white hover:bg-green-700"
 				onclick={() => onBuy(market, 'A')}
 			>
-				<span class="transition-opacity group-hover:opacity-0"
-					>Comprar {market.optionAName}</span
-				>
+				<span class="transition-opacity group-hover:opacity-0">Comprar {market.optionAName}</span>
 				<span
 					class="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100"
 				>
@@ -56,12 +56,10 @@
 			</Button>
 			<Button
 				size="sm"
-				class="group relative h-8 min-w-[120px] bg-red-600 px-4 text-xs font-semibold text-white hover:bg-red-700"
+				class="group relative h-8 min-w-30 bg-red-600 px-4 text-xs font-semibold text-white hover:bg-red-700"
 				onclick={() => onBuy(market, 'B')}
 			>
-				<span class="transition-opacity group-hover:opacity-0"
-					>Comprar {market.optionBName}</span
-				>
+				<span class="transition-opacity group-hover:opacity-0">Comprar {market.optionBName}</span>
 				<span
 					class="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100"
 				>
