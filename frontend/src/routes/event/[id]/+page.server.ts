@@ -78,5 +78,29 @@ export const actions = {
 		}
 
 		return { success: true };
+	},
+
+	cancelorder: async ({ request, fetch, locals }) => {
+		if (!locals.user) {
+			return fail(401, { error: 'Tens de ter sessão iniciada.' });
+		}
+
+		const formData = await request.formData();
+		const orderId = formData.get('orderId')?.toString() ?? '';
+
+		if (!orderId) {
+			return fail(400, { error: 'Ordem inválida.' });
+		}
+
+		const response = await fetch(`/api/event/buyorder/cancel/${orderId}`, {
+			method: 'POST'
+		});
+
+		if (!response.ok) {
+			const text = await response.text();
+			return fail(response.status, { error: text || 'Erro ao cancelar a ordem.' });
+		}
+
+		return { success: true };
 	}
 } satisfies Actions;

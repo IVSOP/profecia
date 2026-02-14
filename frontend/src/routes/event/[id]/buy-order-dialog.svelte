@@ -117,7 +117,7 @@
 						<button
 							type="button"
 							class="rounded-lg border-2 px-3 py-2.5 text-sm font-semibold transition-colors {option === 'A'
-								? 'border-primary bg-primary text-primary-foreground'
+								? 'border-green-600 bg-green-600 text-white'
 								: 'border-border bg-muted/50 text-muted-foreground hover:bg-muted'}"
 							onclick={() => (option = 'A')}
 						>
@@ -126,7 +126,7 @@
 						<button
 							type="button"
 							class="rounded-lg border-2 px-3 py-2.5 text-sm font-semibold transition-colors {option === 'B'
-								? 'border-destructive bg-destructive text-destructive-foreground'
+								? 'border-red-600 bg-red-600 text-white'
 								: 'border-border bg-muted/50 text-muted-foreground hover:bg-muted'}"
 							onclick={() => (option = 'B')}
 						>

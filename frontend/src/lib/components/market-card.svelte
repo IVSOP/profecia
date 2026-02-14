@@ -29,8 +29,8 @@
 				>
 				<div class="flex shrink-0 items-center gap-2">
 					<span class="text-sm font-semibold">50%</span>
-					<Button size="sm" variant="outline" class="h-7 px-3 text-xs">Sim</Button>
-					<Button size="sm" variant="outline" class="h-7 px-3 text-xs">Não</Button>
+					<Button size="sm" variant="outline" class="h-7 border-green-600 px-3 text-xs text-green-600 hover:bg-green-600 hover:text-white">Sim</Button>
+					<Button size="sm" variant="outline" class="h-7 border-red-600 px-3 text-xs text-red-600 hover:bg-red-600 hover:text-white">Não</Button>
 				</div>
 			</div>
 		{/each}

@@ -64,15 +64,14 @@
 				<div class="flex shrink-0 items-center gap-2">
 					<Button
 						size="sm"
-						class="h-8 px-4 text-xs font-semibold"
+						class="h-8 bg-green-600 px-4 text-xs font-semibold text-white hover:bg-green-700"
 						onclick={() => openBuyDialog(market, 'A')}
 					>
 						Comprar {market.optionAName}
 					</Button>
 					<Button
 						size="sm"
-						variant="destructive"
-						class="h-8 px-4 text-xs font-semibold"
+						class="h-8 bg-red-600 px-4 text-xs font-semibold text-white hover:bg-red-700"
 						onclick={() => openBuyDialog(market, 'B')}
 					>
 						Comprar {market.optionBName}

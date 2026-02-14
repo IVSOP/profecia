@@ -26,7 +26,7 @@
 	</div>
 
 	<div class="rounded-lg border">
-		<Table.Root>
+		<Table.Root class="[&_td:first-child]:pl-4 [&_td:last-child]:pr-4 [&_th:first-child]:pl-4 [&_th:last-child]:pr-4">
 			<Table.Header>
 				<Table.Row>
 					<Table.Head>Evento</Table.Head>

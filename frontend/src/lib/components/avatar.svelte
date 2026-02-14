@@ -7,8 +7,8 @@
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger class="focus:outline-none">
-		<Avatar.Root class="cursor-pointer ring-1 ring-gray-300 transition hover:ring-2">
-			<Avatar.Fallback class="justify-center bg-white">
+		<Avatar.Root class="cursor-pointer ring-1 ring-border transition hover:ring-2 hover:ring-ring">
+			<Avatar.Fallback class="justify-center bg-muted text-muted-foreground">
 				{username.slice(0, 2).toUpperCase()}
 			</Avatar.Fallback>
 		</Avatar.Root>
