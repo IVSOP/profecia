@@ -201,6 +201,7 @@ dependencies = [
  "argon2",
  "axum",
  "axum-extra",
+ "blockchain_client",
  "chrono",
  "clap",
  "dotenvy",

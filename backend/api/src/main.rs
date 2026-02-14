@@ -1,4 +1,7 @@
+use std::sync::Arc;
+
 use anyhow::Context;
+use blockchain_client::{DEFAULT_RPC_HTTP, ProfeciaClient};
 use clap::Parser;
 use sea_orm::{Database, DatabaseConnection};
 use tokio::net::TcpListener;
@@ -24,6 +27,7 @@ struct AppConfig {
 #[derive(Clone)]
 pub struct AppState {
     pub database: DatabaseConnection,
+    pub solana: Arc<ProfeciaClient>,
 }
 
 #[tokio::main]
@@ -45,7 +49,9 @@ async fn main() -> anyhow::Result<()> {
         .sync(&database)
         .await?;
 
-    let app_state = AppState { database };
+    let solana = ProfeciaClient::new(DEFAULT_RPC_HTTP)?;
+
+    let app_state = AppState { database, solana: Arc::new(solana) };
 
     let app = route::router(app_state);
 
