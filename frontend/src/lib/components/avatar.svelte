@@ -1,0 +1,25 @@
+<script lang="ts">
+	import * as Avatar from '$lib/components/ui/avatar/index.js';
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
+
+	let { username }: { username: string } = $props();
+</script>
+
+<DropdownMenu.Root>
+	<DropdownMenu.Trigger class="focus:outline-none">
+		<Avatar.Root class="cursor-pointer ring-1 ring-gray-300 transition hover:ring-2">
+			<Avatar.Fallback class="justify-center bg-white">
+				{username.slice(0, 2).toUpperCase()}
+			</Avatar.Fallback>
+		</Avatar.Root>
+	</DropdownMenu.Trigger>
+	<DropdownMenu.Content>
+		<DropdownMenu.Group>
+			<DropdownMenu.Label>{username}</DropdownMenu.Label>
+			<DropdownMenu.Separator />
+			<DropdownMenu.Item>
+				<a href="/logout" class="w-full">Sair</a>
+			</DropdownMenu.Item>
+		</DropdownMenu.Group>
+	</DropdownMenu.Content>
+</DropdownMenu.Root>
