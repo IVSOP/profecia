@@ -50,8 +50,8 @@
 	const totalGainCents = $derived(shares * 100);
 	const profitCents = $derived(totalGainCents - totalCostCents);
 
-	function formatEuros(cents: number): string {
-		return (cents / 100).toFixed(2) + '€';
+	function formatDollars(cents: number): string {
+		return '$' + (cents / 100).toFixed(2);
 	}
 
 	const isValid = $derived(shares > 0 && priceValid);
@@ -197,15 +197,15 @@
 					<div class="flex items-stretch gap-2">
 						<div class="flex flex-1 flex-col items-center justify-center rounded-lg border bg-muted/50 p-3 text-center">
 							<p class="text-xs text-muted-foreground">Custo</p>
-							<p class="text-lg font-bold">{formatEuros(totalCostCents)}</p>
+							<p class="text-lg font-bold">{formatDollars(totalCostCents)}</p>
 						</div>
 						<div class="flex shrink-0 items-center">
 							<span class="text-xl text-muted-foreground">→</span>
 						</div>
 						<div class="flex flex-1 flex-col items-center justify-center rounded-lg border border-green-600/20 bg-green-600/10 p-3 text-center">
 							<p class="text-xs text-muted-foreground">Recebes</p>
-							<p class="text-lg font-bold">{formatEuros(totalGainCents)}</p>
-							<p class="text-xs font-medium text-green-600">+{formatEuros(profitCents)} de lucro</p>
+							<p class="text-lg font-bold">{formatDollars(totalGainCents)}</p>
+							<p class="text-xs font-medium text-green-600">+{formatDollars(profitCents)} de lucro</p>
 						</div>
 					</div>
 				</div>

@@ -10,6 +10,7 @@ declare global {
 		}
 		interface PageData {
 			user: UserDto | null;
+			balanceCents: number | null;
 		}
 		// interface PageState {}
 		// interface Platform {}

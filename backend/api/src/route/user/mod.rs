@@ -15,6 +15,8 @@ mod login;
 mod logout;
 mod me;
 mod register;
+mod airdrop;
+mod balance;
 
 pub static USERNAME_REGEX: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"^[A-Za-z0-9_.]+$").expect("valid username regex"));
@@ -50,4 +52,7 @@ pub fn router() -> axum::Router<AppState> {
         .route("/login", post(login::handle))
         .route("/me", get(me::handle))
         .route("/logout", post(logout::handle))
+        .route("/airdrop", get(airdrop::status))
+        .route("/airdrop", post(airdrop::request))
+        .route("/balance", get(balance::handle))
 }

@@ -11,6 +11,11 @@
 	let { children } = $props();
 
 	const user = $derived(page.data.user);
+	const balanceCents = $derived(page.data.balanceCents);
+
+	function formatBalance(cents: number): string {
+		return '$' + (cents / 100).toFixed(2);
+	}
 </script>
 
 <ModeWatcher />
@@ -24,6 +29,11 @@
 				<a href="/" class="text-xl font-bold">Profecia</a>
 				<div class="flex items-center gap-2">
 					{#if user}
+						{#if balanceCents != null}
+							<span class="text-sm font-medium text-muted-foreground">
+								{formatBalance(balanceCents)}
+							</span>
+						{/if}
 						<UserAvatar username={user.username} />
 					{:else}
 						<Button variant="ghost" href="/login">Entrar</Button>

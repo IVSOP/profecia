@@ -101,3 +101,7 @@ export interface EventPercentagesResponse {
 export interface AllPercentagesResponse {
 	percentages: Record<string, EventPercentagesResponse>;
 }
+
+export interface BalanceResponse {
+	balanceCents: number;
+}

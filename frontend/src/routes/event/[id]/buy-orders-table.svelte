@@ -25,8 +25,8 @@
 		return marketsById.get(marketId)?.displayName ?? 'Mercado desconhecido';
 	}
 
-	function formatEuros(cents: number): string {
-		return (cents / 100).toFixed(2) + '€';
+	function formatDollars(cents: number): string {
+		return '$' + (cents / 100).toFixed(2);
 	}
 </script>
 
@@ -66,7 +66,7 @@
 							{order.pricePerShare}¢
 						</Table.Cell>
 						<Table.Cell class="text-end font-medium">
-							{formatEuros(order.shares * order.pricePerShare)}
+							{formatDollars(order.shares * order.pricePerShare)}
 						</Table.Cell>
 						<Table.Cell>
 							<form

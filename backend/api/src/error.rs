@@ -36,6 +36,8 @@ pub enum AppError {
     BuyOrderNotFound,
     #[error("Not enough funds to place order")]
     InsufficientFunds,
+    #[error("Airdrop cooldown active, try again later")]
+    AirdropCooldown,
 }
 
 impl IntoResponse for AppError {
@@ -98,6 +100,10 @@ impl IntoResponse for AppError {
             AppError::InsufficientFunds => (
                 StatusCode::BAD_REQUEST,
                 "Fundos insuficientes para efetuar a compra".to_string(),
+            ),
+            AppError::AirdropCooldown => (
+                StatusCode::TOO_MANY_REQUESTS,
+                "Airdrop em cooldown, tenta novamente mais tarde".to_string(),
             ),
         };
 
