@@ -76,10 +76,20 @@ impl AppState {
         let usdc_per_share = cents_per_share * 10000;
         let user_wallet = Keypair::from_base58_string(user.wallet.as_str());
 
-        let user_ata = self.solana.fetch_usdc(&user_wallet.pubkey()).await?;
+        let user_ata_amount = match self.solana.fetch_usdc(&user_wallet.pubkey()).await {
+            Ok(user_ata) => user_ata.amount,
+            Err(e) => {
+                // Account doesn't exist => balance is 0
+                if e.to_string().contains("AccountNotFound") {
+                    0
+                } else {
+                    return Err(e.into());
+                }
+            }
+        };
         let necessary_usdc: u64 = (usdc_per_share * shares).try_into().unwrap();
 
-        if necessary_usdc >= user_ata.amount {
+        if necessary_usdc >= user_ata_amount {
             return Err(AppError::InsufficientFunds);
         }
 
@@ -170,7 +180,7 @@ impl AppState {
             num_shares: shares.try_into().unwrap(),
             price_per_share: usdc_per_share.try_into().unwrap(),
         };
-        self.solana
+        let _sig = self.solana
             .create_order(&user_wallet, &create_order_args)
             .await?;
 

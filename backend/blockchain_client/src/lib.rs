@@ -28,7 +28,7 @@ pub const USDC_MINT: Pubkey = solana_sdk::pubkey!("EPjFWdd5AufqSSqeM2qN1xzybapC8
 pub const MARKETPLACE_PROGRAM: Pubkey =
     solana_sdk::pubkey!("ProirMXDTFF4AEqGyZVKPhWte4chANDd1c4Y8w7Nsd4");
 pub const SYSTEM_PROGRAM: Pubkey = solana_sdk::pubkey!("11111111111111111111111111111111");
-pub const SKIP_PREFLIGHT: bool = false;
+pub const SKIP_PREFLIGHT: bool = true;
 
 pub struct ProfeciaClient {
     pub rpc_client: RpcClient,
