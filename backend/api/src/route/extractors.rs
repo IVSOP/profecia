@@ -32,6 +32,10 @@ pub const AUTH_SESSION_COOKIE_NAME: &str = "sessionId";
 #[derive(Debug)]
 pub struct CurrentUser(pub UserDto);
 
+/// Extractor that requires the current user to be an admin.
+#[derive(Debug)]
+pub struct AdminUser(#[allow(dead_code)] pub UserDto);
+
 impl FromRequestParts<AppState> for CurrentUser {
     type Rejection = AppError;
 
@@ -51,6 +55,23 @@ impl FromRequestParts<AppState> for CurrentUser {
             .get_user_by_session_id(session_id)
             .await?
             .ok_or(AppError::Unauthorized("session is not valid".to_string()))?;
+
+        Ok(Self(user))
+    }
+}
+
+impl FromRequestParts<AppState> for AdminUser {
+    type Rejection = AppError;
+
+    async fn from_request_parts(
+        parts: &mut Parts,
+        state: &AppState,
+    ) -> Result<Self, Self::Rejection> {
+        let CurrentUser(user) = CurrentUser::from_request_parts(parts, state).await?;
+
+        if !user.is_admin() {
+            return Err(AppError::Forbidden("admin access required".to_string()));
+        }
 
         Ok(Self(user))
     }

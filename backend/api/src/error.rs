@@ -38,6 +38,8 @@ pub enum AppError {
     InsufficientFunds,
     #[error("Airdrop cooldown active, try again later")]
     AirdropCooldown,
+    #[error("Forbidden: {0}")]
+    Forbidden(String),
 }
 
 impl IntoResponse for AppError {
@@ -105,6 +107,7 @@ impl IntoResponse for AppError {
                 StatusCode::TOO_MANY_REQUESTS,
                 "Airdrop em cooldown, tenta novamente mais tarde".to_string(),
             ),
+            AppError::Forbidden(msg) => (StatusCode::FORBIDDEN, msg.to_string()),
         };
 
         let body = ErrorBody { error };

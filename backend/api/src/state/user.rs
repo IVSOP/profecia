@@ -18,6 +18,22 @@ const AIRDROP_COOLDOWN: chrono::Duration = chrono::Duration::seconds(10);
 pub struct UserDto {
     pub id: Uuid,
     pub username: String,
+    pub is_admin: bool,
+}
+
+impl UserDto {
+    pub fn is_admin(&self) -> bool {
+        self.username == "admin"
+    }
+
+    pub fn new(id: Uuid, username: String) -> Self {
+        let is_admin = username == "admin";
+        Self {
+            id,
+            username,
+            is_admin,
+        }
+    }
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -36,10 +52,7 @@ impl AppState {
             return Ok(None);
         };
 
-        let user_dto = UserDto {
-            id: user.id,
-            username: user.username,
-        };
+        let user_dto = UserDto::new(user.id, user.username);
 
         Ok(Some(user_dto))
     }
@@ -52,10 +65,7 @@ impl AppState {
             return Ok(None);
         };
 
-        let user_dto = UserDto {
-            id: user.id,
-            username: user.username,
-        };
+        let user_dto = UserDto::new(user.id, user.username);
 
         Ok(Some(user_dto))
     }
@@ -87,10 +97,7 @@ impl AppState {
         .insert(&self.database)
         .await?;
 
-        Ok(UserDto {
-            id: user_id,
-            username: username.to_string(),
-        })
+        Ok(UserDto::new(user_id, username.to_string()))
     }
 
     pub async fn get_user_identity_by_id(
@@ -177,7 +184,9 @@ impl AppState {
         };
 
         // x 10k to make it into micro usd
-        self.solana.airdrop_usdc(&wallet.pubkey(), (current_balance + cents) * 10000).await?;
+        self.solana
+            .airdrop_usdc(&wallet.pubkey(), (current_balance + cents) * 10000)
+            .await?;
 
         let mut active_user: entity::user::ActiveModel = user.into();
         active_user.last_airdrop = Set(Some(Utc::now().into()));

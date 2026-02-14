@@ -22,6 +22,7 @@ export interface CreateEventRequest {
 export interface UserDto {
 	id: string;
 	username: string;
+	isAdmin: boolean;
 }
 
 export interface AuthResponse {

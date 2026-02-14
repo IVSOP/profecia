@@ -5,7 +5,9 @@ use axum::{
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::{AppState, error::AppResult, state::event::MarketOptionDto};
+use crate::{
+    AppState, error::AppResult, route::extractors::AdminUser, state::event::MarketOptionDto,
+};
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -15,6 +17,7 @@ pub struct ResolveMarketRequest {
 
 #[debug_handler]
 pub async fn handle(
+    _admin: AdminUser,
     Path(market_id): Path<Uuid>,
     State(state): State<AppState>,
     Json(request): Json<ResolveMarketRequest>,

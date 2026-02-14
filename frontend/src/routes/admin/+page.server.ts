@@ -1,7 +1,14 @@
+import { redirect } from '@sveltejs/kit';
 import type { EventDto, ListResponse } from '$lib/types';
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ fetch }) => {
+export const load: PageServerLoad = async ({ fetch, parent }) => {
+	const { user } = await parent();
+
+	if (!user?.isAdmin) {
+		throw redirect(303, '/');
+	}
+
 	try {
 		const response = await fetch('/api/event');
 

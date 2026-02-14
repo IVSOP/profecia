@@ -19,9 +19,6 @@ pub async fn handle(
     _state: State<AppState>,
 ) -> AppResult<Json<MeResponse>> {
     Ok(Json(MeResponse {
-        user: UserDto {
-            id: user.id,
-            username: user.username,
-        },
+        user: UserDto::new(user.id, user.username),
     }))
 }
