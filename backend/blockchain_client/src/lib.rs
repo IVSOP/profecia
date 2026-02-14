@@ -21,6 +21,7 @@ use spl_associated_token_account::{
     get_associated_token_address, instruction::create_associated_token_account,
 };
 use spl_token::state::Account as TokenAccount;
+use uuid::Uuid;
 
 pub const DEFAULT_RPC_HTTP: &str = "http://127.0.0.1:8899";
 pub const USDC_MINT: Pubkey = solana_sdk::pubkey!("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
@@ -263,14 +264,18 @@ impl ProfeciaClient {
         Ok(sig)
     }
 
-    pub async fn fetch_ata(&self, pubkey: &Pubkey, token: &Pubkey) -> Result<TokenAccount> {
-        let ata = get_associated_token_address(pubkey, token);
+    pub async fn fetch_ata(&self, wallet: &Pubkey, token: &Pubkey) -> Result<TokenAccount> {
+        let ata = get_associated_token_address(wallet, token);
 
         let account = self.rpc_client.get_account(&ata).await?;
 
         let token_account = TokenAccount::unpack(&account.data)?;
 
         Ok(token_account)
+    }
+
+    pub async fn fetch_usdc(&self, wallet: &Pubkey) -> Result<TokenAccount> {
+        self.fetch_ata(wallet, &USDC_MINT).await
     }
 
     pub async fn match_order(
@@ -412,5 +417,9 @@ impl ProfeciaClient {
             .await?;
 
         Ok(sig)
+    }
+
+    pub fn derive_event_pubkey(event_id: &Uuid) -> Pubkey {
+        Event::find_program_address(event_id, &MARKETPLACE_PROGRAM).0
     }
 }

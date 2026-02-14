@@ -202,6 +202,7 @@ dependencies = [
  "axum",
  "axum-extra",
  "blockchain_client",
+ "blockchain_core",
  "chrono",
  "clap",
  "dotenvy",

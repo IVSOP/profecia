@@ -4,7 +4,9 @@ use sea_orm::{
     TransactionTrait,
 };
 use serde::{Deserialize, Serialize};
+use solana_sdk::{signature::Keypair, signer::Signer};
 use uuid::Uuid;
+use blockchain_core::instructions::FakeCreateOrderArgs;
 
 use crate::{
     AppState, entity,
@@ -42,7 +44,7 @@ impl AppState {
         market_id: Uuid,
         user_id: Uuid,
         shares: i64,
-        price_per_share: i64,
+        cents_per_share: i64,
         option: MarketOptionDto,
     ) -> AppResult<()> {
         let transaction = self.database.begin().await?;
@@ -52,7 +54,7 @@ impl AppState {
             .await?
             .ok_or(AppError::MarketNotFound)?;
 
-        let _user = entity::user::Entity::find_by_id(user_id)
+        let user = entity::user::Entity::find_by_id(user_id)
             .one(&transaction)
             .await?
             .ok_or(AppError::UserNotFound)?;
@@ -61,8 +63,29 @@ impl AppState {
             return Err(AppError::MarketAlreadyResolved);
         }
 
-        // TODO: check user balance
-        // TODO: remove balance from user
+        let event_id = market.event_id;
+        // let event_pda = blockchain_client::ProfeciaClient::derive_event_pubkey(&event_id);
+        // tracing::error!("event pda: {}", event_pda);
+
+        // check balance
+        let usdc_per_share = cents_per_share * 10000;
+        let user_wallet = Keypair::from_base58_string(user.wallet.as_str());
+
+        let user_ata = self.solana.fetch_usdc(&user_wallet.pubkey()).await?;
+        let necessary_usdc: u64 = (usdc_per_share * shares).try_into().unwrap();
+
+        if necessary_usdc >= user_ata.amount {
+            return Err(AppError::InsufficientFunds);
+        }
+
+        // blockchain tx to transfer funds
+        let create_order_args = FakeCreateOrderArgs {
+            event_uuid: event_id,
+            option_uuid: market_id,
+            num_shares: shares.try_into().unwrap(),
+            price_per_share: usdc_per_share.try_into().unwrap(),
+        };
+        self.solana.create_order(&user_wallet, &create_order_args).await?;
 
         let option = match option {
             MarketOptionDto::OptionA => entity::market::MarketOption::A,
@@ -70,7 +93,7 @@ impl AppState {
         };
 
         let opposing_option = option.opposite();
-        let opposing_price = 100 - price_per_share;
+        let opposing_price = 100 - cents_per_share;
 
         // Find opposing buy orders that match (price_per_share == 100 - our price)
         let opposing_orders = entity::buyorder::Entity::find()
@@ -135,7 +158,7 @@ impl AppState {
                 user_id: Set(user_id),
                 option: Set(option),
                 shares: Set(my_remaining),
-                price_per_share: Set(price_per_share),
+                price_per_share: Set(cents_per_share),
                 created_at: Set(Utc::now().into()),
             }
             .insert(&transaction)

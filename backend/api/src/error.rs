@@ -26,12 +26,16 @@ pub enum AppError {
     InvalidCredentials,
     #[error("Market not found")]
     MarketNotFound,
+    #[error("Event not found")]
+    EventNotFound,
     #[error("User not found")]
     UserNotFound,
     #[error("Market already resolved")]
     MarketAlreadyResolved,
     #[error("Buy order not found")]
     BuyOrderNotFound,
+    #[error("Not enough funds to place order")]
+    InsufficientFunds,
 }
 
 impl IntoResponse for AppError {
@@ -80,6 +84,9 @@ impl IntoResponse for AppError {
             AppError::MarketNotFound => {
                 (StatusCode::NOT_FOUND, "Mercado não encontrado".to_string())
             }
+            AppError::EventNotFound => {
+                (StatusCode::NOT_FOUND, "Evento não encontrado".to_string())
+            }
             AppError::UserNotFound => (
                 StatusCode::NOT_FOUND,
                 "Utilizador não encontrado".to_string(),
@@ -89,6 +96,9 @@ impl IntoResponse for AppError {
             }
             AppError::BuyOrderNotFound => {
                 (StatusCode::NOT_FOUND, "Compra não encontrada".to_string())
+            },
+            AppError::InsufficientFunds => {
+                (StatusCode::BAD_REQUEST, "Fundos insuficientes para efetuar a compra".to_string())
             }
         };
 

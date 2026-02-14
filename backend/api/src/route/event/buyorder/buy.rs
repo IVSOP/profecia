@@ -12,8 +12,9 @@ use crate::{
 pub struct BuyOrderRequest {
     pub market_id: Uuid,
     pub user_id: Uuid,
+    #[validate(range(min = 1, max = 10000, message = "O número máximo de ações é de 10000"))]
     pub shares: i64,
-    #[validate(range(min = 1, max = 100))]
+    #[validate(range(min = 1, max = 99, message = "Preço por ação deve estar compreendido entre 1 e 99."))]
     pub price_per_share: i64,
     pub option: MarketOptionDto,
 }
