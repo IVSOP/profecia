@@ -165,7 +165,16 @@ impl AppState {
 
         let wallet = Keypair::from_base58_string(&user.wallet);
 
-        let current_balance = self.get_balance_in_cents(user_id).await?;
+        let current_balance = match self.get_balance_in_cents(user_id).await {
+            Ok(balance) => balance,
+            Err(e) => {
+                if e.to_string().contains("AccountNotFound") {
+                    0
+                } else {
+                    return Err(e);
+                }
+            }
+        };
 
         // x 10k to make it into micro usd
         self.solana.airdrop_usdc(&wallet.pubkey(), (current_balance + cents) * 10000).await?;
