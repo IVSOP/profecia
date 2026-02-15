@@ -157,8 +157,6 @@ pub async fn main() -> Result<()> {
         event_uuid,
         option_uuid: some_option_uuid,
         num_shares: 5,
-        yes_price,
-        no_price,
     };
 
     let sig = profecia_client

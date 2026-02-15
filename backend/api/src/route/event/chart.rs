@@ -4,11 +4,7 @@ use axum::{
 };
 use uuid::Uuid;
 
-use crate::{
-    AppState,
-    error::AppResult,
-    state::market_snapshot::EventChartDto,
-};
+use crate::{AppState, error::AppResult, state::market_snapshot::EventChartDto};
 
 #[debug_handler]
 pub async fn handle(

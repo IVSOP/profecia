@@ -1,7 +1,10 @@
 use std::collections::HashMap;
 
 use blockchain_client::ProfeciaClient;
-use blockchain_core::{accounts::event::EventOption, instructions::CreateEventArgs};
+use blockchain_core::{
+    accounts::event::EventOption,
+    instructions::{CreateEventArgs, FakeGetRewardArgs},
+};
 use sea_orm::{
     ActiveModelTrait, ActiveValue::Set, ColumnTrait, EntityTrait, ModelTrait, QueryFilter,
     QuerySelect, TransactionTrait,
@@ -11,7 +14,8 @@ use solana_sdk::{signature::Keypair, signer::Signer};
 use uuid::Uuid;
 
 use crate::{
-    AppState, entity,
+    AppState,
+    entity::{self, market::MarketOption},
     error::{AppError, AppResult},
 };
 
@@ -341,9 +345,32 @@ impl AppState {
             .all(&transaction)
             .await?;
 
+        let winning_mint = match winning_option {
+            MarketOption::A => Keypair::from_base58_string(market.yes_keypair.as_str()).pubkey(),
+            MarketOption::B => Keypair::from_base58_string(market.no_keypair.as_str()).pubkey(),
+        };
+
         for position in &winning_positions {
-            // TODO: add position.shares to user balance (each share pays out 100)
-            let _ = position;
+            // blockchain tx to get rewards for this position
+            let fake_get_reward_args = FakeGetRewardArgs {
+                event_uuid: market.event_id,
+                option_uuid: market_id,
+                num_shares: position.shares.try_into().unwrap(),
+            };
+
+            let user = entity::user::Entity::find_by_id(position.user_id)
+                .one(&transaction)
+                .await?
+                .ok_or(AppError::UserNotFound)?;
+
+            let user_wallet = Keypair::from_base58_string(&user.wallet);
+
+            let sig = self
+                .solana
+                .get_reward(&user_wallet, &winning_mint, &fake_get_reward_args)
+                .await?;
+
+            tracing::error!("\n\n\n\n\n SIG FOR GET REWARD: {}", sig);
         }
 
         // Mark the market as resolved

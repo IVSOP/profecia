@@ -59,10 +59,7 @@ impl AppState {
         Ok(positions)
     }
 
-    pub async fn list_user_positions(
-        &self,
-        user_id: Uuid,
-    ) -> AppResult<Vec<PositionDto>> {
+    pub async fn list_user_positions(&self, user_id: Uuid) -> AppResult<Vec<PositionDto>> {
         let positions = entity::position::Entity::find()
             .filter(entity::position::Column::UserId.eq(user_id))
             .all(&self.database)

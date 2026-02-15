@@ -38,7 +38,9 @@ impl AppState {
             .fold(HashMap::new(), |mut acc, (market, buy_orders)| {
                 let (id, dto) = market_percentages(market, buy_orders);
                 acc.entry(market.event_id)
-                    .or_insert_with(|| EventPercentagesDto { percentages: HashMap::new() })
+                    .or_insert_with(|| EventPercentagesDto {
+                        percentages: HashMap::new(),
+                    })
                     .percentages
                     .insert(id, dto);
                 acc
@@ -69,7 +71,13 @@ fn market_percentages(
     buy_orders: &[entity::buyorder::Model],
 ) -> (Uuid, MarketPercentagesDto) {
     let (option_a_percentage, option_b_percentage) = implied_probability(buy_orders);
-    (market.id, MarketPercentagesDto { option_a_percentage, option_b_percentage })
+    (
+        market.id,
+        MarketPercentagesDto {
+            option_a_percentage,
+            option_b_percentage,
+        },
+    )
 }
 
 fn implied_probability(buy_orders: &[entity::buyorder::Model]) -> (Option<i64>, Option<i64>) {

@@ -11,13 +11,13 @@ use validator::Validate;
 
 use crate::{AppState, state::user::UserDto};
 
+mod airdrop;
+mod balance;
 mod login;
 mod logout;
 mod me;
 mod positions;
 mod register;
-mod airdrop;
-mod balance;
 
 pub static USERNAME_REGEX: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"^[A-Za-z0-9_.]+$").expect("valid username regex"));

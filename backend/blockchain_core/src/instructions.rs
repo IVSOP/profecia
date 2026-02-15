@@ -47,8 +47,6 @@ pub struct FakeMatchOrderArgs {
     pub event_uuid: Uuid,
     pub option_uuid: Uuid,
     pub num_shares: u64,
-    pub yes_price: u64,
-    pub no_price: u64,
 }
 
 /// PRICE IN MICRO USDC!!!

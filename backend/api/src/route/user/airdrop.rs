@@ -1,11 +1,7 @@
 use axum::{Json, debug_handler, extract::State};
 use serde::Serialize;
 
-use crate::{
-    AppState,
-    error::AppResult,
-    route::extractors::CurrentUser,
-};
+use crate::{AppState, error::AppResult, route::extractors::CurrentUser};
 
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "camelCase")]

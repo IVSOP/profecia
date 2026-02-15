@@ -1,5 +1,5 @@
 use blockchain_client::ProfeciaClient;
-use blockchain_core::instructions::{FakeCancelOrderArgs, FakeCreateOrderArgs};
+use blockchain_core::instructions::{FakeCancelOrderArgs, FakeCreateOrderArgs, FakeMatchOrderArgs};
 use chrono::Utc;
 use sea_orm::{
     ActiveModelTrait, ActiveValue::Set, ColumnTrait, EntityTrait, QueryFilter, QueryOrder,
@@ -14,7 +14,8 @@ use solana_sdk::{
 use uuid::Uuid;
 
 use crate::{
-    AppState, entity,
+    AppState,
+    entity::{self, market::MarketOption},
     error::{AppError, AppResult},
     state::event::MarketOptionDto,
 };
@@ -101,6 +102,23 @@ impl AppState {
         let opposing_option = option.opposite();
         let opposing_price = 100 - cents_per_share;
 
+        // blockchain tx to transfer funds
+        let create_order_args = FakeCreateOrderArgs {
+            event_uuid: event_id,
+            option_uuid: market_id,
+            num_shares: shares.try_into().unwrap(),
+            price_per_share: usdc_per_share.try_into().unwrap(),
+        };
+        let _sig = self
+            .solana
+            .create_order(&user_wallet, &create_order_args)
+            .await?;
+
+        let token_yes = Keypair::from_base58_string(&market.yes_keypair).pubkey();
+        let token_no = Keypair::from_base58_string(&market.no_keypair).pubkey();
+
+        // tracing::error!("\n\n\n\n\n SIG FOR BUY ORDER: {}", _sig);
+
         // Find opposing buy orders that match (price_per_share == 100 - our price)
         let opposing_orders = entity::buyorder::Entity::find()
             .filter(entity::buyorder::Column::MarketId.eq(market.id))
@@ -151,12 +169,61 @@ impl AppState {
                     .exec(&transaction)
                     .await?;
             } else {
-                let mut opposing_active: entity::buyorder::ActiveModel = opposing.into();
+                let mut opposing_active: entity::buyorder::ActiveModel = opposing.clone().into();
                 opposing_active.shares = Set(new_opposing_shares);
                 opposing_active.update(&transaction).await?;
             }
 
             my_remaining -= matched_qty;
+
+            let opposing_user = entity::user::Entity::find_by_id(opposing.user_id)
+                .one(&transaction)
+                .await?
+                .ok_or(AppError::UserNotFound)?;
+
+            // blockchain tx to match order
+            let match_order_args = FakeMatchOrderArgs {
+                event_uuid: event_id,
+                option_uuid: market_id,
+                num_shares: shares.try_into().unwrap(),
+            };
+
+            match option {
+                MarketOption::A => {
+                    // the market/user we received is the YES, and the opposing is the NO
+                    let user_yes_wallet = &user_wallet;
+                    let user_no_wallet = Keypair::from_base58_string(&opposing_user.wallet);
+
+                    let _sig = self
+                        .solana
+                        .match_order(
+                            user_yes_wallet,
+                            &user_no_wallet,
+                            &token_yes,
+                            &token_no,
+                            &match_order_args,
+                        )
+                        .await?;
+                    // tracing::error!("\n\n\n\n\n SIG FOR MATCH ORDER: {}", sig);
+                }
+                MarketOption::B => {
+                    // the market/user we received is the NO, and the opposing is the YES
+                    let user_no_wallet = &user_wallet;
+                    let user_yes_wallet = Keypair::from_base58_string(&opposing_user.wallet);
+
+                    let _sig = self
+                        .solana
+                        .match_order(
+                            &user_yes_wallet,
+                            user_no_wallet,
+                            &token_yes,
+                            &token_no,
+                            &match_order_args,
+                        )
+                        .await?;
+                    // tracing::error!("\n\n\n\n\n SIG FOR MATCH ORDER: {}", sig);
+                }
+            }
         }
 
         if my_remaining > 0 {
@@ -174,17 +241,6 @@ impl AppState {
         }
 
         transaction.commit().await?;
-
-        // blockchain tx to transfer funds
-        let create_order_args = FakeCreateOrderArgs {
-            event_uuid: event_id,
-            option_uuid: market_id,
-            num_shares: shares.try_into().unwrap(),
-            price_per_share: usdc_per_share.try_into().unwrap(),
-        };
-        let _sig = self.solana
-            .create_order(&user_wallet, &create_order_args)
-            .await?;
 
         Ok(())
     }
