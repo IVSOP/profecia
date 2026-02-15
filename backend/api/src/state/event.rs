@@ -155,10 +155,11 @@ impl AppState {
                     "total_shares",
                 )
                 .group_by(entity::position::Column::MarketId)
-                .into_tuple::<(Uuid, i64)>()
+                .into_tuple::<(Uuid, Option<i64>)>()
                 .all(&self.database)
                 .await?
                 .into_iter()
+                .map(|(id, sum)| (id, sum.unwrap_or(0)))
                 .collect()
         };
 
@@ -225,9 +226,10 @@ impl AppState {
                     Expr::col(entity::position::Column::Shares).sum().cast_as(Alias::new("BIGINT")),
                     "total_shares",
                 )
-                .into_tuple::<i64>()
+                .into_tuple::<Option<i64>>()
                 .one(&self.database)
                 .await?
+                .flatten()
                 .unwrap_or(0)
         };
 
