@@ -33,6 +33,26 @@ pub fn add_option(accounts: &[AccountInfo], args: &AddOptionArgs) -> ProgramResu
     let mut event_data = deserialize_and_check_event(event, &args.event_uuid)?;
     event_data.options.insert(args.option_uuid, args.option_info.clone());
 
+    // let event_uuid_ref = args.uuid.as_bytes();
+    // let event_bump_ref = &[event_bump];
+    // let event_seeds = seeds!(b"event", event_uuid_ref, event_bump_ref);
+    let event_len = event_data.len()?;
+    let old_rent = event.lamports();
+    let new_rent = rent.minimum_balance(event_len as usize);
+
+    pinocchio_system::instructions::Transfer {
+        from: payer,
+        to: event,
+        lamports: new_rent - old_rent, // TODO: underflow
+    }.invoke()?;
+
+    event.resize(event_len as usize)?;
+
+    {
+        let mut event_bytes = event.try_borrow_mut_data()?;
+        event_data.write_into_bytes(&mut event_bytes)?;
+    }
+
     // pinocchio_log::log!("process token mints");
     // processs remaining accounts. they must be the yes and no mints specified in the accounts, and must be uninit
     // then create the mint
