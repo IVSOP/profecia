@@ -1,6 +1,7 @@
 <script lang="ts">
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
+	import { UserIcon, LogOutIcon } from '@lucide/svelte';
 
 	let { username }: { username: string } = $props();
 </script>
@@ -18,7 +19,16 @@
 			<DropdownMenu.Label>{username}</DropdownMenu.Label>
 			<DropdownMenu.Separator />
 			<DropdownMenu.Item>
-				<a href="/logout" class="w-full" data-sveltekit-reload>Sair</a>
+				<a href="/profile" class="flex w-full items-center gap-2">
+					<UserIcon class="h-4 w-4" />
+					Perfil
+				</a>
+			</DropdownMenu.Item>
+			<DropdownMenu.Item>
+				<a href="/logout" class="flex w-full items-center gap-2" data-sveltekit-reload>
+					<LogOutIcon class="h-4 w-4" />
+					Sair
+				</a>
 			</DropdownMenu.Item>
 		</DropdownMenu.Group>
 	</DropdownMenu.Content>
