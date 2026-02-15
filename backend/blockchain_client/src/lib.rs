@@ -1,7 +1,7 @@
 use anyhow::{Result, anyhow};
 use blockchain_core::{
     accounts::event::Event,
-    instructions::{AddOptionArgs, CloseEventArgs, CreateEmptyEventArgs, CreateEventArgs, FakeCancelOrderArgs, FakeCreateOrderArgs, FakeGetRewardArgs, FakeMatchOrderArgs, MarketInstruction},
+    instructions::{AddOptionArgs, CloseEventArgs, CreateEmptyEventArgs, CreateEventArgs, FakeCancelOrderArgs, FakeCreateOrderArgs, FakeGetRewardArgs, FakeMatchOrderArgs, MarketInstruction, TransferSharesArgs},
 };
 use serde_json::{Value, json};
 use solana_client::{
@@ -546,6 +546,62 @@ impl ProfeciaClient {
         let mut transaction = Transaction::new_unsigned(message);
 
         transaction.sign(&[&self.admin_wallet, yes_token, no_token], recent_blockhash);
+
+        let signature = self
+            .rpc_client
+            .send_transaction_with_config(&transaction, self.rpc_config)
+            .await?;
+
+        Ok(signature)
+    }
+
+    /// User A sends shares to B, user B sends usdc to A
+    pub async fn trasfer_shares(
+        &self,
+        user_a: &Keypair,
+        user_b: &Keypair,
+        token: &Pubkey,
+        args: &TransferSharesArgs,
+    ) -> Result<Signature> {
+        let instruction_args = MarketInstruction::TransferShares(args.clone());
+
+        let instruction_bytes = wincode::serialize(&instruction_args)?;
+
+        let (event_pda, _) = Event::find_program_address(&args.event_uuid, &MARKETPLACE_PROGRAM);
+
+        let user_a_usdc_ata = get_associated_token_address(&user_a.pubkey(), &USDC_MINT);
+        let user_a_token_ata = get_associated_token_address(&user_a.pubkey(), token);
+
+        let user_b_usdc_ata = get_associated_token_address(&user_b.pubkey(), &USDC_MINT);
+        let user_b_token_ata = get_associated_token_address(&user_b.pubkey(), token);
+
+        let accounts: Vec<AccountMeta> = vec![
+            AccountMeta::new(user_a.pubkey(), true),
+            AccountMeta::new(user_a_token_ata, false),
+            AccountMeta::new(user_a_usdc_ata, false),
+
+            AccountMeta::new(user_b.pubkey(), true),
+            AccountMeta::new(user_b_token_ata, false),
+            AccountMeta::new(user_b_usdc_ata, false),
+
+            AccountMeta::new(event_pda, false),
+            AccountMeta::new_readonly(*token, false),
+            AccountMeta::new_readonly(USDC_MINT, false),
+            AccountMeta::new_readonly(SYSTEM_PROGRAM, false),
+            AccountMeta::new_readonly(spl_token::ID, false),
+            AccountMeta::new_readonly(spl_associated_token_account::ID, false),
+        ];
+
+        let recent_blockhash = self.rpc_client.get_latest_blockhash().await?;
+
+        let instruction =
+            Instruction::new_with_bytes(MARKETPLACE_PROGRAM, instruction_bytes.as_ref(), accounts);
+
+        let message = Message::new(&[instruction], Some(&user_a.pubkey()));
+
+        let mut transaction = Transaction::new_unsigned(message);
+
+        transaction.sign(&[user_a, user_b], recent_blockhash);
 
         let signature = self
             .rpc_client

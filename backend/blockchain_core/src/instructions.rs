@@ -19,6 +19,7 @@ pub enum MarketInstruction {
     FakeCancelOrder(FakeCancelOrderArgs),
     FakeGetReward(FakeGetRewardArgs),
     AddOption(AddOptionArgs),
+    TransferShares(TransferSharesArgs),
 }
 
 #[derive(SchemaWrite, SchemaRead, Debug, Clone)]
@@ -108,4 +109,13 @@ pub struct AddOptionArgs {
     pub event_uuid: Uuid,
     pub option_uuid: Uuid,
     pub option_info: EventOption,
+}
+
+#[derive(SchemaWrite, SchemaRead, Debug, Clone)]
+pub struct TransferSharesArgs {
+    pub event_uuid: Uuid,
+    pub option_uuid: Uuid,
+    pub token_option: TokenOption,
+    pub num_shares: u64,
+    pub price_per_share: u64,
 }
