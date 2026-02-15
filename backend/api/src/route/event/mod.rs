@@ -9,6 +9,7 @@ mod add_market;
 mod buyorder;
 mod chart;
 mod create;
+mod create_bulk;
 mod info;
 mod list;
 mod percentages;
@@ -22,6 +23,7 @@ pub fn router() -> Router<AppState> {
         .route("/", get(list::handle))
         .route("/{id}", get(info::handle))
         .route("/", post(create::handle))
+        .route("/bulk", post(create_bulk::handle))
         .route("/{id}", patch(update_event::handle))
         .route("/{id}/market", post(add_market::handle))
         .route("/market/{market_id}", patch(update_market::handle))

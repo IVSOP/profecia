@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
+	import * as ButtonGroup from '$lib/components/ui/button-group';
 	import type { EventDto, MarketDto, MarketOption } from '$lib/types';
 	import type { PageProps } from './$types';
+	import BulkCreateEventDialog from './bulk-create-event-dialog.svelte';
 	import CreateEventDialog from './create-event-dialog.svelte';
 	import CreateMarketDialog from './create-market-dialog.svelte';
 	import EditEventDialog from './edit-event-dialog.svelte';
@@ -43,9 +45,14 @@
 
 	// Create Event
 	let createEventOpen = $state(false);
+	let bulkCreateEventOpen = $state(false);
 
 	function handleEventCreated(event: EventDto) {
 		createdEvents = [event, ...createdEvents];
+	}
+
+	function handleBulkEventsCreated(events: EventDto[]) {
+		createdEvents = [...events, ...createdEvents];
 	}
 
 	// Resolve Market
@@ -116,7 +123,10 @@
 			<h1 class="text-2xl font-bold tracking-tight">Administração</h1>
 			<p class="text-sm text-muted-foreground">Gerir eventos e mercados da plataforma.</p>
 		</div>
-		<Button onclick={() => (createEventOpen = true)}>Criar Evento</Button>
+		<ButtonGroup.Root>
+			<Button onclick={() => (createEventOpen = true)}>Criar Evento</Button>
+			<Button variant="outline" onclick={() => (bulkCreateEventOpen = true)}>Criar em Massa</Button>
+		</ButtonGroup.Root>
 	</div>
 
 	<EventsTable
@@ -129,6 +139,7 @@
 </div>
 
 <CreateEventDialog bind:open={createEventOpen} oncreated={handleEventCreated} />
+<BulkCreateEventDialog bind:open={bulkCreateEventOpen} oncreated={handleBulkEventsCreated} />
 <ResolveMarketDialog bind:open={resolveDialogOpen} market={marketToResolve} onresolved={handleMarketResolved} />
 <EditEventDialog bind:open={editEventOpen} event={eventToEdit} onupdated={handleEventUpdated} />
 <EditMarketDialog bind:open={editMarketOpen} market={marketToEdit} onupdated={handleMarketUpdated} />
