@@ -16,6 +16,7 @@ pub async fn handle(
     let mut events = Vec::with_capacity(requests.len());
 
     for request in requests {
+        tracing::info!("Creating event: {}", request.display_name);
         let event = state.create_event(request).await?;
         events.push(event);
     }

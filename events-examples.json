@@ -1,0 +1,734 @@
+[
+  {
+    "displayName": "Seleção Portuguesa vence o Mundial de 2026?",
+    "imageUrl": "https://on-centro.pt/images/logos/futebol/internacional/entidades/Mundial-2026-logo.jpg",
+    "markets": [
+      {
+        "displayName": "Portugal vence o Mundial 2026",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para 'Sim' se Portugal for oficialmente declarado campeão do Mundial FIFA 2026. Caso contrário, resolve para 'Não'.",
+        "imageUrl": ""
+      }
+    ]
+  },
+  {
+    "displayName": "Quem vai ganhar a Bugsbyte 2026?",
+    "imageUrl": "https://taikai.azureedge.net/9qs5rjrqjwloP8tnMGvivpA0uwNm1Ja-DTPfjb1L86o/rs:fit:350:0:0/aHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy84NjE1MzExMC0wMjI0LTExZjEtOGNiNS1hNzU5N2UxMjQyYzRmb3RvLXBlcmZpbC1tYWlzLXF1YWxpZGFkZS5wbmc",
+    "markets": [
+      {
+        "displayName": "Profecia",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'Profecia' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FgjqhlKteLT0bUx_TRhB5GOnXoBNTMmcd2HZ3qwziLt0%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9hNWI4MjViMC0wYTAxLTExZjEtOTZhMC0zOTYyOTEzNjEyMWRGcmFtZS5wbmc&w=256&q=75"
+      },
+      {
+        "displayName": "avena",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'avena' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FFglzUhPI4kX4OTJaGT1e5mGBnX8QS67xYaBpQ2S4wSM%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy81YzkxNDIxMC0wOWZmLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFsb2dvLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "Bot.byte",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'Bot.byte' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2F4Y1zrGcbKy9c-8G92tcpynN2NQBgIK-_x3cHW3XM5V0%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8xNjIyYWMzMC0wOWYzLTExZjEtOTZhMC0zOTYyOTEzNjEyMWRHZW1pbmlfR2VuZXJhdGVkX0ltYWdlX2d3Y2dxbmd3Y2dxbmd3Y2cucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "CryptoBug",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'CryptoBug' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2F7n4ee3hZFx6SAfhu4PuRPbM4NqyD_2qP2Q7Z398lyI8%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9hMDJmMWVkMC0wOWQ2LTExZjEtYTE3MC1hZmEwMWMyZTMyYTFpbWFnZS5wbmc&w=256&q=75"
+      },
+      {
+        "displayName": "CryptoByte",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'CryptoByte' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2Fp3JMymGc4wTfpbYfUSuwXph0UauvOpB_RTR_Lgrb0HA%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8zZmNkMmYwMC0wOWI4LTExZjEtOTZhMC0zOTYyOTEzNjEyMWRDYXB0dXJhIGRlIGVjcsOjIGRlIDIwMjYtMDItMTQgMTUtMTctMDgucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "Flight Companion",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'Flight Companion' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2F1gAkgkHXVnH1lWSocb0b2PQXcDfh_mPwtphbu0P6si8%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9lODRkNWE1MC0wOWZmLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFJY29uLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "Geisha Gains",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'Geisha Gains' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FtmAuwknHUvEV6yoxnbcu-qfQKsBenADDlK3FZ1NNIvk%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9kZTM5MmRhMC0wOTMyLTExZjEtOTZhMC0zOTYyOTEzNjEyMWRnZ2xvZ28ucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "healthium",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'healthium' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FUobOogJuJBsAw9yYaS3uim1PpOBFkvcyisbqTkfxhhM%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9mNzFiMWRiMC0wOWViLTExZjEtOTZhMC0zOTYyOTEzNjEyMWRjYzRkYzc5MC0wOWViLTExZjEtOTA2MC01ZDE4ZjIwNDY4ZTRsb2dvLWdyZWVuLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "Helix",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'Helix' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FNA6rmbCxQ_11Ke0wTDu_naFT38TE9tMsiCBCwo_EhCY%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9jM2I4NGNjMC0wOWZjLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFpY29uLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "Hermes",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'Hermes' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2Fe9L413HLRk1tCg9EM71ekPq8jfr7tyqT2Vk4LPmH-6Q%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy80ZjZkYWU0MC0wOWZkLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFDYXB0dXJhIGRlIGVjcsOjIGRlIDIwMjYtMDItMTQgMjMtMzEtMzUucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "LettyQuest",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'LettyQuest' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FGMGPzkjj9s9Q0CAylFf4hdY5zULeoXLU_PO2ZuRr2EU%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9mMTNlNWFiMC0wOTgyLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFsZXR0eV8xLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "NomNom",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'NomNom' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2Fobb8j4q0Xe-58SahPKtYIQJuoQIZt-LiYW-get31YZc%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8wNjAxZDMwMC0wOWE2LTExZjEtYTE3MC1hZmEwMWMyZTMyYTFsb2dvX3doaXRlX2JnLlBORy5QTkc&w=256&q=75"
+      },
+      {
+        "displayName": "NutriAI",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'NutriAI' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FzPhq71o2ALK363iqHU_Guh4sBACJHRwat1hX9ypHIdQ%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8xM2NiZTlmMC0wOWZlLTExZjEtOTA2MC01ZDE4ZjIwNDY4ZTRsb2dvLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "NutriFlow",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'NutriFlow' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FZvoGwHd-w-wN2R_f0E68-2j5E1VUGz0wlb3snaIdpww%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8zZDQxOTRjMC0wOWZkLTExZjEtOTZhMC0zOTYyOTEzNjEyMWROdXRyaXMucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "NutriFuel",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'NutriFuel' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2F7DTROODkVml9QL9DznW_9F2eVhsjHAk-kiJhlhU7uAo%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8wZDYyZjI4MC0wOTUzLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFOdXRyaWZ1ZWwucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "NutrIQ",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'NutrIQ' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FsoEVNbzoDSmYhLn9nxbPrUFHoe76d905SOWIZcNUZdU%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9kZWE5Mjk0MC0wOWZkLTExZjEtOTA2MC01ZDE4ZjIwNDY4ZTRXaGF0c0FwcCBJbWFnZSAyMDI2LTAyLTE0IGF0IDIzLjMxLjEyLmpwZWc&w=256&q=75"
+      },
+      {
+        "displayName": "NutriTrip",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'NutriTrip' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FONkVHF_64oqnWyfFL6ID_c7w5CRgWcqiuGc-nAGIiGg%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8zMDgxMjUwMC0wOWZhLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFOdXRyaVRyaXAucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "NutriVentures",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'NutriVentures' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FqeQLtJ_Xd7mIWNjZKd5hYVOby6geQNlxL9F9JY1g-L4%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy82YmExY2IxMC0wOWZjLTExZjEtOTA2MC01ZDE4ZjIwNDY4ZTRDaGF0R1BUX0ltYWdlXzE0XzAyXzIwMjZfMTRfNDdfNDQucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "SECO",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'SECO' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FSRrTpv1awVV7tZxX_SPHzBZvGWGOSzLJjpb2qupol-s%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8yZDk3MWE3MC0wYTY4LTExZjEtOTZhMC0zOTYyOTEzNjEyMWRpY29uLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "Snack-e",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'Snack-e' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FXGKtopnuSRNHkorLYVGcSDIy-LfoNpIB3HjszmljiQs%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9kYmU1MjY0MC0wYTA4LTExZjEtOTZhMC0zOTYyOTEzNjEyMWRzbmFrZWUucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "SpaceSculptAI",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'SpaceSculptAI' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FXUWSs4SEcjw2jKBeCfQgUUaPHQojfDOpeg6eTnwGf-Q%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy80N2ViZjhjMC0wOWRmLTExZjEtOTZhMC0zOTYyOTEzNjEyMWRpY29uLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "πutrium++",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'πutrium++' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.azureedge.net/v_oIGZm6gnwF39r_zazmOWsVtXi31CfLXpbJxaeAIaA/rs:fit:350:0:0/aHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9mMTUzODg5MC0wOWZmLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFhY3R1bGxheXBpLnBuZw"
+      }
+    ]
+  },
+  {
+    "displayName": "Segundo Lugar Bugsbyte 2026?",
+    "imageUrl": "https://taikai.azureedge.net/9qs5rjrqjwloP8tnMGvivpA0uwNm1Ja-DTPfjb1L86o/rs:fit:350:0:0/aHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy84NjE1MzExMC0wMjI0LTExZjEtOGNiNS1hNzU5N2UxMjQyYzRmb3RvLXBlcmZpbC1tYWlzLXF1YWxpZGFkZS5wbmc",
+    "markets": [
+      {
+        "displayName": "Profecia",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'Profecia' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FgjqhlKteLT0bUx_TRhB5GOnXoBNTMmcd2HZ3qwziLt0%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9hNWI4MjViMC0wYTAxLTExZjEtOTZhMC0zOTYyOTEzNjEyMWRGcmFtZS5wbmc&w=256&q=75"
+      },
+      {
+        "displayName": "avena",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'avena' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FFglzUhPI4kX4OTJaGT1e5mGBnX8QS67xYaBpQ2S4wSM%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy81YzkxNDIxMC0wOWZmLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFsb2dvLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "Bot.byte",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'Bot.byte' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2F4Y1zrGcbKy9c-8G92tcpynN2NQBgIK-_x3cHW3XM5V0%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8xNjIyYWMzMC0wOWYzLTExZjEtOTZhMC0zOTYyOTEzNjEyMWRHZW1pbmlfR2VuZXJhdGVkX0ltYWdlX2d3Y2dxbmd3Y2dxbmd3Y2cucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "CryptoBug",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'CryptoBug' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2F7n4ee3hZFx6SAfhu4PuRPbM4NqyD_2qP2Q7Z398lyI8%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9hMDJmMWVkMC0wOWQ2LTExZjEtYTE3MC1hZmEwMWMyZTMyYTFpbWFnZS5wbmc&w=256&q=75"
+      },
+      {
+        "displayName": "CryptoByte",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'CryptoByte' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2Fp3JMymGc4wTfpbYfUSuwXph0UauvOpB_RTR_Lgrb0HA%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8zZmNkMmYwMC0wOWI4LTExZjEtOTZhMC0zOTYyOTEzNjEyMWRDYXB0dXJhIGRlIGVjcsOjIGRlIDIwMjYtMDItMTQgMTUtMTctMDgucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "Flight Companion",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'Flight Companion' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2F1gAkgkHXVnH1lWSocb0b2PQXcDfh_mPwtphbu0P6si8%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9lODRkNWE1MC0wOWZmLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFJY29uLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "Geisha Gains",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'Geisha Gains' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FtmAuwknHUvEV6yoxnbcu-qfQKsBenADDlK3FZ1NNIvk%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9kZTM5MmRhMC0wOTMyLTExZjEtOTZhMC0zOTYyOTEzNjEyMWRnZ2xvZ28ucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "healthium",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'healthium' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FUobOogJuJBsAw9yYaS3uim1PpOBFkvcyisbqTkfxhhM%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9mNzFiMWRiMC0wOWViLTExZjEtOTZhMC0zOTYyOTEzNjEyMWRjYzRkYzc5MC0wOWViLTExZjEtOTA2MC01ZDE4ZjIwNDY4ZTRsb2dvLWdyZWVuLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "Helix",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'Helix' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FNA6rmbCxQ_11Ke0wTDu_naFT38TE9tMsiCBCwo_EhCY%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9jM2I4NGNjMC0wOWZjLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFpY29uLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "Hermes",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'Hermes' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2Fe9L413HLRk1tCg9EM71ekPq8jfr7tyqT2Vk4LPmH-6Q%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy80ZjZkYWU0MC0wOWZkLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFDYXB0dXJhIGRlIGVjcsOjIGRlIDIwMjYtMDItMTQgMjMtMzEtMzUucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "LettyQuest",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'LettyQuest' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FGMGPzkjj9s9Q0CAylFf4hdY5zULeoXLU_PO2ZuRr2EU%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9mMTNlNWFiMC0wOTgyLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFsZXR0eV8xLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "NomNom",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'NomNom' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2Fobb8j4q0Xe-58SahPKtYIQJuoQIZt-LiYW-get31YZc%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8wNjAxZDMwMC0wOWE2LTExZjEtYTE3MC1hZmEwMWMyZTMyYTFsb2dvX3doaXRlX2JnLlBORy5QTkc&w=256&q=75"
+      },
+      {
+        "displayName": "NutriAI",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'NutriAI' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FzPhq71o2ALK363iqHU_Guh4sBACJHRwat1hX9ypHIdQ%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8xM2NiZTlmMC0wOWZlLTExZjEtOTA2MC01ZDE4ZjIwNDY4ZTRsb2dvLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "NutriFlow",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'NutriFlow' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FZvoGwHd-w-wN2R_f0E68-2j5E1VUGz0wlb3snaIdpww%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8zZDQxOTRjMC0wOWZkLTExZjEtOTZhMC0zOTYyOTEzNjEyMWROdXRyaXMucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "NutriFuel",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'NutriFuel' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2F7DTROODkVml9QL9DznW_9F2eVhsjHAk-kiJhlhU7uAo%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8wZDYyZjI4MC0wOTUzLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFOdXRyaWZ1ZWwucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "NutrIQ",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'NutrIQ' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FsoEVNbzoDSmYhLn9nxbPrUFHoe76d905SOWIZcNUZdU%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9kZWE5Mjk0MC0wOWZkLTExZjEtOTA2MC01ZDE4ZjIwNDY4ZTRXaGF0c0FwcCBJbWFnZSAyMDI2LTAyLTE0IGF0IDIzLjMxLjEyLmpwZWc&w=256&q=75"
+      },
+      {
+        "displayName": "NutriTrip",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'NutriTrip' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FONkVHF_64oqnWyfFL6ID_c7w5CRgWcqiuGc-nAGIiGg%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8zMDgxMjUwMC0wOWZhLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFOdXRyaVRyaXAucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "NutriVentures",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'NutriVentures' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FqeQLtJ_Xd7mIWNjZKd5hYVOby6geQNlxL9F9JY1g-L4%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy82YmExY2IxMC0wOWZjLTExZjEtOTA2MC01ZDE4ZjIwNDY4ZTRDaGF0R1BUX0ltYWdlXzE0XzAyXzIwMjZfMTRfNDdfNDQucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "SECO",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'SECO' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FSRrTpv1awVV7tZxX_SPHzBZvGWGOSzLJjpb2qupol-s%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8yZDk3MWE3MC0wYTY4LTExZjEtOTZhMC0zOTYyOTEzNjEyMWRpY29uLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "Snack-e",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'Snack-e' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FXGKtopnuSRNHkorLYVGcSDIy-LfoNpIB3HjszmljiQs%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9kYmU1MjY0MC0wYTA4LTExZjEtOTZhMC0zOTYyOTEzNjEyMWRzbmFrZWUucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "SpaceSculptAI",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'SpaceSculptAI' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FXUWSs4SEcjw2jKBeCfQgUUaPHQojfDOpeg6eTnwGf-Q%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy80N2ViZjhjMC0wOWRmLTExZjEtOTZhMC0zOTYyOTEzNjEyMWRpY29uLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "πutrium++",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'πutrium++' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.azureedge.net/v_oIGZm6gnwF39r_zazmOWsVtXi31CfLXpbJxaeAIaA/rs:fit:350:0:0/aHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9mMTUzODg5MC0wOWZmLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFhY3R1bGxheXBpLnBuZw"
+      }
+    ]
+  },
+  {
+    "displayName": "Terceiro Lugar Bugsbyte 2026?",
+    "imageUrl": "https://taikai.azureedge.net/9qs5rjrqjwloP8tnMGvivpA0uwNm1Ja-DTPfjb1L86o/rs:fit:350:0:0/aHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy84NjE1MzExMC0wMjI0LTExZjEtOGNiNS1hNzU5N2UxMjQyYzRmb3RvLXBlcmZpbC1tYWlzLXF1YWxpZGFkZS5wbmc",
+    "markets": [
+      {
+        "displayName": "Profecia",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'Profecia' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FgjqhlKteLT0bUx_TRhB5GOnXoBNTMmcd2HZ3qwziLt0%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9hNWI4MjViMC0wYTAxLTExZjEtOTZhMC0zOTYyOTEzNjEyMWRGcmFtZS5wbmc&w=256&q=75"
+      },
+      {
+        "displayName": "avena",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'avena' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FFglzUhPI4kX4OTJaGT1e5mGBnX8QS67xYaBpQ2S4wSM%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy81YzkxNDIxMC0wOWZmLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFsb2dvLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "Bot.byte",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'Bot.byte' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2F4Y1zrGcbKy9c-8G92tcpynN2NQBgIK-_x3cHW3XM5V0%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8xNjIyYWMzMC0wOWYzLTExZjEtOTZhMC0zOTYyOTEzNjEyMWRHZW1pbmlfR2VuZXJhdGVkX0ltYWdlX2d3Y2dxbmd3Y2dxbmd3Y2cucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "CryptoBug",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'CryptoBug' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2F7n4ee3hZFx6SAfhu4PuRPbM4NqyD_2qP2Q7Z398lyI8%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9hMDJmMWVkMC0wOWQ2LTExZjEtYTE3MC1hZmEwMWMyZTMyYTFpbWFnZS5wbmc&w=256&q=75"
+      },
+      {
+        "displayName": "CryptoByte",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'CryptoByte' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2Fp3JMymGc4wTfpbYfUSuwXph0UauvOpB_RTR_Lgrb0HA%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8zZmNkMmYwMC0wOWI4LTExZjEtOTZhMC0zOTYyOTEzNjEyMWRDYXB0dXJhIGRlIGVjcsOjIGRlIDIwMjYtMDItMTQgMTUtMTctMDgucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "Flight Companion",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'Flight Companion' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2F1gAkgkHXVnH1lWSocb0b2PQXcDfh_mPwtphbu0P6si8%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9lODRkNWE1MC0wOWZmLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFJY29uLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "Geisha Gains",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'Geisha Gains' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FtmAuwknHUvEV6yoxnbcu-qfQKsBenADDlK3FZ1NNIvk%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9kZTM5MmRhMC0wOTMyLTExZjEtOTZhMC0zOTYyOTEzNjEyMWRnZ2xvZ28ucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "healthium",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'healthium' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FUobOogJuJBsAw9yYaS3uim1PpOBFkvcyisbqTkfxhhM%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9mNzFiMWRiMC0wOWViLTExZjEtOTZhMC0zOTYyOTEzNjEyMWRjYzRkYzc5MC0wOWViLTExZjEtOTA2MC01ZDE4ZjIwNDY4ZTRsb2dvLWdyZWVuLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "Helix",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'Helix' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FNA6rmbCxQ_11Ke0wTDu_naFT38TE9tMsiCBCwo_EhCY%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9jM2I4NGNjMC0wOWZjLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFpY29uLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "Hermes",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'Hermes' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2Fe9L413HLRk1tCg9EM71ekPq8jfr7tyqT2Vk4LPmH-6Q%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy80ZjZkYWU0MC0wOWZkLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFDYXB0dXJhIGRlIGVjcsOjIGRlIDIwMjYtMDItMTQgMjMtMzEtMzUucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "LettyQuest",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'LettyQuest' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FGMGPzkjj9s9Q0CAylFf4hdY5zULeoXLU_PO2ZuRr2EU%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9mMTNlNWFiMC0wOTgyLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFsZXR0eV8xLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "NomNom",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'NomNom' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2Fobb8j4q0Xe-58SahPKtYIQJuoQIZt-LiYW-get31YZc%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8wNjAxZDMwMC0wOWE2LTExZjEtYTE3MC1hZmEwMWMyZTMyYTFsb2dvX3doaXRlX2JnLlBORy5QTkc&w=256&q=75"
+      },
+      {
+        "displayName": "NutriAI",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'NutriAI' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FzPhq71o2ALK363iqHU_Guh4sBACJHRwat1hX9ypHIdQ%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8xM2NiZTlmMC0wOWZlLTExZjEtOTA2MC01ZDE4ZjIwNDY4ZTRsb2dvLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "NutriFlow",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'NutriFlow' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FZvoGwHd-w-wN2R_f0E68-2j5E1VUGz0wlb3snaIdpww%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8zZDQxOTRjMC0wOWZkLTExZjEtOTZhMC0zOTYyOTEzNjEyMWROdXRyaXMucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "NutriFuel",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'NutriFuel' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2F7DTROODkVml9QL9DznW_9F2eVhsjHAk-kiJhlhU7uAo%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8wZDYyZjI4MC0wOTUzLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFOdXRyaWZ1ZWwucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "NutrIQ",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'NutrIQ' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FsoEVNbzoDSmYhLn9nxbPrUFHoe76d905SOWIZcNUZdU%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9kZWE5Mjk0MC0wOWZkLTExZjEtOTA2MC01ZDE4ZjIwNDY4ZTRXaGF0c0FwcCBJbWFnZSAyMDI2LTAyLTE0IGF0IDIzLjMxLjEyLmpwZWc&w=256&q=75"
+      },
+      {
+        "displayName": "NutriTrip",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'NutriTrip' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FONkVHF_64oqnWyfFL6ID_c7w5CRgWcqiuGc-nAGIiGg%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8zMDgxMjUwMC0wOWZhLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFOdXRyaVRyaXAucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "NutriVentures",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'NutriVentures' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FqeQLtJ_Xd7mIWNjZKd5hYVOby6geQNlxL9F9JY1g-L4%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy82YmExY2IxMC0wOWZjLTExZjEtOTA2MC01ZDE4ZjIwNDY4ZTRDaGF0R1BUX0ltYWdlXzE0XzAyXzIwMjZfMTRfNDdfNDQucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "SECO",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'SECO' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FSRrTpv1awVV7tZxX_SPHzBZvGWGOSzLJjpb2qupol-s%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8yZDk3MWE3MC0wYTY4LTExZjEtOTZhMC0zOTYyOTEzNjEyMWRpY29uLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "Snack-e",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'Snack-e' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FXGKtopnuSRNHkorLYVGcSDIy-LfoNpIB3HjszmljiQs%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9kYmU1MjY0MC0wYTA4LTExZjEtOTZhMC0zOTYyOTEzNjEyMWRzbmFrZWUucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "SpaceSculptAI",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'SpaceSculptAI' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FXUWSs4SEcjw2jKBeCfQgUUaPHQojfDOpeg6eTnwGf-Q%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy80N2ViZjhjMC0wOWRmLTExZjEtOTZhMC0zOTYyOTEzNjEyMWRpY29uLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "πutrium++",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'πutrium++' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.azureedge.net/v_oIGZm6gnwF39r_zazmOWsVtXi31CfLXpbJxaeAIaA/rs:fit:350:0:0/aHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9mMTUzODg5MC0wOWZmLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFhY3R1bGxheXBpLnBuZw"
+      }
+    ]
+  },
+  {
+    "displayName": "Prémio Tema Bugsbyte 2026?",
+    "imageUrl": "https://taikai.azureedge.net/9qs5rjrqjwloP8tnMGvivpA0uwNm1Ja-DTPfjb1L86o/rs:fit:350:0:0/aHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy84NjE1MzExMC0wMjI0LTExZjEtOGNiNS1hNzU5N2UxMjQyYzRmb3RvLXBlcmZpbC1tYWlzLXF1YWxpZGFkZS5wbmc",
+    "markets": [
+      {
+        "displayName": "Profecia",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'Profecia' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FgjqhlKteLT0bUx_TRhB5GOnXoBNTMmcd2HZ3qwziLt0%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9hNWI4MjViMC0wYTAxLTExZjEtOTZhMC0zOTYyOTEzNjEyMWRGcmFtZS5wbmc&w=256&q=75"
+      },
+      {
+        "displayName": "avena",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'avena' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FFglzUhPI4kX4OTJaGT1e5mGBnX8QS67xYaBpQ2S4wSM%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy81YzkxNDIxMC0wOWZmLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFsb2dvLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "Bot.byte",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'Bot.byte' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2F4Y1zrGcbKy9c-8G92tcpynN2NQBgIK-_x3cHW3XM5V0%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8xNjIyYWMzMC0wOWYzLTExZjEtOTZhMC0zOTYyOTEzNjEyMWRHZW1pbmlfR2VuZXJhdGVkX0ltYWdlX2d3Y2dxbmd3Y2dxbmd3Y2cucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "CryptoBug",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'CryptoBug' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2F7n4ee3hZFx6SAfhu4PuRPbM4NqyD_2qP2Q7Z398lyI8%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9hMDJmMWVkMC0wOWQ2LTExZjEtYTE3MC1hZmEwMWMyZTMyYTFpbWFnZS5wbmc&w=256&q=75"
+      },
+      {
+        "displayName": "CryptoByte",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'CryptoByte' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2Fp3JMymGc4wTfpbYfUSuwXph0UauvOpB_RTR_Lgrb0HA%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8zZmNkMmYwMC0wOWI4LTExZjEtOTZhMC0zOTYyOTEzNjEyMWRDYXB0dXJhIGRlIGVjcsOjIGRlIDIwMjYtMDItMTQgMTUtMTctMDgucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "Flight Companion",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'Flight Companion' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2F1gAkgkHXVnH1lWSocb0b2PQXcDfh_mPwtphbu0P6si8%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9lODRkNWE1MC0wOWZmLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFJY29uLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "Geisha Gains",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'Geisha Gains' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FtmAuwknHUvEV6yoxnbcu-qfQKsBenADDlK3FZ1NNIvk%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9kZTM5MmRhMC0wOTMyLTExZjEtOTZhMC0zOTYyOTEzNjEyMWRnZ2xvZ28ucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "healthium",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'healthium' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FUobOogJuJBsAw9yYaS3uim1PpOBFkvcyisbqTkfxhhM%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9mNzFiMWRiMC0wOWViLTExZjEtOTZhMC0zOTYyOTEzNjEyMWRjYzRkYzc5MC0wOWViLTExZjEtOTA2MC01ZDE4ZjIwNDY4ZTRsb2dvLWdyZWVuLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "Helix",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'Helix' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FNA6rmbCxQ_11Ke0wTDu_naFT38TE9tMsiCBCwo_EhCY%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9jM2I4NGNjMC0wOWZjLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFpY29uLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "Hermes",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'Hermes' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2Fe9L413HLRk1tCg9EM71ekPq8jfr7tyqT2Vk4LPmH-6Q%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy80ZjZkYWU0MC0wOWZkLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFDYXB0dXJhIGRlIGVjcsOjIGRlIDIwMjYtMDItMTQgMjMtMzEtMzUucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "LettyQuest",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'LettyQuest' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FGMGPzkjj9s9Q0CAylFf4hdY5zULeoXLU_PO2ZuRr2EU%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9mMTNlNWFiMC0wOTgyLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFsZXR0eV8xLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "NomNom",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'NomNom' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2Fobb8j4q0Xe-58SahPKtYIQJuoQIZt-LiYW-get31YZc%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8wNjAxZDMwMC0wOWE2LTExZjEtYTE3MC1hZmEwMWMyZTMyYTFsb2dvX3doaXRlX2JnLlBORy5QTkc&w=256&q=75"
+      },
+      {
+        "displayName": "NutriAI",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'NutriAI' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FzPhq71o2ALK363iqHU_Guh4sBACJHRwat1hX9ypHIdQ%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8xM2NiZTlmMC0wOWZlLTExZjEtOTA2MC01ZDE4ZjIwNDY4ZTRsb2dvLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "NutriFlow",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'NutriFlow' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FZvoGwHd-w-wN2R_f0E68-2j5E1VUGz0wlb3snaIdpww%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8zZDQxOTRjMC0wOWZkLTExZjEtOTZhMC0zOTYyOTEzNjEyMWROdXRyaXMucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "NutriFuel",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'NutriFuel' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2F7DTROODkVml9QL9DznW_9F2eVhsjHAk-kiJhlhU7uAo%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8wZDYyZjI4MC0wOTUzLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFOdXRyaWZ1ZWwucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "NutrIQ",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'NutrIQ' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FsoEVNbzoDSmYhLn9nxbPrUFHoe76d905SOWIZcNUZdU%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9kZWE5Mjk0MC0wOWZkLTExZjEtOTA2MC01ZDE4ZjIwNDY4ZTRXaGF0c0FwcCBJbWFnZSAyMDI2LTAyLTE0IGF0IDIzLjMxLjEyLmpwZWc&w=256&q=75"
+      },
+      {
+        "displayName": "NutriTrip",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'NutriTrip' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FONkVHF_64oqnWyfFL6ID_c7w5CRgWcqiuGc-nAGIiGg%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8zMDgxMjUwMC0wOWZhLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFOdXRyaVRyaXAucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "NutriVentures",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'NutriVentures' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FqeQLtJ_Xd7mIWNjZKd5hYVOby6geQNlxL9F9JY1g-L4%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy82YmExY2IxMC0wOWZjLTExZjEtOTA2MC01ZDE4ZjIwNDY4ZTRDaGF0R1BUX0ltYWdlXzE0XzAyXzIwMjZfMTRfNDdfNDQucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "SECO",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'SECO' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FSRrTpv1awVV7tZxX_SPHzBZvGWGOSzLJjpb2qupol-s%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy8yZDk3MWE3MC0wYTY4LTExZjEtOTZhMC0zOTYyOTEzNjEyMWRpY29uLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "Snack-e",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'Snack-e' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FXGKtopnuSRNHkorLYVGcSDIy-LfoNpIB3HjszmljiQs%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9kYmU1MjY0MC0wYTA4LTExZjEtOTZhMC0zOTYyOTEzNjEyMWRzbmFrZWUucG5n&w=256&q=75"
+      },
+      {
+        "displayName": "SpaceSculptAI",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'SpaceSculptAI' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FXUWSs4SEcjw2jKBeCfQgUUaPHQojfDOpeg6eTnwGf-Q%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy80N2ViZjhjMC0wOWRmLTExZjEtOTZhMC0zOTYyOTEzNjEyMWRpY29uLnBuZw&w=256&q=75"
+      },
+      {
+        "displayName": "πutrium++",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se 'πutrium++' for oficialmente anunciada como vencedora da Bugbyte 2026.",
+        "imageUrl": "https://taikai.azureedge.net/v_oIGZm6gnwF39r_zazmOWsVtXi31CfLXpbJxaeAIaA/rs:fit:350:0:0/aHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9mMTUzODg5MC0wOWZmLTExZjEtYTE3MC1hZmEwMWMyZTMyYTFhY3R1bGxheXBpLnBuZw"
+      }
+    ]
+  },
+  {
+    "displayName": "Mês de reparação do parque P06",
+    "imageUrl": "https://midias.eurodicas.com.br/wp-content/uploads/2024/06/universidade-do-minho.jpg.webp",
+    "markets": [
+      {
+        "displayName": "Março",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se o parque P06 for oficialmente considerada concluída ou reaberta ao público até 31/03/2026.",
+        "imageUrl": ""
+      },
+      {
+        "displayName": "Depois de Abril",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para sim se o parque P06 for oficialmente considerada concluída ou reaberta ao público depois de 01/04/2026.",
+        "imageUrl": ""
+      }
+    ]
+  },
+  {
+    "displayName": "Quem é o verdadeiro GOAT?",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a7/Flickr_-_law_keven_-_Goat_-_Colchester_Zoo_-_Colchester%2C_Essex%2C_England_-_Monday_November_5th_2007..jpg",
+    "markets": [
+      {
+        "displayName": "Cristiano Ronaldo",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para Sim se o Cristiano Ronaldo for o verdadeiro GOAT.",
+        "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThds3bDP-XVze0wvRUC8gl4ToFDeGLj2eNFw&s"
+      },
+      {
+        "displayName": "Messi",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para Sim se o Pessi for o verdadeiro GOAT.",
+        "imageUrl": "https://i.scdn.co/image/ab67616d0000b273fcc67f782675a207044b94e5"
+      }
+    ]
+  },
+  {
+    "displayName": "A aplicação vai funcionar durante a apresentação?",
+    "imageUrl": "https://taikai.network/_next/image?url=https%3A%2F%2Ftaikai.azureedge.net%2FgjqhlKteLT0bUx_TRhB5GOnXoBNTMmcd2HZ3qwziLt0%2Frs%3Afit%3A150%3A150%3A0%2FaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL3RhaWthaS1zdG9yYWdlL2ltYWdlcy9hNWI4MjViMC0wYTAxLTExZjEtOTZhMC0zOTYyOTEzNjEyMWRGcmFtZS5wbmc&w=256&q=75",
+    "markets": [
+      {
+        "displayName": "Funcionamento da aplicação",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para 'Sim' se a aplicação funcionar durante toda a apresentação sem falhas. Caso contrário, resolve para 'Não'.",
+        "imageUrl": ""
+      }
+    ]
+  },
+  {
+    "displayName": "XXV Governo Português dura até ao fim da legislatura?",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8CoffShUe9ZaKCum4pBIzFuziUcc1L2U4Og&s",
+    "markets": [
+      {
+        "displayName": "Duração do Governo",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para 'Sim' se o XXV Governo se mantiver em funções até ao fim da legislatura. Resolve para 'Não' se cair antes.",
+        "imageUrl": ""
+      }
+    ]
+  },
+  {
+    "displayName": "O Ronaldo vai chegar aos 1000 golos?",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSnk8QxZIPlHkDs4Ca-jtlREW_KIXYgSWOKA&s",
+    "markets": [
+      {
+        "displayName": "Cristiano Ronaldo atinge 1000 golos",
+        "optionAName": "Sim",
+        "optionBName": "Não",
+        "rules": "Resolve para 'Sim' se Cristiano Ronaldo atingir oficialmente 1000 golos na carreira. Caso contrário, resolve para 'Não'.",
+        "imageUrl": ""
+      }
+    ]
+  }
+]
