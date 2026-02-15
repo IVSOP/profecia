@@ -77,8 +77,8 @@
 		{/if}
 		<h1 class="text-2xl font-bold">{data.event.displayName}</h1>
 	</div>
-	{#if data.event.url}
-		<div class="mb-6 flex flex-wrap items-center gap-2">
+	<div class="mb-6 flex flex-wrap items-center gap-2">
+		{#if data.event.url}
 			<a
 				href={data.event.url}
 				target="_blank"
@@ -89,19 +89,12 @@
 				{data.event.pubkey.slice(0, 6)}...{data.event.pubkey.slice(-6)}
 				<ExternalLinkIcon class="h-3 w-3" />
 			</a>
-			<span class="inline-flex items-center gap-1.5 rounded-full border bg-muted/50 px-3 py-1 text-xs font-medium text-muted-foreground">
-				<BarChart3 class="h-3 w-3" />
-				{formatVolume(data.event.volume)} Posições
-			</span>
-		</div>
-	{:else}
-		<div class="mb-6 flex items-center gap-2">
-			<span class="inline-flex items-center gap-1.5 rounded-full border bg-muted/50 px-3 py-1 text-xs font-medium text-muted-foreground">
-				<BarChart3 class="h-3 w-3" />
-				{formatVolume(data.event.volume)} Posições
-			</span>
-		</div>
-	{/if}
+		{/if}
+		<span class="inline-flex items-center gap-1.5 rounded-full border bg-muted/50 px-3 py-1 text-xs font-medium text-muted-foreground">
+			<BarChart3 class="h-3 w-3" />
+			{formatVolume(data.event.volume)} {data.event.volume === 1 ? 'Ação' : 'Ações'}
+		</span>
+	</div>
 
 	<!-- Price Chart -->
 	<EventChart markets={data.event.markets} chartData={data.chartData} />

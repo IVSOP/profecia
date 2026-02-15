@@ -15,7 +15,14 @@
 		balanceCents: number | null;
 	}
 
-	let { open = $bindable(false), market, option = $bindable('A'), percentages, user, balanceCents }: Props = $props();
+	let {
+		open = $bindable(false),
+		market,
+		option = $bindable('A'),
+		percentages,
+		user,
+		balanceCents
+	}: Props = $props();
 
 	let shares = $state(1);
 	let priceInput = $state('50');
@@ -100,9 +107,7 @@
 			<Dialog.Title>
 				{market?.displayName ?? ''}
 			</Dialog.Title>
-			<Dialog.Description>
-				Criar ordem de compra
-			</Dialog.Description>
+			<Dialog.Description>Criar ordem de compra</Dialog.Description>
 		</Dialog.Header>
 
 		{#if user}
@@ -139,21 +144,25 @@
 					<div class="grid grid-cols-2 gap-2">
 						<button
 							type="button"
-							class="rounded-lg border-2 px-3 py-2.5 text-sm font-semibold transition-colors {option === 'A'
+							class="rounded-lg border-2 px-3 py-2.5 text-sm font-semibold transition-colors {option ===
+							'A'
 								? 'border-green-600 bg-green-600 text-white'
 								: 'border-border bg-muted/50 text-muted-foreground hover:bg-muted'}"
 							onclick={() => switchOption('A')}
 						>
-							{market.optionAName} {percentages?.optionAPercentage != null ? `${percentages.optionAPercentage}¢` : '—'}
+							{market.optionAName}
+							{percentages?.optionAPercentage != null ? `${percentages.optionAPercentage}¢` : '—'}
 						</button>
 						<button
 							type="button"
-							class="rounded-lg border-2 px-3 py-2.5 text-sm font-semibold transition-colors {option === 'B'
+							class="rounded-lg border-2 px-3 py-2.5 text-sm font-semibold transition-colors {option ===
+							'B'
 								? 'border-red-600 bg-red-600 text-white'
 								: 'border-border bg-muted/50 text-muted-foreground hover:bg-muted'}"
 							onclick={() => switchOption('B')}
 						>
-							{market.optionBName} {percentages?.optionBPercentage != null ? `${percentages.optionBPercentage}¢` : '—'}
+							{market.optionBName}
+							{percentages?.optionBPercentage != null ? `${percentages.optionBPercentage}¢` : '—'}
 						</button>
 					</div>
 				{/if}
@@ -174,7 +183,9 @@
 							disabled={submitting}
 							class="pr-8"
 						/>
-						<span class="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-sm text-muted-foreground">
+						<span
+							class="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-sm text-muted-foreground"
+						>
 							¢
 						</span>
 					</div>
@@ -199,24 +210,34 @@
 						Se <span class="font-bold">{optionName}</span> for a opção correta:
 					</p>
 					<div class="flex items-stretch gap-2">
-						<div class="flex flex-1 flex-col items-center justify-center rounded-lg border bg-muted/50 p-3 text-center">
+						<div
+							class="flex flex-1 flex-col items-center justify-center rounded-lg border bg-muted/50 p-3 text-center"
+						>
 							<p class="text-xs text-muted-foreground">Custo</p>
 							<p class="text-lg font-bold">{formatDollars(totalCostCents)}</p>
 						</div>
 						<div class="flex shrink-0 items-center">
 							<span class="text-xl text-muted-foreground">→</span>
 						</div>
-						<div class="flex flex-1 flex-col items-center justify-center rounded-lg border border-green-600/20 bg-green-600/10 p-3 text-center">
+						<div
+							class="flex flex-1 flex-col items-center justify-center rounded-lg border border-green-600/20 bg-green-600/10 p-3 text-center"
+						>
 							<p class="text-xs text-muted-foreground">Recebes</p>
 							<p class="text-lg font-bold">{formatDollars(totalGainCents)}</p>
-							<p class="text-xs font-medium text-green-600">+{formatDollars(profitCents)} de lucro</p>
+							<p class="text-xs font-medium text-green-600">
+								+{formatDollars(profitCents)} de lucro
+							</p>
 						</div>
 					</div>
 				</div>
 
 				{#if isValid && !hasEnoughBalance}
-					<div class="rounded-md border border-amber-500/50 bg-amber-500/10 px-3 py-2 text-sm text-amber-700 dark:text-amber-400">
-						Saldo insuficiente. Precisas de {formatDollars(totalCostCents)} mas tens {formatDollars(balanceCents ?? 0)}.
+					<div
+						class="rounded-md border border-amber-500/50 bg-amber-500/10 px-3 py-2 text-sm text-amber-700 dark:text-amber-400"
+					>
+						Saldo insuficiente. Precisas de {formatDollars(totalCostCents)} mas tens {formatDollars(
+							balanceCents ?? 0
+						)}.
 					</div>
 				{/if}
 
@@ -230,9 +251,17 @@
 
 				<div class="grid grid-cols-2 gap-2">
 					<Dialog.Close>
-						<Button type="button" variant="outline" class="w-full" disabled={submitting}>Cancelar</Button>
+						<Button type="button" variant="outline" class="w-full" disabled={submitting}
+							>Cancelar</Button
+						>
 					</Dialog.Close>
-					<Button type="submit" class="w-full" disabled={!canSubmit || submitting}>
+					<Button
+						type="submit"
+						class="w-full {option === 'A'
+							? 'bg-green-600 text-white hover:bg-green-700'
+							: 'bg-red-600 text-white hover:bg-red-700'}"
+						disabled={!canSubmit || submitting}
+					>
 						{#if submitting}
 							A enviar...
 						{:else}

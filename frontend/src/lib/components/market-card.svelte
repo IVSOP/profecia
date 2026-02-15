@@ -56,7 +56,15 @@
 			</span>
 			<span class="mt-0.5 flex items-center gap-1 text-xs font-normal text-muted-foreground">
 				<BarChart3 class="h-3 w-3" />
-				{formatVolume(event.volume)} Posições
+				{formatVolume(event.volume)} {event.volume === 1 ? 'Ação' : 'Ações'}
+				{#if event.markets.length > 0 && event.markets.every((m) => m.resolvedOption != null) && !isSingleMarket}
+					<span
+						class="inline-flex items-center gap-1.5 rounded-full bg-yellow-500 px-2 py-0.5 text-xs font-medium text-white"
+					>
+						<Trophy class="h-3 w-3" />
+						Encerrado
+					</span>
+				{/if}
 			</span>
 		</div>
 		{#if isSingleMarket}
