@@ -7,8 +7,8 @@ services:
       POSTGRES_USER: profecia
       POSTGRES_PASSWORD: profecia
       POSTGRES_DB: profecia
-    ports:
-      - "5432:5432"
+    # ports:
+    #   - "5432:5432"
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
     healthcheck:
@@ -33,10 +33,10 @@ services:
   surfpool:
     image: surfpool/surfpool
     container_name: surfpool-instance
-    ports:
-      - "8899:8899"
-      - "8900:8900"
-      - "18488:18488"
+    # ports:
+    # - "8899:8899"
+    # - "8900:8900"
+    # - "18488:18488"
     volumes:
       - ./backend/blockchain_program:/workspace
       - ./backend/blockchain_program/PRIVATE_KEY/id.json:/root/.config/solana/id.json:ro
@@ -55,7 +55,7 @@ services:
     environment:
       DATABASE_URL: postgres://profecia:profecia@postgres:5432/profecia
       RPC_URL: http://surfpool:8899
-      EXTERNAL_RPC_URL: http://localhost:8899
+      EXTERNAL_RPC_URL: ${EXTERNAL_RPC_URL}
       RUST_LOG: info
       ADMIN_WALLET_PATH: /app/admin-wallet.json
     volumes:
@@ -74,7 +74,7 @@ services:
     restart: unless-stopped
     environment:
       BACKEND_URL: http://backend:3000
-      ORIGIN: http://localhost
+      ORIGIN: ${ORIGIN}
       PORT: "3000"
       NODE_ENV: production
     depends_on:
@@ -84,8 +84,6 @@ services:
     image: jqtype/rpxy:latest
     container_name: profecia-rpxy
     restart: unless-stopped
-    ports:
-      - "80:80"
     depends_on:
       - frontend
       - backend
@@ -94,3 +92,11 @@ services:
     volumes:
       - ./rpxy/config/config.toml:/etc/rpxy.toml:ro
 
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    environment:
+      - TUNNEL_TOKEN
+    command: "tunnel run"
+    depends_on:
+      - frontend
+    restart: unless-stopped
