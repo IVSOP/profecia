@@ -24,7 +24,10 @@
 	];
 
 	// Transform backend data into chart-friendly format
-	function buildChartData(marketList: MarketDto[], chart: EventChartDto): Record<string, unknown>[] {
+	function buildChartData(
+		marketList: MarketDto[],
+		chart: EventChartDto
+	): Record<string, unknown>[] {
 		return chart.points.map((point) => {
 			const row: Record<string, unknown> = {
 				time: new Date(point.recordedAt)
@@ -72,15 +75,15 @@
 <div class="mt-6 mb-10">
 	{#if markets.length > 1}
 		<div class="mb-1 flex items-center gap-4">
-			{#each series as s}
+			{#each series as s (s.key)}
 				<div class="flex items-center gap-1.5">
-					<span
-						class="inline-block size-2.5 rounded-[2px]"
-						style="background-color: {s.color};"
-					></span>
+					<span class="inline-block size-2.5 rounded-[2px]" style="background-color: {s.color};">
+					</span>
 					<span class="text-xs text-muted-foreground">
 						{s.label}
-						<span class="font-medium text-foreground">{latestValues[s.key]?.toFixed(1) ?? '—'}%</span>
+						<span class="font-medium text-foreground"
+							>{latestValues[s.key]?.toFixed(1) ?? '—'}%</span
+						>
 					</span>
 				</div>
 			{/each}
@@ -134,16 +137,26 @@
 	</Chart.Container>
 </div>
 
-{#snippet tooltipFormatter({ value, name, item, index, payload }: { value: unknown; name: string; item: import('$lib/components/ui/chart/chart-utils.js').TooltipPayload; index: number; payload: import('$lib/components/ui/chart/chart-utils.js').TooltipPayload[] })}
+{#snippet tooltipFormatter({
+	value,
+	name,
+	item,
+	index,
+	payload
+}: {
+	value: unknown;
+	name: string;
+	item: import('$lib/components/ui/chart/chart-utils.js').TooltipPayload;
+	index: number;
+	payload: import('$lib/components/ui/chart/chart-utils.js').TooltipPayload[];
+})}
 	{@const indicatorColor = item.color}
-	<div
-		class="flex w-full flex-wrap items-center gap-2"
-	>
+	<div class="flex w-full flex-wrap items-center gap-2">
 		<div
 			style="--color-bg: {indicatorColor}; --color-border: {indicatorColor};"
 			class="size-2.5 shrink-0 rounded-[2px] border-(--color-border) bg-(--color-bg)"
 		></div>
-		<div class="flex flex-1 justify-between items-center leading-none">
+		<div class="flex flex-1 items-center justify-between leading-none">
 			<span class="text-muted-foreground">
 				{chartConfig[name]?.label || name}
 			</span>

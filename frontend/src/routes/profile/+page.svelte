@@ -2,7 +2,6 @@
 	import { page } from '$app/state';
 	import * as Card from '$lib/components/ui/card';
 	import * as Table from '$lib/components/ui/table';
-	import { Separator } from '$lib/components/ui/separator';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import {
 		TrendingUpIcon,
@@ -12,8 +11,9 @@
 		Trophy,
 		ExternalLinkIcon
 	} from '@lucide/svelte';
-	import type { MarketDto, MarketOption, PositionDto } from '$lib/types';
+	import type { MarketDto, PositionDto } from '$lib/types';
 	import type { PageProps } from './$types';
+	import { SvelteMap } from 'svelte/reactivity';
 
 	let { data }: PageProps = $props();
 
@@ -21,7 +21,7 @@
 
 	// Build lookup maps
 	const marketsById = $derived.by(() => {
-		const map = new Map<string, MarketDto>();
+		const map = new SvelteMap<string, MarketDto>();
 		for (const event of data.events) {
 			for (const market of event.markets) {
 				map.set(market.id, market);
@@ -31,7 +31,7 @@
 	});
 
 	const eventByMarketId = $derived.by(() => {
-		const map = new Map<string, (typeof data.events)[0]>();
+		const map = new SvelteMap<string, (typeof data.events)[0]>();
 		for (const event of data.events) {
 			for (const market of event.markets) {
 				map.set(market.id, event);
@@ -155,9 +155,7 @@
 
 		<Card.Root class="gap-0 py-3">
 			<Card.Header class="flex flex-row items-center justify-between px-4 py-0 pb-1">
-				<Card.Title class="text-sm font-medium text-muted-foreground"
-					>Lucro Realizado</Card.Title
-				>
+				<Card.Title class="text-sm font-medium text-muted-foreground">Lucro Realizado</Card.Title>
 				{#if totalRealizedProfit > 0}
 					<TrendingUpIcon class="h-4 w-4 text-green-600 dark:text-green-400" />
 				{:else if totalRealizedProfit < 0}
@@ -172,21 +170,20 @@
 							? 'text-red-600 dark:text-red-400'
 							: ''}"
 				>
-					{totalRealizedProfit > 0 ? '+' : totalRealizedProfit < 0 ? '-' : ''}{formatDollars(Math.abs(totalRealizedProfit))}
+					{totalRealizedProfit > 0 ? '+' : totalRealizedProfit < 0 ? '-' : ''}{formatDollars(
+						Math.abs(totalRealizedProfit)
+					)}
 				</div>
 				<p class="text-xs text-muted-foreground">
-					{resolvedPositions.length} {resolvedPositions.length === 1
-						? 'posição encerrada'
-						: 'posições encerradas'}
+					{resolvedPositions.length}
+					{resolvedPositions.length === 1 ? 'posição encerrada' : 'posições encerradas'}
 				</p>
 			</Card.Content>
 		</Card.Root>
 
 		<Card.Root class="gap-0 py-3">
 			<Card.Header class="flex flex-row items-center justify-between px-4 py-0 pb-1">
-				<Card.Title class="text-sm font-medium text-muted-foreground"
-					>Não Realizado</Card.Title
-				>
+				<Card.Title class="text-sm font-medium text-muted-foreground">Não Realizado</Card.Title>
 				{#if totalUnrealizedGain > 0}
 					<TrendingUpIcon class="h-4 w-4 text-green-600 dark:text-green-400" />
 				{:else if totalUnrealizedGain < 0}
@@ -201,21 +198,20 @@
 							? 'text-red-600 dark:text-red-400'
 							: ''}"
 				>
-					{totalUnrealizedGain > 0 ? '+' : totalUnrealizedGain < 0 ? '-' : ''}{formatDollars(Math.abs(totalUnrealizedGain))}
+					{totalUnrealizedGain > 0 ? '+' : totalUnrealizedGain < 0 ? '-' : ''}{formatDollars(
+						Math.abs(totalUnrealizedGain)
+					)}
 				</div>
 				<p class="text-xs text-muted-foreground">
-					{openPositions.length} {openPositions.length === 1
-						? 'posição aberta'
-						: 'posições abertas'}
+					{openPositions.length}
+					{openPositions.length === 1 ? 'posição aberta' : 'posições abertas'}
 				</p>
 			</Card.Content>
 		</Card.Root>
 
 		<Card.Root class="gap-0 py-3">
 			<Card.Header class="flex flex-row items-center justify-between px-4 py-0 pb-1">
-				<Card.Title class="text-sm font-medium text-muted-foreground"
-					>Investido</Card.Title
-				>
+				<Card.Title class="text-sm font-medium text-muted-foreground">Investido</Card.Title>
 				<BarChart3Icon class="h-4 w-4 text-muted-foreground" />
 			</Card.Header>
 			<Card.Content class="px-4 py-0">
@@ -230,9 +226,7 @@
 		<div>
 			<h2 class="mb-3 text-lg font-semibold">As tuas posições</h2>
 			<div class="rounded-lg border bg-card text-card-foreground">
-				<Table.Root
-					class="[&_td]:px-5 [&_th]:px-5"
-				>
+				<Table.Root class="[&_td]:px-5 [&_th]:px-5">
 					<Table.Header>
 						<Table.Row>
 							<Table.Head>Evento</Table.Head>
@@ -249,12 +243,9 @@
 							{@const resolved = isResolved(position.marketId)}
 							{@const eventId = getEventId(position.marketId)}
 							<Table.Row class={resolved ? 'opacity-70' : ''}>
-								<Table.Cell class="max-w-[140px] truncate font-medium">
+								<Table.Cell class="max-w-35 truncate font-medium">
 									{#if eventId}
-										<a
-											href="/event/{eventId}"
-											class="hover:underline"
-										>
+										<a href="/event/{eventId}" class="hover:underline">
 											{getEventName(position.marketId)}
 										</a>
 									{:else}

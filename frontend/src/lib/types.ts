@@ -134,10 +134,12 @@ export interface TransactionResponse {
 }
 
 export interface AirdropStatusResponse {
-	lastAirdrop: string | null;
-	secondsUntilAvailable: number;
+	nextAirdropAt: string | null;
 	available: boolean;
 }
+
+/** Date ISO string when the next airdrop becomes available, or null if available now */
+export type AirdropAvailableAt = string | null;
 
 // Leaderboard
 

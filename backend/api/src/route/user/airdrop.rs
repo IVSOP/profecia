@@ -6,9 +6,8 @@ use crate::{AppState, error::AppResult, route::extractors::CurrentUser};
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AirdropStatusResponse {
-    pub last_airdrop: Option<String>,
-    /// Seconds remaining until the next airdrop is available. 0 means ready.
-    pub seconds_until_available: u64,
+    /// ISO 8601 timestamp when the next airdrop becomes available, or null if available now.
+    pub next_airdrop_at: Option<String>,
     pub available: bool,
 }
 
@@ -17,12 +16,11 @@ pub async fn status(
     CurrentUser(user): CurrentUser,
     State(state): State<AppState>,
 ) -> AppResult<Json<AirdropStatusResponse>> {
-    let (last_airdrop, seconds_remaining) = state.get_airdrop_status(user.id).await?;
+    let next_airdrop_at = state.get_airdrop_status(user.id).await?;
 
     Ok(Json(AirdropStatusResponse {
-        last_airdrop: last_airdrop.map(|ts| ts.to_rfc3339()),
-        seconds_until_available: seconds_remaining,
-        available: seconds_remaining == 0,
+        available: next_airdrop_at.is_none(),
+        next_airdrop_at: next_airdrop_at.map(|ts| ts.to_rfc3339()),
     }))
 }
 

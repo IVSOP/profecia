@@ -3,8 +3,7 @@ import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = async ({ locals, fetch }) => {
 	let balanceCents: number | null = null;
-	let airdropSecondsLeft: number = 0;
-	let airdropAvailable: boolean = false;
+	let airdropAvailableAt: string | null = null;
 
 	if (locals.user) {
 		const [balanceRes, airdropRes] = await Promise.all([
@@ -19,15 +18,13 @@ export const load: LayoutServerLoad = async ({ locals, fetch }) => {
 
 		if (airdropRes.ok) {
 			const data = (await airdropRes.json()) as AirdropStatusResponse;
-			airdropSecondsLeft = data.secondsUntilAvailable;
-			airdropAvailable = data.available;
+			airdropAvailableAt = data.nextAirdropAt ?? null;
 		}
 	}
 
 	return {
 		user: locals.user,
 		balanceCents,
-		airdropSecondsLeft,
-		airdropAvailable
+		airdropAvailableAt
 	};
 };

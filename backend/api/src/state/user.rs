@@ -92,7 +92,7 @@ impl AppState {
         let user = entity::user::ActiveModel {
             id: Set(user_id),
             username: Set(username.to_string()),
-            last_airdrop: Set(None),
+            next_airdrop_at: Set(None),
             wallet: Set(wallet.to_base58_string()),
         }
         .insert(&self.database)
@@ -143,27 +143,17 @@ impl AppState {
     pub async fn get_airdrop_status(
         &self,
         user_id: Uuid,
-    ) -> AppResult<(Option<DateTime<FixedOffset>>, u64)> {
+    ) -> AppResult<Option<DateTime<FixedOffset>>> {
         let user = entity::user::Entity::find_by_id(user_id)
             .one(&self.database)
             .await?
             .ok_or(AppError::UserNotFound)?;
 
-        let seconds_remaining = match user.last_airdrop {
-            Some(last) => {
-                let next_allowed = last + AIRDROP_COOLDOWN;
-                let now: DateTime<FixedOffset> = Utc::now().into();
-                let remaining = next_allowed - now;
-                if remaining.num_seconds() > 0 {
-                    remaining.num_seconds() as u64
-                } else {
-                    0
-                }
-            }
-            None => 0,
-        };
-
-        Ok((user.last_airdrop, seconds_remaining))
+        // Return None if no cooldown or cooldown has passed
+        match user.next_airdrop_at {
+            Some(next) if next > Utc::now() => Ok(Some(next)),
+            _ => Ok(None),
+        }
     }
 
     pub async fn request_airdrop(&self, user_id: Uuid, cents: u64) -> AppResult<()> {
@@ -172,9 +162,8 @@ impl AppState {
             .await?
             .ok_or(AppError::UserNotFound)?;
 
-        if let Some(last_airdrop) = user.last_airdrop {
-            let next_allowed = last_airdrop + AIRDROP_COOLDOWN;
-            if Utc::now() < next_allowed {
+        if let Some(next) = user.next_airdrop_at {
+            if Utc::now() < next {
                 return Err(AppError::AirdropCooldown);
             }
         }
@@ -198,7 +187,8 @@ impl AppState {
             .await?;
 
         let mut active_user: entity::user::ActiveModel = user.into();
-        active_user.last_airdrop = Set(Some(Utc::now().into()));
+        let next_airdrop_at: DateTime<FixedOffset> = (Utc::now() + AIRDROP_COOLDOWN).into();
+        active_user.next_airdrop_at = Set(Some(next_airdrop_at));
         active_user.update(&self.database).await?;
 
         Ok(())

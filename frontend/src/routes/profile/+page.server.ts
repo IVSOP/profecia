@@ -38,7 +38,7 @@ export const load: PageServerLoad = async ({ locals, fetch }) => {
 		balanceCents = data.balanceCents;
 	}
 
-	let allPercentages: Record<string, Record<string, MarketPercentagesDto>> = {};
+	const allPercentages: Record<string, Record<string, MarketPercentagesDto>> = {};
 	if (pctRes.ok) {
 		const response = (await pctRes.json()) as AllPercentagesResponse;
 		for (const [eventId, eventPct] of Object.entries(response.percentages)) {

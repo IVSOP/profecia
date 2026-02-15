@@ -10,7 +10,7 @@ pub struct Model {
     pub username: String,
     #[sea_orm(unique)]
     pub wallet: String,
-    pub last_airdrop: Option<DateTimeWithTimeZone>,
+    pub next_airdrop_at: Option<DateTimeWithTimeZone>,
     #[sea_orm(has_one)]
     pub identity: HasOne<super::identity::Entity>,
     #[sea_orm(has_many)]
