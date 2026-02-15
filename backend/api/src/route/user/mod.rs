@@ -13,6 +13,7 @@ use crate::{AppState, state::user::UserDto};
 
 mod airdrop;
 mod balance;
+mod leaderboard;
 mod login;
 mod logout;
 mod me;
@@ -57,4 +58,5 @@ pub fn router() -> axum::Router<AppState> {
         .route("/airdrop", post(airdrop::request))
         .route("/balance", get(balance::handle))
         .route("/positions", get(positions::handle))
+        .route("/leaderboard", get(leaderboard::handle))
 }

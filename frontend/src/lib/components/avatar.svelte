@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
-	import { UserIcon, LogOutIcon } from '@lucide/svelte';
+	import { UserIcon, LogOutIcon, TrophyIcon } from '@lucide/svelte';
 
 	let { username }: { username: string } = $props();
 </script>
@@ -24,6 +24,13 @@
 					Perfil
 				</a>
 			</DropdownMenu.Item>
+			<DropdownMenu.Item>
+				<a href="/leaderboard" class="flex w-full items-center gap-2">
+					<TrophyIcon class="h-4 w-4" />
+					Leaderboard
+				</a>
+			</DropdownMenu.Item>
+			<DropdownMenu.Separator />
 			<DropdownMenu.Item>
 				<a href="/logout" class="flex w-full items-center gap-2" data-sveltekit-reload>
 					<LogOutIcon class="h-4 w-4" />

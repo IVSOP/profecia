@@ -131,3 +131,15 @@ export interface AirdropStatusResponse {
 	secondsUntilAvailable: number;
 	available: boolean;
 }
+
+// Leaderboard
+
+export interface LeaderboardEntry {
+	userId: string;
+	username: string;
+	realizedProfitCents: number;
+}
+
+export interface LeaderboardResponse {
+	entries: LeaderboardEntry[];
+}
