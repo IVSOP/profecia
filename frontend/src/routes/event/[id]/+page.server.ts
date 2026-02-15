@@ -1,64 +1,10 @@
-import { error, fail } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import type { BuyOrderDto, EventChartDto, EventPercentagesResponse, InfoResponse, MarketOption, MarketPercentagesDto, PositionDto } from '$lib/types';
+import type { MarketOption } from '$lib/types';
+import { fetchEventData } from '$lib/data/event';
 
 export const load: PageServerLoad = async ({ fetch, params, locals }) => {
-	const response = await fetch(`/api/event/${params.id}`);
-
-	if (!response.ok) {
-		error(404, 'Evento não encontrado');
-	}
-
-	const payload = (await response.json()) as InfoResponse;
-
-	if (!payload.event) {
-		error(404, 'Evento não encontrado');
-	}
-
-	let positions: PositionDto[] = [];
-	let buyOrders: BuyOrderDto[] = [];
-
-	// Fetch percentages for all markets in this event
-	let marketPercentages: Record<string, MarketPercentagesDto> = {};
-	const pctResponse = await fetch(`/api/event/percentages/${params.id}`);
-	if (pctResponse.ok) {
-		const response = (await pctResponse.json()) as EventPercentagesResponse;
-		marketPercentages = response.percentages;
-	}
-
-	// Fetch chart data (percentage history)
-	let chartData: EventChartDto = { points: [] };
-	const chartResponse = await fetch(`/api/event/chart/${params.id}`);
-	if (chartResponse.ok) {
-		chartData = (await chartResponse.json()) as EventChartDto;
-	}
-
-	// Fetch ALL buy orders for each market (for the order book)
-	const allOrderPromises = payload.event.markets.map(async (market) => {
-		const res = await fetch(`/api/event/buyorder/${market.id}`);
-		if (!res.ok) return { marketId: market.id, orders: [] as BuyOrderDto[] };
-		const orders = (await res.json()) as BuyOrderDto[];
-		return { marketId: market.id, orders };
-	});
-	const allOrderResults = await Promise.all(allOrderPromises);
-	const allMarketOrders: Record<string, BuyOrderDto[]> = {};
-	for (const { marketId, orders } of allOrderResults) {
-		allMarketOrders[marketId] = orders;
-	}
-
-	if (locals.user) {
-		const posResponse = await fetch(`/api/event/position/${params.id}`);
-		if (posResponse.ok) {
-			positions = (await posResponse.json()) as PositionDto[];
-		}
-
-		// Filter user's buy orders from the already-fetched data
-		buyOrders = Object.values(allMarketOrders)
-			.flat()
-			.filter((o) => o.userId === locals.user!.id);
-	}
-
-	return { event: payload.event, positions, buyOrders, allMarketOrders, marketPercentages, chartData };
+	return fetchEventData(fetch, params.id, locals.user?.id);
 };
 
 export const actions = {

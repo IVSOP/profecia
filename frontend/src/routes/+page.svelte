@@ -1,8 +1,11 @@
 <script lang="ts">
 	import MarketCard from '$lib/components/market-card.svelte';
+	import { usePolling } from '$lib/hooks/use-polling.svelte';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
+
+	usePolling(30_000);
 
 	const sortedEvents = $derived.by(() => {
 		return [...data.events].sort((a, b) => {

@@ -4,6 +4,7 @@
 	import * as Select from '$lib/components/ui/select';
 	import { ExternalLinkIcon } from '@lucide/svelte';
 	import BarChart3 from '@lucide/svelte/icons/bar-chart-3';
+	import { usePolling } from '$lib/hooks/use-polling.svelte';
 	import type { MarketDto, MarketPercentagesDto } from '$lib/types';
 	import type { PageProps } from './$types';
 	import BuyOrderDialog from './buy-order-dialog.svelte';
@@ -14,6 +15,8 @@
 	import ActiveMarketRow from './active-market-row.svelte';
 
 	let { data }: PageProps = $props();
+
+	usePolling(30_000);
 
 	const user = $derived(page.data.user);
 
