@@ -1,3 +1,4 @@
+use blockchain_client::ProfeciaClient;
 use chrono::{DateTime, FixedOffset, Utc};
 use sea_orm::{ActiveModelTrait, ActiveValue::Set, EntityTrait};
 use serde::{Deserialize, Serialize};
@@ -19,6 +20,8 @@ pub struct UserDto {
     pub id: Uuid,
     pub username: String,
     pub is_admin: bool,
+    pub url: String,
+    pub pubkey: String,
 }
 
 impl UserDto {
@@ -26,12 +29,18 @@ impl UserDto {
         self.username == "admin"
     }
 
-    pub fn new(id: Uuid, username: String) -> Self {
+    pub fn new(id: Uuid, username: String, wallet: &String, solana: &ProfeciaClient) -> Self {
         let is_admin = username == "admin";
+        let wallet = Keypair::from_base58_string(wallet);
+        let pubkey = wallet.pubkey();
+        let url = solana.get_account_url(&pubkey);
+
         Self {
             id,
             username,
             is_admin,
+            url,
+            pubkey: pubkey.to_string(),
         }
     }
 }
@@ -52,7 +61,7 @@ impl AppState {
             return Ok(None);
         };
 
-        let user_dto = UserDto::new(user.id, user.username);
+        let user_dto = UserDto::new(user.id, user.username, &user.wallet, &self.solana);
 
         Ok(Some(user_dto))
     }
@@ -65,7 +74,7 @@ impl AppState {
             return Ok(None);
         };
 
-        let user_dto = UserDto::new(user.id, user.username);
+        let user_dto = UserDto::new(user.id, user.username, &user.wallet, &self.solana);
 
         Ok(Some(user_dto))
     }
@@ -97,7 +106,7 @@ impl AppState {
         .insert(&self.database)
         .await?;
 
-        Ok(UserDto::new(user_id, username.to_string()))
+        Ok(UserDto::new(user_id, username.to_string(), &user.wallet, &self.solana))
     }
 
     pub async fn get_user_identity_by_id(

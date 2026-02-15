@@ -25,6 +25,8 @@ export interface UserDto {
 	id: string;
 	username: string;
 	isAdmin: boolean;
+	url: string;
+	pubkey: string;
 }
 
 export interface AuthResponse {

@@ -9,7 +9,8 @@
 		TrendingDownIcon,
 		WalletIcon,
 		BarChart3Icon,
-		Trophy
+		Trophy,
+		ExternalLinkIcon
 	} from '@lucide/svelte';
 	import type { MarketDto, MarketOption, PositionDto } from '$lib/types';
 	import type { PageProps } from './$types';
@@ -120,9 +121,23 @@
 				{user?.username.slice(0, 2).toUpperCase()}
 			</Avatar.Fallback>
 		</Avatar.Root>
-		<div>
-			<h1 class="text-2xl font-bold">{user?.username}</h1>
-			<p class="text-sm text-muted-foreground">O teu perfil</p>
+		<div class="flex items-center gap-4">
+			<div>
+				<h1 class="text-2xl font-bold">{user?.username}</h1>
+				<p class="text-sm text-muted-foreground">O teu perfil</p>
+			</div>
+			{#if user?.url}
+				<a
+					href={user.url}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="inline-flex items-center gap-1.5 rounded-full border bg-muted/50 px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+				>
+					<span class="inline-block h-2 w-2 rounded-full bg-green-500"></span>
+					{user.pubkey.slice(0, 6)}...{user.pubkey.slice(-6)}
+					<ExternalLinkIcon class="h-3 w-3" />
+				</a>
+			{/if}
 		</div>
 	</div>
 
