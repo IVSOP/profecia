@@ -1,5 +1,6 @@
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card';
+	import * as Tooltip from '$lib/components/ui/tooltip';
 	import Trophy from '@lucide/svelte/icons/trophy';
 	import BarChart3 from '@lucide/svelte/icons/bar-chart-3';
 	import type { EventDto, MarketDto, MarketPercentagesDto } from '$lib/types';
@@ -97,7 +98,7 @@
 	</div>
 {/snippet}
 
-<Card.Root class="flex h-44 w-full flex-col gap-0 overflow-hidden p-4">
+<Card.Root class="flex h-45 w-full flex-col gap-0 overflow-hidden p-4">
 	<!-- Header -->
 	<div class="flex items-center gap-3">
 		{#if event.imageUrl}
@@ -110,21 +111,29 @@
 		<div class="min-w-0 flex-1 text-base leading-snug font-semibold">
 			<span class="flex items-center gap-1.5">
 				{#if event.pendingBuyOrders > 0}
-					<span class="relative flex h-2 w-2 shrink-0">
-						<span
-							class="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75"
-						></span>
-						<span class="relative inline-flex h-2 w-2 rounded-full bg-red-500"></span>
-					</span>
+					<Tooltip.Provider>
+						<Tooltip.Root>
+							<Tooltip.Trigger>
+								<span class="relative flex h-2 w-2 shrink-0">
+									<span
+										class="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75"
+									></span>
+									<span class="relative inline-flex h-2 w-2 rounded-full bg-red-500"></span>
+								</span>
+							</Tooltip.Trigger>
+							<Tooltip.Portal>
+								<Tooltip.Content>
+									{event.pendingBuyOrders} {event.pendingBuyOrders === 1 ? 'ordem aberta' : 'ordens abertas'}
+								</Tooltip.Content>
+							</Tooltip.Portal>
+						</Tooltip.Root>
+					</Tooltip.Provider>
 				{/if}
 				<a href={eventUrl} class="hover:underline">{event.displayName}</a>
 			</span>
 			<span class="mt-0.5 flex items-center gap-1 text-xs font-normal text-muted-foreground">
 				<BarChart3 class="h-3 w-3" />
 				{formatVolume(event.volume)} {event.volume === 1 ? 'Ação' : 'Ações'}
-				{#if isAllResolved && !isSingleMarket}
-					{@render encerradoBadge()}
-				{/if}
 			</span>
 		</div>
 		{#if isSingleMarket}
@@ -136,6 +145,8 @@
 					{formatPercentage(pct)}
 				</span>
 			{/if}
+		{:else if isAllResolved}
+			{@render encerradoBadge()}
 		{/if}
 	</div>
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import MarketCard from '$lib/components/market-card.svelte';
+	import MarketCard from './market-card.svelte';
 	import { usePolling } from '$lib/hooks/use-polling.svelte';
 	import type { PageData } from './$types';
 
@@ -15,8 +15,10 @@
 			// Resolved events go to the end
 			if (aResolved !== bResolved) return aResolved ? 1 : -1;
 
-			// Among unresolved, sort by pending buy orders descending
-			return b.pendingBuyOrders - a.pendingBuyOrders;
+			// Among unresolved, sort by pending buy orders descending, then by shares
+			const orderDiff = b.pendingBuyOrders - a.pendingBuyOrders;
+			if (orderDiff !== 0) return orderDiff;
+			return b.volume - a.volume;
 		});
 	});
 </script>
