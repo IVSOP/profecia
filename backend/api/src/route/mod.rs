@@ -8,7 +8,7 @@ mod user;
 
 pub fn router(state: AppState) -> Router {
     Router::new()
-        .nest("/event", event::router())
-        .nest("/user", user::router())
+        .nest("/api/event", event::router())
+        .nest("/api/user", user::router())
         .with_state(state)
 }

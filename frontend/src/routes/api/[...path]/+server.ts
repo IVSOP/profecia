@@ -14,7 +14,7 @@ async function proxyRequest(
 	request: Request,
 	fetcher: typeof globalThis.fetch
 ) {
-	const url = `${BACKEND_URL}/${path}`;
+	const url = `${BACKEND_URL}/api/${path}`;
 
 	const options: RequestInit = {
 		method,

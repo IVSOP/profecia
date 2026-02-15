@@ -33,12 +33,13 @@ pub const SKIP_PREFLIGHT: bool = false;
 pub struct ProfeciaClient {
     pub rpc_client: RpcClient,
     pub rpc_url: String,
+    pub external_rpc_url: String,
     pub rpc_config: RpcSendTransactionConfig,
     pub admin_wallet: Keypair,
 }
 
 impl ProfeciaClient {
-    pub fn new_with_wallet(admin_wallet: Keypair, rpc_url: &str) -> Self {
+    pub fn new_with_wallet(admin_wallet: Keypair, rpc_url: &str, external_rpc_url: &str) -> Self {
         let rpc_client =
             RpcClient::new_with_commitment(rpc_url.into(), CommitmentConfig::confirmed());
 
@@ -53,13 +54,14 @@ impl ProfeciaClient {
         Self {
             rpc_client,
             rpc_url: rpc_url.into(),
+            external_rpc_url: external_rpc_url.into(),
             rpc_config,
             admin_wallet,
         }
     }
 
     /// like new() but creates the wallet just for testing
-    pub async fn new_debug(rpc_url: &str) -> Result<Self> {
+    pub async fn new_debug(rpc_url: &str, external_rpc_url: &str) -> Result<Self> {
         let admin_wallet = Keypair::new();
 
         let rpc_client =
@@ -80,13 +82,15 @@ impl ProfeciaClient {
         Ok(Self {
             rpc_client,
             rpc_url: rpc_url.into(),
+            external_rpc_url: external_rpc_url.into(),
             rpc_config,
             admin_wallet,
         })
     }
 
-    pub fn new(rpc_url: &str) -> Result<Self> {
-        let wallet_path = "../blockchain_program/PRIVATE_KEY/id.json";
+    pub fn new(rpc_url: &str, external_rpc_url: &str) -> Result<Self> {
+        let wallet_path = std::env::var("ADMIN_WALLET_PATH")
+            .unwrap_or_else(|_| "../blockchain_program/PRIVATE_KEY/id.json".to_string());
 
         let admin_wallet = Keypair::read_from_file(wallet_path).map_err(|e| anyhow!("Error creating admin wallet: {}", e.to_string()))?;
 
@@ -104,6 +108,7 @@ impl ProfeciaClient {
         Ok(Self {
             rpc_client,
             rpc_url: rpc_url.into(),
+            external_rpc_url: external_rpc_url.into(),
             rpc_config,
             admin_wallet,
         })
@@ -470,11 +475,11 @@ impl ProfeciaClient {
     }
 
     pub fn get_account_url(&self, pubkey: &Pubkey) -> String {
-        format!("https://solscan.io/account/{}?cluster=custom&customUrl={}", pubkey.to_string(), self.rpc_url)
+        format!("https://solscan.io/account/{}?cluster=custom&customUrl={}", pubkey.to_string(), self.external_rpc_url)
     }
 
     pub fn get_transaction_url(&self, sig: &Signature) -> String {
-        format!("https://solscan.io/tx/{}?cluster=custom&customUrl={}", sig.to_string(), self.rpc_url)
+        format!("https://solscan.io/tx/{}?cluster=custom&customUrl={}", sig.to_string(), self.external_rpc_url)
     }
 
     pub async fn create_empty_event(

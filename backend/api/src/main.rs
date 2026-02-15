@@ -30,6 +30,12 @@ struct AppConfig {
         default_value = DEFAULT_RPC_HTTP
     )]
     rpc_url: String,
+    #[arg(
+        long,
+        env = "EXTERNAL_RPC_URL",
+        default_value = "http://localhost:8899"
+    )]
+    external_rpc_url: String,
 }
 
 #[derive(Clone)]
@@ -57,7 +63,7 @@ async fn main() -> anyhow::Result<()> {
         .sync(&database)
         .await?;
 
-    let solana = ProfeciaClient::new(&config.rpc_url)?;
+    let solana = ProfeciaClient::new(&config.rpc_url, &config.external_rpc_url)?;
 
     let _sig = solana
         .rpc_client

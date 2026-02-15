@@ -18,8 +18,9 @@ use uuid::Uuid;
 #[tokio::main]
 pub async fn main() -> Result<()> {
     let rpc_url = env::var("RPC_HTTP").unwrap_or_else(|_| DEFAULT_RPC_HTTP.to_string());
+    let external_rpc_url = env::var("EXTERNAL_RPC_HTTP").unwrap_or_else(|_| DEFAULT_RPC_HTTP.to_string());
 
-    let profecia_client = ProfeciaClient::new_debug(rpc_url.as_str()).await?;
+    let profecia_client = ProfeciaClient::new_debug(rpc_url.as_str(), external_rpc_url.as_str()).await?;
 
     println!("GENERATED WALLET {}", profecia_client.admin_wallet.pubkey());
     println!(

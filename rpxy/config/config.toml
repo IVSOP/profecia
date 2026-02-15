@@ -1,0 +1,15 @@
+listen_port = 80
+
+max_clients = 10000
+max_concurrent_streams = 10000
+
+[apps.profecia]
+server_name = 'localhost'
+
+[[apps.profecia.reverse_proxy]]
+path = '/api'
+upstream = [{ location = 'backend:3000' }]
+
+[[apps.profecia.reverse_proxy]]
+upstream = [{ location = 'frontend:3000' }]
+upstream_options = ["keep_original_host"]

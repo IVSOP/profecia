@@ -44,6 +44,7 @@ WORKDIR /app
 COPY --from=builder /app/target/release/api ./api
 
 ENV RUST_LOG=info
+ENV ADMIN_WALLET_PATH=/app/admin-wallet.json
 
 EXPOSE 3000
 
