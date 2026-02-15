@@ -17,14 +17,18 @@ services:
       timeout: 3s
       retries: 20
 
-  blockchain-program:
-    build:
-      context: ./backend
-      dockerfile: blockchain_program/Dockerfile
-    container_name: profecia-blockchain-program
-    volumes:
-      - ./data/program-so:/program/so
-      - ./data/program-keys:/program/keys
+  #  build vai sempre dar merda. dar build localmente:
+  # mkdir -p blockchain_program/target/deploy
+  # cp PRIVATE_KEY/*.json /workspace/target/deploy/blockchain_program-keypair.json
+  # cargo build-sbf
+  # blockchain-program:
+  #   build:
+  #     context: ./backend
+  #     dockerfile: blockchain_program/Dockerfile
+  #   container_name: profecia-blockchain-program
+  #   volumes:
+  #     - ./data/program-so:/program/so
+  #     - ./data/program-keys:/program/keys
 
   surfpool:
     image: surfpool/surfpool
@@ -39,9 +43,9 @@ services:
       - ./data/surfpool:/workspace/.surfpool
     command: start --no-tui
     restart: unless-stopped
-    depends_on:
-      blockchain-program:
-        condition: service_completed_successfully
+    # depends_on:
+    #   blockchain-program:
+    #     condition: service_completed_successfully
 
   backend:
     build:
