@@ -3,6 +3,7 @@
 	import { Separator } from '$lib/components/ui/separator';
 	import * as Select from '$lib/components/ui/select';
 	import { ExternalLinkIcon } from '@lucide/svelte';
+	import BarChart3 from '@lucide/svelte/icons/bar-chart-3';
 	import type { MarketDto, MarketPercentagesDto } from '$lib/types';
 	import type { PageProps } from './$types';
 	import BuyOrderDialog from './buy-order-dialog.svelte';
@@ -40,6 +41,12 @@
 	let buyDialogOption = $state<'A' | 'B'>('A');
 	let buyDialogPercentages = $state<MarketPercentagesDto | null>(null);
 
+	function formatVolume(vol: number): string {
+		if (vol >= 1_000_000) return `${(vol / 1_000_000).toFixed(1)}M`;
+		if (vol >= 1_000) return `${(vol / 1_000).toFixed(1)}K`;
+		return vol.toString();
+	}
+
 	function openBuyDialog(market: MarketDto, option: 'A' | 'B') {
 		buyDialogMarket = market;
 		buyDialogOption = option;
@@ -68,18 +75,29 @@
 		<h1 class="text-2xl font-bold">{data.event.displayName}</h1>
 	</div>
 	{#if data.event.url}
-		<a
-			href={data.event.url}
-			target="_blank"
-			rel="noopener noreferrer"
-			class="mb-6 inline-flex items-center gap-1.5 rounded-full border bg-muted/50 px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-		>
-			<span class="inline-block h-2 w-2 rounded-full bg-green-500"></span>
-			{data.event.pubkey.slice(0, 6)}...{data.event.pubkey.slice(-6)}
-			<ExternalLinkIcon class="h-3 w-3" />
-		</a>
+		<div class="mb-6 flex flex-wrap items-center gap-2">
+			<a
+				href={data.event.url}
+				target="_blank"
+				rel="noopener noreferrer"
+				class="inline-flex items-center gap-1.5 rounded-full border bg-muted/50 px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+			>
+				<span class="inline-block h-2 w-2 rounded-full bg-green-500"></span>
+				{data.event.pubkey.slice(0, 6)}...{data.event.pubkey.slice(-6)}
+				<ExternalLinkIcon class="h-3 w-3" />
+			</a>
+			<span class="inline-flex items-center gap-1.5 rounded-full border bg-muted/50 px-3 py-1 text-xs font-medium text-muted-foreground">
+				<BarChart3 class="h-3 w-3" />
+				{formatVolume(data.event.volume)} Posições
+			</span>
+		</div>
 	{:else}
-		<div class="mb-6"></div>
+		<div class="mb-6 flex items-center gap-2">
+			<span class="inline-flex items-center gap-1.5 rounded-full border bg-muted/50 px-3 py-1 text-xs font-medium text-muted-foreground">
+				<BarChart3 class="h-3 w-3" />
+				{formatVolume(data.event.volume)} Posições
+			</span>
+		</div>
 	{/if}
 
 	<!-- Price Chart -->

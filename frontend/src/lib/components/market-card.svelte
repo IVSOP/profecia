@@ -1,6 +1,7 @@
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card';
 	import Trophy from '@lucide/svelte/icons/trophy';
+	import BarChart3 from '@lucide/svelte/icons/bar-chart-3';
 	import type { EventDto, MarketPercentagesDto } from '$lib/types';
 
 	interface Props {
@@ -23,11 +24,17 @@
 	const isSingleMarket = $derived(event.markets.length === 1);
 	const visibleMarkets = $derived(sortedMarkets.slice(0, MAX_VISIBLE_MARKETS));
 	const hiddenCount = $derived(Math.max(0, sortedMarkets.length - MAX_VISIBLE_MARKETS));
+
+	function formatVolume(vol: number): string {
+		if (vol >= 1_000_000) return `${(vol / 1_000_000).toFixed(1)}M`;
+		if (vol >= 1_000) return `${(vol / 1_000).toFixed(1)}K`;
+		return vol.toString();
+	}
 </script>
 
-<Card.Root class="flex h-48 w-full flex-col gap-0 overflow-hidden py-0">
+<Card.Root class="flex h-44 w-full flex-col gap-0 overflow-hidden p-4">
 	<!-- Header -->
-	<Card.Header class="flex flex-row items-center gap-3 p-4">
+	<div class="flex items-center gap-3">
 		{#if event.imageUrl}
 			<img
 				src={event.imageUrl}
@@ -35,7 +42,7 @@
 				class="size-12 shrink-0 rounded-lg object-cover"
 			/>
 		{/if}
-		<Card.Title class="min-w-0 flex-1 text-base leading-snug">
+		<div class="min-w-0 flex-1 text-base leading-snug font-semibold">
 			<span class="flex items-center gap-1.5">
 				{#if event.pendingBuyOrders > 0}
 					<span class="relative flex h-2 w-2 shrink-0">
@@ -47,7 +54,11 @@
 				{/if}
 				<a href="/event/{event.id}" class="hover:underline">{event.displayName}</a>
 			</span>
-		</Card.Title>
+			<span class="mt-0.5 flex items-center gap-1 text-xs font-normal text-muted-foreground">
+				<BarChart3 class="h-3 w-3" />
+				{formatVolume(event.volume)} Posições
+			</span>
+		</div>
 		{#if isSingleMarket}
 			{@const pct = percentages[event.markets[0].id]}
 			{#if event.markets[0].resolvedOption != null}
@@ -63,10 +74,10 @@
 				</span>
 			{/if}
 		{/if}
-	</Card.Header>
+	</div>
 
 	<!-- Content -->
-	<Card.Content class="flex flex-1 flex-col px-4 pt-0 pb-4">
+	<div class="mt-3 flex flex-1 flex-col">
 		{#if isSingleMarket}
 			<!-- Single market: prominent side-by-side buttons -->
 			{@const market = event.markets[0]}
@@ -77,7 +88,8 @@
 					<div class="grid w-full grid-cols-2 gap-2">
 						<a
 							href="/event/{event.id}"
-							class="flex h-10 items-center justify-center gap-1.5 rounded-md text-sm font-semibold transition-colors {market.resolvedOption === 'optionA'
+							class="flex h-10 items-center justify-center gap-1.5 rounded-md text-sm font-semibold transition-colors {market.resolvedOption ===
+							'optionA'
 								? 'bg-green-600 text-white hover:bg-green-700'
 								: 'bg-muted text-muted-foreground'}"
 						>
@@ -88,7 +100,8 @@
 						</a>
 						<a
 							href="/event/{event.id}"
-							class="flex h-10 items-center justify-center gap-1.5 rounded-md text-sm font-semibold transition-colors {market.resolvedOption === 'optionB'
+							class="flex h-10 items-center justify-center gap-1.5 rounded-md text-sm font-semibold transition-colors {market.resolvedOption ===
+							'optionB'
 								? 'bg-green-600 text-white hover:bg-green-700'
 								: 'bg-muted text-muted-foreground'}"
 						>
@@ -107,9 +120,7 @@
 						>
 							{market.optionAName}
 							{#if pct?.optionAPercentage != null}
-								<span class="ml-2 text-xs font-normal opacity-80"
-									>{pct.optionAPercentage}¢</span
-								>
+								<span class="ml-2 text-xs font-normal opacity-80">{pct.optionAPercentage}¢</span>
 							{/if}
 						</a>
 						<a
@@ -118,9 +129,7 @@
 						>
 							{market.optionBName}
 							{#if pct?.optionBPercentage != null}
-								<span class="ml-2 text-xs font-normal opacity-80"
-									>{pct.optionBPercentage}¢</span
-								>
+								<span class="ml-2 text-xs font-normal opacity-80">{pct.optionBPercentage}¢</span>
 							{/if}
 						</a>
 					</div>
@@ -149,16 +158,10 @@
 						</div>
 						{#if market.resolvedOption != null}
 							<!-- Resolved market row -->
-							<div
-								class="flex shrink-0 items-center gap-1.5 rounded-full bg-green-600 px-2.5 py-1"
-							>
+							<div class="flex shrink-0 items-center gap-1.5 rounded-full bg-green-600 px-2.5 py-1">
 								<Trophy class="h-3.5 w-3.5 text-white" />
-								<span
-									class="text-xs font-semibold text-white"
-								>
-									{market.resolvedOption === 'optionA'
-										? market.optionAName
-										: market.optionBName}
+								<span class="text-xs font-semibold text-white">
+									{market.resolvedOption === 'optionA' ? market.optionAName : market.optionBName}
 								</span>
 							</div>
 						{:else}
@@ -189,9 +192,10 @@
 					href="/event/{event.id}"
 					class="mt-2 text-xs text-muted-foreground hover:text-foreground hover:underline"
 				>
-					Mais {hiddenCount} {hiddenCount === 1 ? 'mercado' : 'mercados'}
+					Mais {hiddenCount}
+					{hiddenCount === 1 ? 'mercado' : 'mercados'}
 				</a>
 			{/if}
 		{/if}
-	</Card.Content>
+	</div>
 </Card.Root>

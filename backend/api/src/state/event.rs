@@ -3,11 +3,12 @@ use std::collections::HashMap;
 use blockchain_client::ProfeciaClient;
 use blockchain_core::{
     accounts::event::EventOption,
-    instructions::{AddOptionArgs, CreateEmptyEventArgs, CreateEventArgs, FakeGetRewardArgs},
+    instructions::{AddOptionArgs, CreateEmptyEventArgs, FakeGetRewardArgs},
 };
 use sea_orm::{
-    ActiveModelTrait, ActiveValue::Set, ColumnTrait, EntityTrait, ModelTrait, QueryFilter,
+    ActiveModelTrait, ActiveValue::Set, ColumnTrait, EntityTrait, ExprTrait, ModelTrait, QueryFilter,
     QuerySelect, TransactionTrait,
+    sea_query::{Expr, Alias},
 };
 use serde::{Deserialize, Serialize};
 use solana_sdk::{signature::Keypair, signer::Signer};
@@ -29,6 +30,7 @@ pub struct EventDto {
     pub pubkey: String,
     pub markets: Vec<MarketDto>,
     pub pending_buy_orders: i64,
+    pub volume: i64,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -128,7 +130,7 @@ impl AppState {
             HashMap::new()
         } else {
             entity::buyorder::Entity::find()
-                .filter(entity::buyorder::Column::MarketId.is_in(all_market_ids))
+                .filter(entity::buyorder::Column::MarketId.is_in(all_market_ids.clone()))
                 .select_only()
                 .column(entity::buyorder::Column::MarketId)
                 .column_as(entity::buyorder::Column::Id.count(), "order_count")
@@ -140,11 +142,38 @@ impl AppState {
                 .collect()
         };
 
+        // Compute volume (total shares) per market from positions, then aggregate to events
+        let market_volumes: HashMap<Uuid, i64> = if all_market_ids.is_empty() {
+            HashMap::new()
+        } else {
+            entity::position::Entity::find()
+                .filter(entity::position::Column::MarketId.is_in(all_market_ids))
+                .select_only()
+                .column(entity::position::Column::MarketId)
+                .column_as(
+                    Expr::col(entity::position::Column::Shares).sum().cast_as(Alias::new("BIGINT")),
+                    "total_shares",
+                )
+                .group_by(entity::position::Column::MarketId)
+                .into_tuple::<(Uuid, i64)>()
+                .all(&self.database)
+                .await?
+                .into_iter()
+                .collect()
+        };
+
         Ok(rows
             .into_iter()
             .map(|(event, markets)| {
                 let event_pda = ProfeciaClient::derive_event_pubkey(&event.id);
-                let pending: i64 = markets.iter().map(|m| market_order_counts.get(&m.id).copied().unwrap_or(0)).sum();
+                let pending: i64 = markets
+                    .iter()
+                    .map(|m| market_order_counts.get(&m.id).copied().unwrap_or(0))
+                    .sum();
+                let volume: i64 = markets
+                    .iter()
+                    .map(|m| market_volumes.get(&m.id).copied().unwrap_or(0))
+                    .sum();
                 EventDto {
                     id: event.id,
                     display_name: event.display_name,
@@ -153,6 +182,7 @@ impl AppState {
                     pubkey: event_pda.to_string(),
                     markets: markets.into_iter().map(Into::into).collect(),
                     pending_buy_orders: pending,
+                    volume,
                 }
             })
             .collect())
@@ -175,9 +205,26 @@ impl AppState {
             0
         } else {
             entity::buyorder::Entity::find()
-                .filter(entity::buyorder::Column::MarketId.is_in(market_ids))
+                .filter(entity::buyorder::Column::MarketId.is_in(market_ids.clone()))
                 .select_only()
                 .column_as(entity::buyorder::Column::Id.count(), "order_count")
+                .into_tuple::<i64>()
+                .one(&self.database)
+                .await?
+                .unwrap_or(0)
+        };
+
+        // Compute volume (total shares) for this event from positions
+        let volume: i64 = if market_ids.is_empty() {
+            0
+        } else {
+            entity::position::Entity::find()
+                .filter(entity::position::Column::MarketId.is_in(market_ids))
+                .select_only()
+                .column_as(
+                    Expr::col(entity::position::Column::Shares).sum().cast_as(Alias::new("BIGINT")),
+                    "total_shares",
+                )
                 .into_tuple::<i64>()
                 .one(&self.database)
                 .await?
@@ -193,6 +240,7 @@ impl AppState {
             pubkey: event_pda.to_string(),
             markets: markets.into_iter().map(Into::into).collect(),
             pending_buy_orders: pending,
+            volume,
         }))
     }
 
@@ -286,15 +334,23 @@ impl AppState {
             uuid: event_id,
             description: "".into(),
         };
-        let _sig = self.solana.create_empty_event(&create_empty_event_args).await?;
+        let _sig = self
+            .solana
+            .create_empty_event(&create_empty_event_args)
+            .await?;
 
-        for ((option_id, option_info), (yes_token, no_token)) in markets_map.iter().zip(token_keypairs.iter()) {
+        for ((option_id, option_info), (yes_token, no_token)) in
+            markets_map.iter().zip(token_keypairs.iter())
+        {
             let add_option_args = AddOptionArgs {
                 event_uuid: event_id,
                 option_uuid: *option_id,
                 option_info: option_info.clone(),
             };
-            let _sig = self.solana.add_option(yes_token, no_token, &add_option_args).await?;
+            let _sig = self
+                .solana
+                .add_option(yes_token, no_token, &add_option_args)
+                .await?;
         }
 
         let event_pda = ProfeciaClient::derive_event_pubkey(&event_id);
@@ -307,6 +363,7 @@ impl AppState {
             pubkey: event_pda.to_string(),
             markets,
             pending_buy_orders: 0,
+            volume: 0,
         };
 
         Ok(event_dto)
