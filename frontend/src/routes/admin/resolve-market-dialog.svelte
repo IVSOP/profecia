@@ -4,6 +4,7 @@
 	import { Label } from '$lib/components/ui/label';
 	import { toast } from 'svelte-sonner';
 	import type { MarketDto, MarketOption } from '$lib/types';
+	import ErrorBanner from './error-banner.svelte';
 
 	interface Props {
 		open: boolean;
@@ -86,11 +87,7 @@
 			</AlertDialog.Header>
 
 			{#if error}
-				<div
-					class="rounded-md border border-destructive/50 bg-destructive/10 px-3 py-2 text-sm text-destructive"
-				>
-					{error}
-				</div>
+				<ErrorBanner message={error} />
 			{/if}
 
 			{#if market}

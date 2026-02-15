@@ -5,6 +5,8 @@
 	import { Label } from '$lib/components/ui/label';
 	import { Separator } from '$lib/components/ui/separator';
 	import type { CreateEventRequest, CreateMarketRequest, EventDto } from '$lib/types';
+	import ErrorBanner from './error-banner.svelte';
+	import MarketFields from './market-fields.svelte';
 
 	interface Props {
 		open: boolean;
@@ -111,13 +113,7 @@
 		</Dialog.Header>
 		<form onsubmit={handleSubmit}>
 			<div class="grid gap-5">
-				{#if error}
-					<div
-						class="rounded-md border border-destructive/50 bg-destructive/10 px-3 py-2 text-sm text-destructive"
-					>
-						{error}
-					</div>
-				{/if}
+				<ErrorBanner message={error} />
 
 				<div class="grid gap-2">
 					<Label for="event-title">Título do Evento</Label>
@@ -150,75 +146,13 @@
 				</div>
 
 				{#each markets as market, i}
-					<div class="rounded-lg border p-4">
-						<div class="mb-3 flex items-center justify-between">
-							<span class="text-sm font-medium text-muted-foreground">Mercado {i + 1}</span>
-							{#if markets.length > 1}
-								<Button
-									type="button"
-									variant="ghost"
-									size="sm"
-									class="h-7 px-2 text-xs text-destructive hover:text-destructive"
-									onclick={() => removeMarket(i)}
-									disabled={loading}
-								>
-									Remover
-								</Button>
-							{/if}
-						</div>
-						<div class="grid gap-3">
-							<div class="grid gap-2">
-								<Label for="market-name-{i}">Nome do Mercado</Label>
-								<Input
-									id="market-name-{i}"
-									placeholder="Ex: Vencedor da partida"
-									bind:value={market.displayName}
-									disabled={loading}
-									required
-								/>
-							</div>
-							<div class="grid grid-cols-2 gap-3">
-								<div class="grid gap-2">
-									<Label for="market-option-a-{i}">Opção A</Label>
-									<Input
-										id="market-option-a-{i}"
-										placeholder="Ex: Sim"
-										bind:value={market.optionAName}
-										disabled={loading}
-										required
-									/>
-								</div>
-								<div class="grid gap-2">
-									<Label for="market-option-b-{i}">Opção B</Label>
-									<Input
-										id="market-option-b-{i}"
-										placeholder="Ex: Não"
-										bind:value={market.optionBName}
-										disabled={loading}
-										required
-									/>
-								</div>
-							</div>
-							<div class="grid gap-2">
-								<Label for="market-rules-{i}">Regras</Label>
-								<Input
-									id="market-rules-{i}"
-									placeholder="Ex: Resultado no tempo regulamentar"
-									bind:value={market.rules}
-									disabled={loading}
-								/>
-							</div>
-							<div class="grid gap-2">
-								<Label for="market-image-url-{i}">Imagem do Mercado (URL, opcional)</Label>
-								<Input
-									id="market-image-url-{i}"
-									placeholder="https://exemplo.com/imagem.jpg"
-									bind:value={market.imageUrl}
-									disabled={loading}
-								/>
-							</div>
-						</div>
-					</div>
+					<MarketFields
+						bind:market={markets[i]}
+						index={i}
+						total={markets.length}
+						disabled={loading}
+						onremove={() => removeMarket(i)}
+					/>
 				{/each}
 			</div>
 

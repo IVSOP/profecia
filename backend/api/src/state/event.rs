@@ -70,6 +70,23 @@ pub struct MarketRequest {
     pub rules: String,
 }
 
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct UpdateEventRequest {
+    pub display_name: Option<String>,
+    pub image_url: Option<Option<String>>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct UpdateMarketRequest {
+    pub display_name: Option<String>,
+    pub image_url: Option<Option<String>>,
+    pub option_a_name: Option<String>,
+    pub option_b_name: Option<String>,
+    pub rules: Option<String>,
+}
+
 // impl From<(entity::event::Model, Vec<entity::market::Model>)> for EventDto {
 //     fn from((event, markets): (entity::event::Model, Vec<entity::market::Model>)) -> Self {
 //         EventDto {
@@ -455,5 +472,119 @@ impl AppState {
         transaction.commit().await?;
 
         Ok(tx_urls)
+    }
+
+    pub async fn update_event(&self, event_id: Uuid, request: UpdateEventRequest) -> AppResult<EventDto> {
+        let event = entity::event::Entity::find_by_id(event_id)
+            .one(&self.database)
+            .await?
+            .ok_or(AppError::EventNotFound)?;
+
+        let mut active: entity::event::ActiveModel = event.into();
+
+        if let Some(name) = request.display_name {
+            active.display_name = Set(name.trim().to_string());
+        }
+        if let Some(url) = request.image_url {
+            active.image_url = Set(url.map(|s| s.trim().to_string()).filter(|s| !s.is_empty()));
+        }
+
+        active.update(&self.database).await?;
+
+        self.get_event_by_id(event_id)
+            .await?
+            .ok_or(AppError::EventNotFound)
+    }
+
+    pub async fn update_market(&self, market_id: Uuid, request: UpdateMarketRequest) -> AppResult<MarketDto> {
+        let market = entity::market::Entity::find_by_id(market_id)
+            .one(&self.database)
+            .await?
+            .ok_or(AppError::MarketNotFound)?;
+
+        let mut active: entity::market::ActiveModel = market.into();
+
+        if let Some(name) = request.display_name {
+            active.display_name = Set(name.trim().to_string());
+        }
+        if let Some(url) = request.image_url {
+            active.image_url = Set(url.map(|s| s.trim().to_string()).filter(|s| !s.is_empty()));
+        }
+        if let Some(name) = request.option_a_name {
+            active.option_a_name = Set(name.trim().to_string());
+        }
+        if let Some(name) = request.option_b_name {
+            active.option_b_name = Set(name.trim().to_string());
+        }
+        if let Some(rules) = request.rules {
+            active.rules = Set(rules.trim().to_string());
+        }
+
+        let updated = active.update(&self.database).await?;
+        Ok(updated.into())
+    }
+
+    pub async fn add_market_to_event(&self, event_id: Uuid, request: MarketRequest) -> AppResult<MarketDto> {
+        // Verify event exists
+        entity::event::Entity::find_by_id(event_id)
+            .one(&self.database)
+            .await?
+            .ok_or(AppError::EventNotFound)?;
+
+        let market_id = Uuid::new_v4();
+        let market_display_name = request.display_name.trim().to_string();
+        let market_image_url = request
+            .image_url
+            .as_deref()
+            .map(|s| s.trim().to_string())
+            .filter(|s| !s.is_empty());
+
+        let yes_keypair = Keypair::new();
+        let no_keypair = Keypair::new();
+
+        let yes_keypair_string = yes_keypair.to_base58_string();
+        let no_keypair_string = no_keypair.to_base58_string();
+
+        let option_info = EventOption {
+            option_desc: "".into(),
+            yes_mint: yes_keypair.pubkey(),
+            no_mint: no_keypair.pubkey(),
+        };
+
+        let market = entity::market::ActiveModel {
+            id: Set(market_id),
+            yes_keypair: Set(yes_keypair_string),
+            no_keypair: Set(no_keypair_string),
+            display_name: Set(market_display_name),
+            image_url: Set(market_image_url.clone()),
+            event_id: Set(event_id),
+            option_a_name: Set(request.option_a_name),
+            option_b_name: Set(request.option_b_name),
+            rules: Set(request.rules),
+            resolved_option: Set(None),
+        };
+
+        let market = market.insert(&self.database).await?;
+
+        // Register on blockchain
+        let add_option_args = AddOptionArgs {
+            event_uuid: event_id,
+            option_uuid: market_id,
+            option_info,
+        };
+        let _sig = self
+            .solana
+            .add_option(&yes_keypair, &no_keypair, &add_option_args)
+            .await?;
+
+        Ok(MarketDto {
+            id: market.id,
+            display_name: market.display_name,
+            image_url: market_image_url,
+            option_a_name: market.option_a_name,
+            option_b_name: market.option_b_name,
+            rules: market.rules,
+            resolved_option: None,
+        })
     }
 }

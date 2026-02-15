@@ -19,6 +19,19 @@ export interface CreateEventRequest {
 	markets: CreateMarketRequest[];
 }
 
+export interface UpdateEventRequest {
+	displayName?: string;
+	imageUrl?: string | null;
+}
+
+export interface UpdateMarketRequest {
+	displayName?: string;
+	imageUrl?: string | null;
+	optionAName?: string;
+	optionBName?: string;
+	rules?: string;
+}
+
 // Response types
 
 export interface UserDto {
