@@ -250,11 +250,16 @@
 				{/if}
 
 				<div class="grid grid-cols-2 gap-2">
-					<Dialog.Close>
-						<Button type="button" variant="outline" class="w-full" disabled={submitting}
-							>Cancelar</Button
-						>
-					</Dialog.Close>
+					<Button
+						type="button"
+						variant="outline"
+						class="w-full"
+						disabled={submitting}
+						onclick={() => {
+							open = false;
+							resetForm();
+						}}>Cancelar</Button
+					>
 					<Button
 						type="submit"
 						class="w-full {option === 'A'

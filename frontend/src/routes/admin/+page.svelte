@@ -9,7 +9,19 @@
 	let { data }: PageProps = $props();
 
 	let createdEvents = $state<EventDto[]>([]);
-	let events = $derived<EventDto[]>([...createdEvents, ...data.events]);
+	let resolvedMarkets = $state<Map<string, MarketOption>>(new Map());
+
+	let events = $derived<EventDto[]>([
+		...createdEvents,
+		...data.events.map((event) => ({
+			...event,
+			markets: event.markets.map((m) => {
+				const resolved = resolvedMarkets.get(m.id);
+				return resolved !== undefined ? { ...m, resolvedOption: resolved } : m;
+			})
+		}))
+	]);
+
 	let dialogOpen = $state(false);
 
 	let resolveDialogOpen = $state(false);
@@ -20,22 +32,8 @@
 	}
 
 	function handleMarketResolved(marketId: string, option: MarketOption) {
-		function updateInList(list: EventDto[]): boolean {
-			for (const event of list) {
-				const market = event.markets.find((m) => m.id === marketId);
-				if (market) {
-					market.resolvedOption = option;
-					return true;
-				}
-			}
-			return false;
-		}
-
-		if (updateInList(createdEvents)) {
-			createdEvents = [...createdEvents];
-		} else if (updateInList(data.events)) {
-			data = { ...data, events: [...data.events] };
-		}
+		resolvedMarkets.set(marketId, option);
+		resolvedMarkets = new Map(resolvedMarkets);
 	}
 
 	function openResolveDialog(market: MarketDto) {

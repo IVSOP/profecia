@@ -231,7 +231,7 @@
 			<h2 class="mb-3 text-lg font-semibold">As tuas posições</h2>
 			<div class="rounded-lg border bg-card text-card-foreground">
 				<Table.Root
-					class="[&_td:first-child]:pl-4 [&_td:last-child]:pr-4 [&_th:first-child]:pl-4 [&_th:last-child]:pr-4"
+					class="[&_td]:px-5 [&_th]:px-5"
 				>
 					<Table.Header>
 						<Table.Row>

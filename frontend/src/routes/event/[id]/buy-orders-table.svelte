@@ -33,7 +33,7 @@
 <div class="mt-8">
 	<h2 class="mb-3 text-lg font-semibold">Ordens de compra pendentes</h2>
 	<div class="rounded-lg border bg-card text-card-foreground">
-		<Table.Root class="[&_td:first-child]:pl-4 [&_td:last-child]:pr-4 [&_th:first-child]:pl-4 [&_th:last-child]:pr-4">
+		<Table.Root class="[&_td]:px-5 [&_th]:px-5">
 			<Table.Header>
 				<Table.Row>
 					<Table.Head>Mercado</Table.Head>
