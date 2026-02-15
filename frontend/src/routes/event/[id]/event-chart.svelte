@@ -70,12 +70,19 @@
 		}
 		return values;
 	});
+
+	// Top 5 series by latest percentage for the legend labels
+	const topSeries = $derived(
+		[...series]
+			.sort((a, b) => (latestValues[b.key] ?? 0) - (latestValues[a.key] ?? 0))
+			.slice(0, 5)
+	);
 </script>
 
 <div class="mt-6 mb-10">
 	{#if markets.length > 1}
 		<div class="mb-1 flex items-center gap-4">
-			{#each series as s (s.key)}
+			{#each topSeries as s (s.key)}
 				<div class="flex items-center gap-1.5">
 					<span class="inline-block size-2.5 rounded-[2px]" style="background-color: {s.color};">
 					</span>
