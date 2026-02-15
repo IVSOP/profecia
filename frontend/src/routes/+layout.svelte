@@ -8,6 +8,7 @@
 	import '@fontsource-variable/inter';
 	import { ModeWatcher } from 'mode-watcher';
 	import { GiftIcon } from '@lucide/svelte';
+	import { Toaster } from '$lib/components/ui/sonner';
 	import type { AirdropStatusResponse, BalanceResponse } from '$lib/types';
 
 	let { children } = $props();
@@ -110,6 +111,7 @@
 </script>
 
 <ModeWatcher />
+<Toaster richColors closeButton />
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
 

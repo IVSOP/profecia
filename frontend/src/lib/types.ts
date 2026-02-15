@@ -129,6 +129,10 @@ export interface BalanceResponse {
 	balanceCents: number;
 }
 
+export interface TransactionResponse {
+	transactionUrls: string[];
+}
+
 export interface AirdropStatusResponse {
 	lastAirdrop: string | null;
 	secondsUntilAvailable: number;

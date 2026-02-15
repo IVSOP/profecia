@@ -46,7 +46,10 @@ export const actions = {
 			return fail(response.status, { error: text || 'Erro ao criar a ordem de compra.' });
 		}
 
-		return { success: true };
+		const data = await response.json().catch(() => null);
+		const transactionUrls: string[] = data?.transactionUrls ?? [];
+
+		return { success: true, transactionUrls };
 	},
 
 	cancelorder: async ({ request, fetch, locals }) => {
@@ -70,6 +73,9 @@ export const actions = {
 			return fail(response.status, { error: text || 'Erro ao cancelar a ordem.' });
 		}
 
-		return { success: true };
+		const data = await response.json().catch(() => null);
+		const transactionUrls: string[] = data?.transactionUrls ?? [];
+
+		return { success: true, transactionUrls };
 	}
 } satisfies Actions;

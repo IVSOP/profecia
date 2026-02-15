@@ -371,7 +371,7 @@ impl AppState {
         Ok(event_dto)
     }
 
-    pub async fn resolve_market(&self, market_id: Uuid, option: MarketOptionDto) -> AppResult<()> {
+    pub async fn resolve_market(&self, market_id: Uuid, option: MarketOptionDto) -> AppResult<Vec<String>> {
         let transaction = self.database.begin().await?;
 
         let market = entity::market::Entity::find_by_id(market_id)
@@ -384,6 +384,7 @@ impl AppState {
         }
 
         let winning_option: entity::market::MarketOption = option.into();
+        let mut tx_urls: Vec<String> = Vec::new();
 
         // Cancel all remaining buy orders for this market
         let buy_orders = market
@@ -399,7 +400,7 @@ impl AppState {
 
             let user_wallet = Keypair::from_base58_string(&user.wallet);
 
-            AppState::cancel_buy_order(
+            let sig = AppState::cancel_buy_order(
                 &transaction,
                 order.id,
                 order.shares,
@@ -409,6 +410,7 @@ impl AppState {
                 &self.solana,
             )
             .await?;
+            tx_urls.push(self.solana.get_transaction_url(&sig));
         }
 
         // Pay out positions that hold the winning option
@@ -442,8 +444,7 @@ impl AppState {
                 .solana
                 .get_reward(&user_wallet, &winning_mint, &fake_get_reward_args)
                 .await?;
-
-            tracing::error!("\n\n\n\n\n SIG FOR GET REWARD: {}", sig);
+            tx_urls.push(self.solana.get_transaction_url(&sig));
         }
 
         // Mark the market as resolved
@@ -453,6 +454,6 @@ impl AppState {
 
         transaction.commit().await?;
 
-        Ok(())
+        Ok(tx_urls)
     }
 }

@@ -6,18 +6,26 @@ use sea_orm::{EntityTrait, TransactionTrait};
 use solana_sdk::{signature::Keypair, signer::Signer};
 use uuid::Uuid;
 
+use serde::Serialize;
+
 use crate::{
     AppState, entity,
     error::{AppError, AppResult},
     route::extractors::CurrentUser,
 };
 
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct TransactionResponse {
+    pub transaction_urls: Vec<String>,
+}
+
 #[debug_handler]
 pub async fn handle(
     Path(buy_order_id): Path<Uuid>,
     State(app_state): State<AppState>,
     CurrentUser(user): CurrentUser,
-) -> AppResult<()> {
+) -> AppResult<axum::Json<TransactionResponse>> {
     let txn = app_state.database.begin().await?;
 
     let Some(buy_order) = AppState::get_buy_order(&txn, buy_order_id).await? else {
@@ -42,7 +50,7 @@ pub async fn handle(
 
     let user_wallet = Keypair::from_base58_string(&user_model.wallet);
 
-    let _sig = AppState::cancel_buy_order(
+    let sig = AppState::cancel_buy_order(
         &txn,
         buy_order.id,
         buy_order.shares,
@@ -53,7 +61,11 @@ pub async fn handle(
     )
     .await?;
 
+    let tx_url = app_state.solana.get_transaction_url(&sig);
+
     txn.commit().await?;
 
-    Ok(())
+    Ok(axum::Json(TransactionResponse {
+        transaction_urls: vec![tx_url],
+    }))
 }

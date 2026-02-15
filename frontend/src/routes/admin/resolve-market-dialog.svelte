@@ -2,6 +2,7 @@
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import * as Select from '$lib/components/ui/select';
 	import { Label } from '$lib/components/ui/label';
+	import { toast } from 'svelte-sonner';
 	import type { MarketDto, MarketOption } from '$lib/types';
 
 	interface Props {
@@ -41,6 +42,18 @@
 				error = data?.error || 'Erro ao resolver mercado. Tente novamente.';
 				loading = false;
 				return;
+			}
+
+			const data = await response.json().catch(() => null);
+			const urls: string[] = data?.transactionUrls ?? [];
+			for (const url of urls) {
+				toast.success('Transação na blockchain', {
+					description: 'Clica para ver no explorador',
+					action: {
+						label: 'Abrir',
+						onClick: () => window.open(url, '_blank')
+					}
+				});
 			}
 
 			onresolved(market.id, selectedOption);

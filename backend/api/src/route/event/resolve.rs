@@ -15,12 +15,22 @@ pub struct ResolveMarketRequest {
     pub option: MarketOptionDto,
 }
 
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct TransactionResponse {
+    pub transaction_urls: Vec<String>,
+}
+
 #[debug_handler]
 pub async fn handle(
     _admin: AdminUser,
     Path(market_id): Path<Uuid>,
     State(state): State<AppState>,
     Json(request): Json<ResolveMarketRequest>,
-) -> AppResult<()> {
-    state.resolve_market(market_id, request.option).await
+) -> AppResult<Json<TransactionResponse>> {
+    let tx_urls = state.resolve_market(market_id, request.option).await?;
+
+    Ok(Json(TransactionResponse {
+        transaction_urls: tx_urls,
+    }))
 }

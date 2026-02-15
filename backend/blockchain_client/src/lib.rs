@@ -28,7 +28,7 @@ pub const USDC_MINT: Pubkey = solana_sdk::pubkey!("EPjFWdd5AufqSSqeM2qN1xzybapC8
 pub const MARKETPLACE_PROGRAM: Pubkey =
     solana_sdk::pubkey!("ProirMXDTFF4AEqGyZVKPhWte4chANDd1c4Y8w7Nsd4");
 pub const SYSTEM_PROGRAM: Pubkey = solana_sdk::pubkey!("11111111111111111111111111111111");
-pub const SKIP_PREFLIGHT: bool = true;
+pub const SKIP_PREFLIGHT: bool = false;
 
 pub struct ProfeciaClient {
     pub rpc_client: RpcClient,
@@ -471,6 +471,10 @@ impl ProfeciaClient {
 
     pub fn get_account_url(&self, pubkey: &Pubkey) -> String {
         format!("https://solscan.io/account/{}?cluster=custom&customUrl={}", pubkey.to_string(), self.rpc_url)
+    }
+
+    pub fn get_transaction_url(&self, sig: &Signature) -> String {
+        format!("https://solscan.io/tx/{}?cluster=custom&customUrl={}", sig.to_string(), self.rpc_url)
     }
 
     pub async fn create_empty_event(

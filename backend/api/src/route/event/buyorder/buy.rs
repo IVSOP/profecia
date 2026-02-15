@@ -1,4 +1,4 @@
-use axum::{debug_handler, extract::State};
+use axum::{Json, debug_handler, extract::State};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 use validator::Validate;
@@ -23,12 +23,18 @@ pub struct BuyOrderRequest {
     pub option: MarketOptionDto,
 }
 
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct TransactionResponse {
+    pub transaction_urls: Vec<String>,
+}
+
 #[debug_handler]
 pub async fn handle(
     State(state): State<AppState>,
     ValidatedJson(request): ValidatedJson<BuyOrderRequest>,
-) -> AppResult<()> {
-    state
+) -> AppResult<Json<TransactionResponse>> {
+    let tx_urls = state
         .create_buy_order(
             request.market_id,
             request.user_id,
@@ -36,5 +42,9 @@ pub async fn handle(
             request.price_per_share,
             request.option,
         )
-        .await
+        .await?;
+
+    Ok(Json(TransactionResponse {
+        transaction_urls: tx_urls,
+    }))
 }

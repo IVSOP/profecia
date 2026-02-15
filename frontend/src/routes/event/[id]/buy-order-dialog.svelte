@@ -4,6 +4,7 @@
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
 	import * as Dialog from '$lib/components/ui/dialog';
+	import { toast } from 'svelte-sonner';
 	import type { MarketDto, MarketPercentagesDto, UserDto } from '$lib/types';
 
 	interface Props {
@@ -126,6 +127,18 @@
 							open = false;
 							resetForm();
 							window.dispatchEvent(new CustomEvent('balance:refresh'));
+
+							const urls = (result.data as { transactionUrls?: string[] })?.transactionUrls ?? [];
+							for (const url of urls) {
+								toast.success('Transação na blockchain', {
+									description: 'Clica para ver no explorador',
+									action: {
+										label: 'Abrir',
+										onClick: () => window.open(url, '_blank')
+									}
+								});
+							}
+
 							await update();
 						} else if (result.type === 'failure') {
 							const data = result.data as { error?: string } | undefined;

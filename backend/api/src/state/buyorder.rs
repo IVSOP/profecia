@@ -52,8 +52,9 @@ impl AppState {
         shares: i64,
         cents_per_share: i64,
         option: MarketOptionDto,
-    ) -> AppResult<()> {
+    ) -> AppResult<Vec<String>> {
         let transaction = self.database.begin().await?;
+        let mut tx_urls: Vec<String> = Vec::new();
 
         let market = entity::market::Entity::find_by_id(market_id)
             .one(&transaction)
@@ -109,15 +110,14 @@ impl AppState {
             num_shares: shares.try_into().unwrap(),
             price_per_share: usdc_per_share.try_into().unwrap(),
         };
-        let _sig = self
+        let sig = self
             .solana
             .create_order(&user_wallet, &create_order_args)
             .await?;
+        tx_urls.push(self.solana.get_transaction_url(&sig));
 
         let token_yes = Keypair::from_base58_string(&market.yes_keypair).pubkey();
         let token_no = Keypair::from_base58_string(&market.no_keypair).pubkey();
-
-        // tracing::error!("\n\n\n\n\n SIG FOR BUY ORDER: {}", _sig);
 
         // Find opposing buy orders that match (price_per_share == 100 - our price)
         let opposing_orders = entity::buyorder::Entity::find()
@@ -185,7 +185,7 @@ impl AppState {
             let match_order_args = FakeMatchOrderArgs {
                 event_uuid: event_id,
                 option_uuid: market_id,
-                num_shares: shares.try_into().unwrap(),
+                num_shares: matched_qty.try_into().unwrap(),
             };
 
             match option {
@@ -194,7 +194,7 @@ impl AppState {
                     let user_yes_wallet = &user_wallet;
                     let user_no_wallet = Keypair::from_base58_string(&opposing_user.wallet);
 
-                    let _sig = self
+                    let sig = self
                         .solana
                         .match_order(
                             user_yes_wallet,
@@ -204,14 +204,14 @@ impl AppState {
                             &match_order_args,
                         )
                         .await?;
-                    // tracing::error!("\n\n\n\n\n SIG FOR MATCH ORDER: {}", sig);
+                    tx_urls.push(self.solana.get_transaction_url(&sig));
                 }
                 MarketOption::B => {
                     // the market/user we received is the NO, and the opposing is the YES
                     let user_no_wallet = &user_wallet;
                     let user_yes_wallet = Keypair::from_base58_string(&opposing_user.wallet);
 
-                    let _sig = self
+                    let sig = self
                         .solana
                         .match_order(
                             &user_yes_wallet,
@@ -221,7 +221,7 @@ impl AppState {
                             &match_order_args,
                         )
                         .await?;
-                    // tracing::error!("\n\n\n\n\n SIG FOR MATCH ORDER: {}", sig);
+                    tx_urls.push(self.solana.get_transaction_url(&sig));
                 }
             }
         }
@@ -242,7 +242,7 @@ impl AppState {
 
         transaction.commit().await?;
 
-        Ok(())
+        Ok(tx_urls)
     }
 
     pub async fn cancel_buy_order(
