@@ -1,4 +1,4 @@
-import { fetchHomeData } from '$lib/data/home';
+import { fetchHomeData } from '$lib/fetchers/home';
 import type { EventDto, MarketPercentagesDto } from '$lib/types';
 import type { PageLoad } from './$types';
 

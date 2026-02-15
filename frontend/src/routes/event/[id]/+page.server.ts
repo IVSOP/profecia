@@ -1,7 +1,7 @@
 import { fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import type { MarketOption } from '$lib/types';
-import { fetchEventData } from '$lib/data/event';
+import { fetchEventData } from '$lib/fetchers/event';
 
 export const load: PageServerLoad = async ({ fetch, params, locals }) => {
 	return fetchEventData(fetch, params.id, locals.user?.id);
