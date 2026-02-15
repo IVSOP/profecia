@@ -8,6 +8,7 @@ use crate::accounts::{event::EventOption, order::TokenOption};
 #[derive(SchemaWrite, SchemaRead, Debug, Clone)]
 pub enum MarketInstruction {
     CreateEvent(CreateEventArgs),
+    CreateEmptyEvent(CreateEmptyEventArgs),
     CloseEvent(CloseEventArgs),
     // CreateOrder(CreateOrderArgs),
     // MatchOrder(MatchOrderArgs),
@@ -17,6 +18,7 @@ pub enum MarketInstruction {
     FakeCreateOrder(FakeCreateOrderArgs),
     FakeCancelOrder(FakeCancelOrderArgs),
     FakeGetReward(FakeGetRewardArgs),
+    AddOption(AddOptionArgs),
 }
 
 #[derive(SchemaWrite, SchemaRead, Debug, Clone)]
@@ -24,6 +26,12 @@ pub struct CreateEventArgs {
     pub uuid: Uuid,
     pub description: String,
     pub options: HashMap<Uuid, EventOption>,
+}
+
+#[derive(SchemaWrite, SchemaRead, Debug, Clone)]
+pub struct CreateEmptyEventArgs {
+    pub uuid: Uuid,
+    pub description: String,
 }
 
 #[derive(SchemaWrite, SchemaRead, Debug, Copy, Clone)]
@@ -93,4 +101,11 @@ pub struct FakeGetRewardArgs {
     pub event_uuid: Uuid,
     pub option_uuid: Uuid,
     pub num_shares: u64,
+}
+
+#[derive(SchemaWrite, SchemaRead, Debug, Clone)]
+pub struct AddOptionArgs {
+    pub event_uuid: Uuid,
+    pub option_uuid: Uuid,
+    pub option_info: EventOption,
 }

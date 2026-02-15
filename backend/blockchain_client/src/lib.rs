@@ -1,7 +1,7 @@
 use anyhow::{Result, anyhow};
 use blockchain_core::{
     accounts::event::Event,
-    instructions::{CloseEventArgs, CreateEventArgs, FakeCancelOrderArgs, FakeCreateOrderArgs, FakeGetRewardArgs, FakeMatchOrderArgs, MarketInstruction},
+    instructions::{AddOptionArgs, CloseEventArgs, CreateEmptyEventArgs, CreateEventArgs, FakeCancelOrderArgs, FakeCreateOrderArgs, FakeGetRewardArgs, FakeMatchOrderArgs, MarketInstruction},
 };
 use serde_json::{Value, json};
 use solana_client::{
@@ -471,5 +471,87 @@ impl ProfeciaClient {
 
     pub fn get_account_url(&self, pubkey: &Pubkey) -> String {
         format!("https://solscan.io/account/{}?cluster=custom&customUrl={}", pubkey.to_string(), self.rpc_url)
+    }
+
+    pub async fn create_empty_event(
+        &self,
+        args: &CreateEmptyEventArgs,
+    ) -> Result<Signature> {
+        let instruction_args = MarketInstruction::CreateEmptyEvent(args.clone());
+
+        let instruction_bytes = wincode::serialize(&instruction_args)?;
+
+        let (event_pda, _) = Event::find_program_address(&args.uuid, &MARKETPLACE_PROGRAM);
+
+        let treasury = get_associated_token_address(&event_pda, &USDC_MINT);
+
+        let accounts: Vec<AccountMeta> = vec![
+            AccountMeta::new(self.admin_wallet.pubkey(), true),
+            AccountMeta::new(event_pda, false),
+            AccountMeta::new_readonly(USDC_MINT, false),
+            AccountMeta::new(treasury, false),
+            AccountMeta::new_readonly(SYSTEM_PROGRAM, false),
+            AccountMeta::new_readonly(spl_token::ID, false),
+            AccountMeta::new_readonly(spl_associated_token_account::ID, false),
+        ];
+
+        let recent_blockhash = self.rpc_client.get_latest_blockhash().await?;
+
+        let instruction =
+            Instruction::new_with_bytes(MARKETPLACE_PROGRAM, instruction_bytes.as_ref(), accounts);
+
+        let message = Message::new(&[instruction], Some(&self.admin_wallet.pubkey()));
+
+        let mut transaction = Transaction::new_unsigned(message);
+
+        transaction.sign(&[&self.admin_wallet], recent_blockhash);
+
+        let signature = self
+            .rpc_client
+            .send_transaction_with_config(&transaction, self.rpc_config)
+            .await?;
+
+        Ok(signature)
+    }
+
+    pub async fn add_option(
+        &self,
+        yes_token: &Keypair,
+        no_token: &Keypair,
+        args: &AddOptionArgs,
+    ) -> Result<Signature> {
+        let instruction_args = MarketInstruction::AddOption(args.clone());
+
+        let instruction_bytes = wincode::serialize(&instruction_args)?;
+
+        let (event_pda, _) = Event::find_program_address(&args.event_uuid, &MARKETPLACE_PROGRAM);
+
+        let accounts: Vec<AccountMeta> = vec![
+            AccountMeta::new(self.admin_wallet.pubkey(), true),
+            AccountMeta::new(event_pda, false),
+            AccountMeta::new_readonly(SYSTEM_PROGRAM, false),
+            AccountMeta::new_readonly(spl_token::ID, false),
+            AccountMeta::new_readonly(spl_associated_token_account::ID, false),
+            AccountMeta::new(yes_token.pubkey(), true),
+            AccountMeta::new(no_token.pubkey(), true),
+        ];
+
+        let recent_blockhash = self.rpc_client.get_latest_blockhash().await?;
+
+        let instruction =
+            Instruction::new_with_bytes(MARKETPLACE_PROGRAM, instruction_bytes.as_ref(), accounts);
+
+        let message = Message::new(&[instruction], Some(&self.admin_wallet.pubkey()));
+
+        let mut transaction = Transaction::new_unsigned(message);
+
+        transaction.sign(&[&self.admin_wallet, yes_token, no_token], recent_blockhash);
+
+        let signature = self
+            .rpc_client
+            .send_transaction_with_config(&transaction, self.rpc_config)
+            .await?;
+
+        Ok(signature)
     }
 }

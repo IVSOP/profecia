@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use blockchain_client::ProfeciaClient;
 use blockchain_core::{
     accounts::event::EventOption,
-    instructions::{CreateEventArgs, FakeGetRewardArgs},
+    instructions::{AddOptionArgs, CreateEmptyEventArgs, CreateEventArgs, FakeGetRewardArgs},
 };
 use sea_orm::{
     ActiveModelTrait, ActiveValue::Set, ColumnTrait, EntityTrait, ModelTrait, QueryFilter,
@@ -214,7 +214,7 @@ impl AppState {
         .insert(&transaction)
         .await?;
 
-        let mut token_keypairs: Vec<Keypair> = Vec::new();
+        let mut token_keypairs: Vec<(Keypair, Keypair)> = Vec::new();
         let mut markets_map: HashMap<Uuid, EventOption> = HashMap::new();
 
         let mut markets = Vec::with_capacity(event.markets.len());
@@ -243,8 +243,7 @@ impl AppState {
                 },
             );
 
-            token_keypairs.push(yes_keypair);
-            token_keypairs.push(no_keypair);
+            token_keypairs.push((yes_keypair, no_keypair));
 
             let market = entity::market::ActiveModel {
                 id: Set(market_id),
@@ -273,15 +272,30 @@ impl AppState {
 
         transaction.commit().await?;
 
-        let create_event_args = CreateEventArgs {
+        // let create_event_args = CreateEventArgs {
+        //     uuid: event_id,
+        //     description: "".into(),
+        //     options: markets_map,
+        // };
+        // let _sig = self
+        //     .solana
+        //     .create_event(&token_keypairs, &create_event_args)
+        //     .await?;
+
+        let create_empty_event_args = CreateEmptyEventArgs {
             uuid: event_id,
             description: "".into(),
-            options: markets_map,
         };
-        let _sig = self
-            .solana
-            .create_event(&token_keypairs, &create_event_args)
-            .await?;
+        let _sig = self.solana.create_empty_event(&create_empty_event_args).await?;
+
+        for ((option_id, option_info), (yes_token, no_token)) in markets_map.iter().zip(token_keypairs.iter()) {
+            let add_option_args = AddOptionArgs {
+                event_uuid: event_id,
+                option_uuid: *option_id,
+                option_info: option_info.clone(),
+            };
+            let _sig = self.solana.add_option(yes_token, no_token, &add_option_args).await?;
+        }
 
         let event_pda = ProfeciaClient::derive_event_pubkey(&event_id);
 
