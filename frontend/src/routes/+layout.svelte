@@ -128,7 +128,7 @@
 							variant="outline"
 							size="icon"
 							class={airdropAvailable && !airdropLoading
-								? 'text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300 cursor-pointer'
+								? 'text-primary hover:text-primary/80 cursor-pointer'
 								: 'text-muted-foreground/40 !opacity-50 !pointer-events-auto cursor-not-allowed'}
 							onclick={requestAirdrop}
 							aria-label={airdropAvailable ? 'Pedir airdrop' : `Airdrop disponível em ${formatCooldown(secondsLeft)}`}
