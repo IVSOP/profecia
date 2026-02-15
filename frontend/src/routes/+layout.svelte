@@ -74,7 +74,7 @@
 			</div>
 		</div>
 	</header>
-	<main class="container mx-auto max-w-6xl flex-1 px-4 py-5">
+	<main class="container mx-auto flex-1 px-4 py-5">
 		{@render children?.()}
 	</main>
 </div>

@@ -12,6 +12,8 @@
 	class="toaster group"
 	toastOptions={{
 		classes: {
+			toast: 'group-[.toaster]:!bg-background group-[.toaster]:!text-foreground group-[.toaster]:!border-border',
+			closeButton: 'group-[.toaster]:!bg-background group-[.toaster]:!text-foreground group-[.toaster]:!border-border',
 			actionButton: 'group-[.toaster]:!bg-primary group-[.toaster]:!text-primary-foreground'
 		}
 	}}
