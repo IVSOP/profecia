@@ -113,7 +113,7 @@
 	<title>Perfil - Profecia</title>
 </svelte:head>
 
-<div class="mx-auto max-w-4xl">
+<div>
 	<!-- Profile Header -->
 	<div class="mb-8 flex items-center gap-4">
 		<Avatar.Root class="h-16 w-16 ring-2 ring-border">
@@ -126,9 +126,9 @@
 				<h1 class="text-2xl font-bold">{user?.username}</h1>
 				<p class="text-sm text-muted-foreground">O teu perfil</p>
 			</div>
-			{#if user?.url}
+			{#if user?.solanaUrl}
 				<a
-					href={user.url}
+					href={user.solanaUrl}
 					target="_blank"
 					rel="noopener noreferrer"
 					class="inline-flex items-center gap-1.5 rounded-full border bg-muted/50 px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"

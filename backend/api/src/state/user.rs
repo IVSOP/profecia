@@ -20,7 +20,7 @@ pub struct UserDto {
     pub id: Uuid,
     pub username: String,
     pub is_admin: bool,
-    pub url: String,
+    pub solana_url: String,
     pub pubkey: String,
 }
 
@@ -33,13 +33,13 @@ impl UserDto {
         let is_admin = username == "admin";
         let wallet = Keypair::from_base58_string(wallet);
         let pubkey = wallet.pubkey();
-        let url = solana.get_account_url(&pubkey);
+        let solana_url = solana.get_account_url(&pubkey);
 
         Self {
             id,
             username,
             is_admin,
-            url,
+            solana_url,
             pubkey: pubkey.to_string(),
         }
     }

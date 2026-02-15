@@ -65,7 +65,7 @@
 	<title>{data.event.displayName} - Profecia</title>
 </svelte:head>
 
-<div class="mx-auto max-w-3xl">
+<div>
 	<!-- Event Title -->
 	<div class="mb-1 flex items-center gap-4">
 		{#if data.event.imageUrl}
@@ -78,9 +78,9 @@
 		<h1 class="text-2xl font-bold">{data.event.displayName}</h1>
 	</div>
 	<div class="mb-6 flex flex-wrap items-center gap-2">
-		{#if data.event.url}
+		{#if data.event.solanaUrl}
 			<a
-				href={data.event.url}
+				href={data.event.solanaUrl}
 				target="_blank"
 				rel="noopener noreferrer"
 				class="inline-flex items-center gap-1.5 rounded-full border bg-muted/50 px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"

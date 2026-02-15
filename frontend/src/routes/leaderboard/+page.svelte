@@ -24,7 +24,7 @@
 	<title>Leaderboard - Profecia</title>
 </svelte:head>
 
-<div class="mx-auto">
+<div>
 	<div class="mb-6 flex items-center gap-3">
 		<Trophy class="h-7 w-7 text-yellow-500" />
 		<h1 class="text-2xl font-bold">Leaderboard</h1>

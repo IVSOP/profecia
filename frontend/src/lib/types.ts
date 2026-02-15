@@ -25,7 +25,7 @@ export interface UserDto {
 	id: string;
 	username: string;
 	isAdmin: boolean;
-	url: string;
+	solanaUrl: string;
 	pubkey: string;
 }
 
@@ -54,7 +54,7 @@ export interface EventDto {
 	id: string;
 	displayName: string;
 	imageUrl: string | null;
-	url: string;
+	solanaUrl: string;
 	pubkey: string;
 	markets: MarketDto[];
 	pendingBuyOrders: number;
