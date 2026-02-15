@@ -26,9 +26,9 @@
 		<p class="text-xs text-muted-foreground">Mercado encerrado</p>
 	</div>
 	<div
-		class="flex shrink-0 items-center gap-2 rounded-full bg-emerald-100 px-3 py-1 dark:bg-emerald-900/40"
+		class="flex shrink-0 items-center gap-2 rounded-full bg-green-100 px-3 py-1 dark:bg-green-900/40"
 	>
-		<Trophy class="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-		<span class="text-sm font-semibold text-emerald-700 dark:text-emerald-300">{winnerName}</span>
+		<Trophy class="h-4 w-4 text-green-600 dark:text-green-400" />
+		<span class="text-sm font-semibold text-green-700 dark:text-green-300">{winnerName}</span>
 	</div>
 </div>

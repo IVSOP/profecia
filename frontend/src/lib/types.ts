@@ -55,6 +55,7 @@ export interface EventDto {
 	url: string;
 	pubkey: string;
 	markets: MarketDto[];
+	pendingBuyOrders: number;
 }
 
 export interface InfoResponse {

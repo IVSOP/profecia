@@ -3,15 +3,28 @@
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
+
+	const sortedEvents = $derived.by(() => {
+		return [...data.events].sort((a, b) => {
+			const aResolved = a.markets.length > 0 && a.markets.every((m) => m.resolvedOption !== null);
+			const bResolved = b.markets.length > 0 && b.markets.every((m) => m.resolvedOption !== null);
+
+			// Resolved events go to the end
+			if (aResolved !== bResolved) return aResolved ? 1 : -1;
+
+			// Among unresolved, sort by pending buy orders descending
+			return b.pendingBuyOrders - a.pendingBuyOrders;
+		});
+	});
 </script>
 
 <svelte:head>
 	<title>Profecia</title>
 </svelte:head>
 
-{#if data.events.length > 0}
+{#if sortedEvents.length > 0}
 	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-		{#each data.events as event (event.id)}
+		{#each sortedEvents as event (event.id)}
 			<MarketCard {event} percentages={data.allPercentages[event.id] ?? {}} />
 		{/each}
 	</div>

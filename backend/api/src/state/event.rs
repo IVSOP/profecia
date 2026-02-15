@@ -4,7 +4,7 @@ use blockchain_client::ProfeciaClient;
 use blockchain_core::{accounts::event::EventOption, instructions::CreateEventArgs};
 use sea_orm::{
     ActiveModelTrait, ActiveValue::Set, ColumnTrait, EntityTrait, ModelTrait, QueryFilter,
-    TransactionTrait,
+    QuerySelect, TransactionTrait,
 };
 use serde::{Deserialize, Serialize};
 use solana_sdk::{signature::Keypair, signer::Signer};
@@ -24,6 +24,7 @@ pub struct EventDto {
     pub url: String,
     pub pubkey: String,
     pub markets: Vec<MarketDto>,
+    pub pending_buy_orders: i64,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -112,10 +113,34 @@ impl AppState {
             .all(&self.database)
             .await?;
 
+        // Collect all market IDs to count pending buy orders
+        let all_market_ids: Vec<Uuid> = rows
+            .iter()
+            .flat_map(|(_, markets)| markets.iter().map(|m| m.id))
+            .collect();
+
+        // Count buy orders per market
+        let market_order_counts: HashMap<Uuid, i64> = if all_market_ids.is_empty() {
+            HashMap::new()
+        } else {
+            entity::buyorder::Entity::find()
+                .filter(entity::buyorder::Column::MarketId.is_in(all_market_ids))
+                .select_only()
+                .column(entity::buyorder::Column::MarketId)
+                .column_as(entity::buyorder::Column::Id.count(), "order_count")
+                .group_by(entity::buyorder::Column::MarketId)
+                .into_tuple::<(Uuid, i64)>()
+                .all(&self.database)
+                .await?
+                .into_iter()
+                .collect()
+        };
+
         Ok(rows
             .into_iter()
             .map(|(event, markets)| {
                 let event_pda = ProfeciaClient::derive_event_pubkey(&event.id);
+                let pending: i64 = markets.iter().map(|m| market_order_counts.get(&m.id).copied().unwrap_or(0)).sum();
                 EventDto {
                     id: event.id,
                     display_name: event.display_name,
@@ -123,6 +148,7 @@ impl AppState {
                     url: self.solana.get_account_url(&event_pda),
                     pubkey: event_pda.to_string(),
                     markets: markets.into_iter().map(Into::into).collect(),
+                    pending_buy_orders: pending,
                 }
             })
             .collect())
@@ -134,20 +160,36 @@ impl AppState {
             .all(&self.database)
             .await?
             .into_iter()
-            .next()
-            .map(|(event, markets)| {
-                let event_pda = ProfeciaClient::derive_event_pubkey(&event.id);
-                EventDto {
-                    id: event.id,
-                    display_name: event.display_name,
-                    image_url: event.image_url,
-                    url: self.solana.get_account_url(&event_pda),
-                    pubkey: event_pda.to_string(),
-                    markets: markets.into_iter().map(Into::into).collect(),
-                }
-            });
+            .next();
 
-        Ok(result)
+        let Some((event, markets)) = result else {
+            return Ok(None);
+        };
+
+        let market_ids: Vec<Uuid> = markets.iter().map(|m| m.id).collect();
+        let pending: i64 = if market_ids.is_empty() {
+            0
+        } else {
+            entity::buyorder::Entity::find()
+                .filter(entity::buyorder::Column::MarketId.is_in(market_ids))
+                .select_only()
+                .column_as(entity::buyorder::Column::Id.count(), "order_count")
+                .into_tuple::<i64>()
+                .one(&self.database)
+                .await?
+                .unwrap_or(0)
+        };
+
+        let event_pda = ProfeciaClient::derive_event_pubkey(&event.id);
+        Ok(Some(EventDto {
+            id: event.id,
+            display_name: event.display_name,
+            image_url: event.image_url,
+            url: self.solana.get_account_url(&event_pda),
+            pubkey: event_pda.to_string(),
+            markets: markets.into_iter().map(Into::into).collect(),
+            pending_buy_orders: pending,
+        }))
     }
 
     pub async fn create_event(&self, event: EventRequest) -> AppResult<EventDto> {
@@ -191,7 +233,7 @@ impl AppState {
             markets_map.insert(
                 market_id,
                 EventOption {
-                    option_desc: "isto nao esta feito".into(),
+                    option_desc: "".into(),
                     yes_mint: yes_keypair.pubkey(),
                     no_mint: no_keypair.pubkey(),
                 },
@@ -229,7 +271,7 @@ impl AppState {
 
         let create_event_args = CreateEventArgs {
             uuid: event_id,
-            description: "isto nao esta feito".into(),
+            description: "".into(),
             options: markets_map,
         };
         let _sig = self
@@ -246,6 +288,7 @@ impl AppState {
             image_url: event_image_url,
             pubkey: event_pda.to_string(),
             markets,
+            pending_buy_orders: 0,
         };
 
         Ok(event_dto)
