@@ -51,6 +51,10 @@
 	let expandedMarkets = $state<Record<string, boolean>>({});
 </script>
 
+<svelte:head>
+	<title>{data.event.displayName} - Profecia</title>
+</svelte:head>
+
 <div class="mx-auto max-w-3xl">
 	<!-- Event Title -->
 	<div class="mb-1 flex items-center gap-4">

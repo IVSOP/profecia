@@ -5,6 +5,10 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
+<svelte:head>
+	<title>Profecia</title>
+</svelte:head>
+
 {#if data.events.length > 0}
 	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 		{#each data.events as event (event.id)}
