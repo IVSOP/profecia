@@ -56,7 +56,7 @@
 					<img src={favicon} alt="" class="h-7 w-7" aria-hidden="true" />
 					Profecia
 				</a>
-				<div class="flex items-center gap-2">
+				<div class="flex items-center gap-3">
 					{#if user}
 						<AirdropButton />
 						{#if balanceCents != null}
@@ -74,7 +74,7 @@
 			</div>
 		</div>
 	</header>
-	<main class="container mx-auto flex-1 px-4 py-5">
+	<main class="container mx-auto max-w-5xl flex-1 px-4 py-5">
 		{@render children?.()}
 	</main>
 </div>

@@ -1,38 +1,4 @@
-FROM rust:slim-bookworm
-
-# # Install system dependencies
-# RUN apt-get update && apt-get install -y \
-#     curl \
-#     ca-certificates \
-#     build-essential \
-#     pkg-config \
-#     libssl-dev \
-#     libudev-dev \
-#     bzip2 \
-#     && rm -rf /var/lib/apt/lists/*
-
-# # Install Solana tools from GitHub release
-# RUN SOLANA_VERSION="v1.18.26" && \
-#     curl -L "https://github.com/solana-labs/solana/releases/download/${SOLANA_VERSION}/solana-release-x86_64-unknown-linux-gnu.tar.bz2" -o /tmp/solana.tar.bz2 && \
-#     tar -xjf /tmp/solana.tar.bz2 -C /tmp && \
-#     mv /tmp/solana-release /root/.local/share/solana && \
-#     rm /tmp/solana.tar.bz2
-# ENV PATH="/root/.local/share/solana/bin:${PATH}"
-
-# # Verify Solana installation
-# RUN solana --version && cargo --version
-
-# # Install cargo-build-sbf and surfpool
-# RUN cargo install cargo-build-sbf || echo "cargo-build-sbf installation attempted" && \
-#     cargo install surfpool || echo "surfpool installation attempted"
-
-# WORKDIR /workspace
-
-# # Copy and setup entrypoint script
-# COPY entrypoint.sh /entrypoint.sh
-# RUN chmod +x /entrypoint.sh
-
-# ENTRYPOINT ["/entrypoint.sh"]
+FROM rust:slim-bookworm AS builder
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -42,22 +8,40 @@ RUN apt-get update \
         libssl-dev \
         pkg-config \
         build-essential \
+        bzip2 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-    
-# Install Solana
-# ARG SOLANA_VERSION=v2.1.21
-# RUN sh -c "$(curl -sSfL https://release.solana.com/v${SOLANA_VERSION}/install)"
-# ENV PATH="${HOME}/.local/share/solana/install/active_release/bin:${PATH}"
+# Install Solana CLI (provides cargo-build-sbf)
 RUN curl --proto '=https' --tlsv1.2 -sSfL https://solana-install.solana.workers.dev | bash
-
-# # install surfpool
-# RUN curl -sL "https://run.surfpool.run/" | bash
+ENV PATH="/root/.local/share/solana/install/active_release/bin:${PATH}"
 
 WORKDIR /workspace
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+# Copy blockchain_core dependency first (shared crate)
+COPY blockchain_core/ blockchain_core/
 
-ENTRYPOINT ["/entrypoint.sh"]
+# Copy blockchain_program source
+COPY blockchain_program/ blockchain_program/
+
+# Copy keypair for deployment
+RUN mkdir -p blockchain_program/target/deploy \
+    && cp blockchain_program/PRIVATE_KEY/ProirMXDTFF4AEqGyZVKPhWte4chANDd1c4Y8w7Nsd4.json \
+       blockchain_program/target/deploy/blockchain_program-keypair.json
+
+# Build the Solana program
+WORKDIR /workspace/blockchain_program
+RUN cargo-build-sbf
+
+# --- Output stage: copy artifacts to volume mount points ---
+FROM debian:bookworm-slim
+
+# .so goes into /program/so (mounted as surfpool's /workspace/target/deploy)
+COPY --from=builder /workspace/blockchain_program/target/deploy/blockchain_program.so /program/so/
+COPY --from=builder /workspace/blockchain_program/target/deploy/blockchain_program-keypair.json /program/so/
+
+# Keys go into /program/keys (mounted as surfpool's /root/.config/solana)
+COPY --from=builder /workspace/blockchain_program/PRIVATE_KEY/ /program/keys/
+
+# Container just starts, copies artifacts to volumes, and exits
+CMD ["echo", "Program artifacts ready"]

@@ -226,7 +226,7 @@
 		<div>
 			<h2 class="mb-3 text-lg font-semibold">As tuas posições</h2>
 			<div class="rounded-lg border bg-card text-card-foreground">
-				<Table.Root class="[&_td]:px-5 [&_th]:px-5">
+				<Table.Root class="[&_td]:px-5 [&_td]:py-4 [&_th]:px-5 [&_th]:py-4">
 					<Table.Header>
 						<Table.Row>
 							<Table.Head>Evento</Table.Head>

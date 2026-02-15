@@ -1,0 +1,7 @@
+target/
+blockchain_program/target/
+data/
+*.md
+.dockerignore
+.git/
+.gitignore

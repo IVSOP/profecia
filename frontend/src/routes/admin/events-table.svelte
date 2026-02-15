@@ -33,7 +33,7 @@
 
 <div class="rounded-lg border bg-card text-card-foreground">
 	<Table.Root
-		class="[&_td:first-child]:pl-4 [&_td:last-child]:pr-4 [&_th:first-child]:pl-4 [&_th:last-child]:pr-4"
+		class="[&_td]:py-4 [&_th]:py-4 [&_td:first-child]:pl-4 [&_td:last-child]:pr-4 [&_th:first-child]:pl-4 [&_th:last-child]:pr-4"
 	>
 		<Table.Header>
 			<Table.Row>

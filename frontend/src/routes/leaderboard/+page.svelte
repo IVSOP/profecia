@@ -33,7 +33,7 @@
 	{#if data.entries.length > 0}
 		<div class="rounded-lg border bg-card text-card-foreground">
 			<Table.Root
-				class="[&_td]:px-5 [&_th]:px-5"
+				class="[&_td]:px-5 [&_td]:py-4 [&_th]:px-5 [&_th]:py-4"
 			>
 				<Table.Header>
 					<Table.Row>

@@ -17,35 +17,62 @@ services:
       timeout: 3s
       retries: 20
 
-  # blockchain-program:
-  #   build:
-  #     context: ./backend/blockchain_program
-  #     dockerfile: Dockerfile
-  #   container_name: profecia-blockchain
-  #  # ports:
-  #  #   - "8899:8899"
-  #  #   - "8900:8900"
-  #  #   - "18488:18488"
-  #   volumes:
-  #     # - ./backend/blockchain_program:/workspace
-  #     # - ./backend/blockchain_core:/blockchain_core
-  #     # - ./backend/blockchain_program/target:/workspace/target
-  #     # - ./backend/blockchain_program/.surfpool:/workspace/.surfpool
-  #     - ./backend:/workspace
-  #   working_dir: /workspace/blockchain_program
-  #   environment:
-  #     - RUST_LOG=info
+  blockchain-program:
+    build:
+      context: ./backend
+      dockerfile: blockchain_program/Dockerfile
+    container_name: profecia-blockchain-program
+    volumes:
+      - ./data/program-so:/program/so
+      - ./data/program-keys:/program/keys
 
   surfpool:
     image: surfpool/surfpool
     container_name: surfpool-instance
     ports:
-     - "8899:8899"
-     - "8900:8900"
-     - "18488:18488"
+      - "8899:8899"
+      - "8900:8900"
+      - "18488:18488"
     volumes:
-      - ./backend/blockchain_program:/workspace
-      - .surfpool:/workspace/.surfpool
-      - ./backend/blockchain_program/PRIVATE_KEY:/root/.config/solana/ # TODO: this will also copy program priv key
+      - ./data/program-so:/workspace/target/deploy
+      - ./data/program-keys:/root/.config/solana
+      - ./data/surfpool:/workspace/.surfpool
     command: start --no-tui
     restart: unless-stopped
+    depends_on:
+      blockchain-program:
+        condition: service_completed_successfully
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: profecia-backend
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      DATABASE_URL: postgres://profecia:profecia@postgres:5432/profecia
+      RPC_URL: http://surfpool:8899
+      RUST_LOG: info
+    depends_on:
+      postgres:
+        condition: service_healthy
+      surfpool:
+        condition: service_started
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: profecia-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      BACKEND_URL: http://backend:3000
+      PORT: "3000"
+      NODE_ENV: production
+    depends_on:
+      - backend
+
